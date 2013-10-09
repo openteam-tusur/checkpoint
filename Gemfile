@@ -26,6 +26,7 @@ group :development do
   gem 'hirb'
   gem 'openteam-capistrano'
   gem 'sqlite3'
+  gem 'rails-erd'
 end
 
 group :production do
