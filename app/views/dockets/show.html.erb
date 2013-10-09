@@ -1,0 +1,9 @@
+<h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
+<%= @docket.lecturer %>
+<ul class='list'>
+  <% @docket.grades.each do |grade|%>
+    <li>
+      <%= grade.student %>
+    </li>
+  <% end %>
+</ul>

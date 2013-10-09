@@ -1,0 +1,8 @@
+<h1><%= @subdivision %></h1>
+<ul class='list'>
+  <% @subdivision.dockets.each do |docket| %>
+    <li>
+      <%= link_to docket, [@subdivision, docket] %>
+    </li>
+  <% end %>
+</ul>
