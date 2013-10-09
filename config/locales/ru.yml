@@ -1,4 +1,9 @@
 ru:
+  activerecord:
+    attributes:
+      permission:
+        context_id:         Кафедра
+
   cancan:
     access_denied:          Доступ запрещен. Недостаточно прав.
 

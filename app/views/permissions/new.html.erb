@@ -6,7 +6,7 @@
               :placeholder => 'Начните электронную почту' %>
 
   <%= f.input :user_id, :as => :hidden %>
-  <%#= f.input :context_id, :collection => Subdivision.all, :selected => f.object.context.try(:id), :include_blank => true %>
+  <%= f.input :context_id, :collection => Subdivision.all, :selected => f.object.context.try(:id), :include_blank => true %>
 
   <div class="buttons">
     <%= f.submit 'Сохранить' %>
