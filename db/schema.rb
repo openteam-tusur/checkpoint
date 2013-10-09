@@ -69,13 +69,6 @@ ActiveRecord::Schema.define(:version => 20131009033112) do
 
   add_index "people", ["group_id"], :name => "index_people_on_group_id"
 
-  create_table "subdivisions", :force => true do |t|
-    t.string   "title"
-    t.string   "abbr"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "permissions", :force => true do |t|
     t.integer  "user_id"
     t.integer  "context_id"
@@ -87,6 +80,13 @@ ActiveRecord::Schema.define(:version => 20131009033112) do
   end
 
   add_index "permissions", ["user_id", "role", "context_id", "context_type"], :name => "by_user_and_role_and_context"
+
+  create_table "subdivisions", :force => true do |t|
+    t.string   "title"
+    t.string   "abbr"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "uid"
@@ -106,4 +106,5 @@ ActiveRecord::Schema.define(:version => 20131009033112) do
   end
 
   add_index "users", ["uid"], :name => "index_users_on_uid"
+
 end
