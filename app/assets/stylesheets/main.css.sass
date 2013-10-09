@@ -1,0 +1,90 @@
+@import 'compass/reset'
+@import 'compass/utilities'
+
+html, body
+  color: #222
+  font-size: 12px
+  line-height: 16px
+
+html, body, input, textarea, select, button, a, p, b, i
+  font-family: 'Verdana', sans-serif
+  font-weight: normal
+
+h1, h2, h3, h4, h5, h6
+  font-weight: normal
+
+h1
+  font-size: 18px
+  line-height: 20px
+  margin: 18px 0
+
+h2
+  font-size: 16px
+  line-height: 18px
+  margin: 16px 0
+
+h3
+  font-size: 14px
+  line-height: 16px
+  margin: 14px 0
+
+p
+  margin: 0 0 7px 0
+
+i
+  color: #555
+  font-style: italic
+
+a
+  color: #3b29c8
+
+  &:hover
+    color: #8174e3
+
+body
+  background: #F7FBFE
+  margin: 15px auto
+  width: 1024px
+
+.header
+  +clearfix
+
+  .logo
+    float: left
+
+    a
+      background: image_url('tusur.png') no-repeat 0 0
+      display: block
+      height: 47px
+      text-indent: -9999px
+      width: 150px
+
+  .title
+    float: left
+    font-size: 16px
+    line-height: 24px
+    margin: 0 0 15px 0
+    padding: 0 0 0 20px
+    text-align: left
+    width: 510px
+
+  .auth_block
+    +clearfix
+    float: right
+
+.message_wrapper
+  display: block
+  font-size: 16px
+  left: 0
+  line-height: 20px
+  padding: 5px 0
+  position: absolute
+  right: 0
+  text-align: center
+  top: 0
+
+  &.alert
+    background: #feb8b8
+
+  &.notice
+    background: #d6f994

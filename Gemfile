@@ -5,12 +5,17 @@ group :assets do
   gem 'compass-rails'
   gem 'execjs'
   gem 'jquery-rails'
+  gem 'jquery-ui-rails'
   gem 'sass-rails'
   gem 'uglifier'
 end
 
 group :default do
   gem 'attribute_normalizer'
+  gem 'configliere'
+  gem 'devise', '2.2.4'
+  gem 'enumerize'
+  gem 'has_scope'
   gem 'inherited_resources'
   gem 'pg'
   gem 'progress_bar'
@@ -18,6 +23,7 @@ group :default do
   gem 'russian'
   gem 'simple_form'
   gem 'sso-auth'
+  gem 'validates_email_format_of'
 end
 
 group :development do

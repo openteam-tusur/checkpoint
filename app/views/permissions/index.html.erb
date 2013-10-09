@@ -1,0 +1,9 @@
+<%= link_to "Добавить роль", new_permission_path %>
+<ul>
+  <% @permissions.each do |permission| %>
+    <li>
+      <%= permission %>
+      <%= link_to "удалить", permission_path(permission), :method => :delete, :confirm => 'Вы уверены?' %>
+    </li>
+  <% end %>
+</ul>
