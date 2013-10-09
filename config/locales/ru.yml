@@ -1,3 +1,10 @@
 ru:
   cancan:
     access_denied:          Доступ запрещен. Недостаточно прав.
+
+  enumerize:
+    permission:
+      role:
+        administrator:      Админ
+        manager:            Менеджер
+
