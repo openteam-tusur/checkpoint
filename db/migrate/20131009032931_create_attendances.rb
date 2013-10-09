@@ -4,12 +4,12 @@ class CreateAttendances < ActiveRecord::Migration
       t.string :kind
       t.integer :fact
       t.integer :total
-      t.references :person
+      t.references :student
       t.references :docket
 
       t.timestamps
     end
-    add_index :attendances, :person_id
+    add_index :attendances, :student_id
     add_index :attendances, :docket_id
   end
 end

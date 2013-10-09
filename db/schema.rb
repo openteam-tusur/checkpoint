@@ -17,39 +17,39 @@ ActiveRecord::Schema.define(:version => 20131009033112) do
     t.string   "kind"
     t.integer  "fact"
     t.integer  "total"
-    t.integer  "person_id"
+    t.integer  "student_id"
     t.integer  "docket_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   add_index "attendances", ["docket_id"], :name => "index_attendances_on_docket_id"
-  add_index "attendances", ["person_id"], :name => "index_attendances_on_person_id"
+  add_index "attendances", ["student_id"], :name => "index_attendances_on_student_id"
 
   create_table "dockets", :force => true do |t|
     t.string   "discipline"
     t.integer  "subdivision_id"
     t.integer  "group_id"
-    t.integer  "person_id"
+    t.integer  "lecturer_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end
 
   add_index "dockets", ["group_id"], :name => "index_dockets_on_group_id"
-  add_index "dockets", ["person_id"], :name => "index_dockets_on_person_id"
+  add_index "dockets", ["lecturer_id"], :name => "index_dockets_on_lecturer_id"
   add_index "dockets", ["subdivision_id"], :name => "index_dockets_on_subdivision_id"
 
   create_table "grades", :force => true do |t|
     t.integer  "mark"
     t.integer  "brs"
-    t.integer  "person_id"
+    t.integer  "student_id"
     t.integer  "docket_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   add_index "grades", ["docket_id"], :name => "index_grades_on_docket_id"
-  add_index "grades", ["person_id"], :name => "index_grades_on_person_id"
+  add_index "grades", ["student_id"], :name => "index_grades_on_student_id"
 
   create_table "groups", :force => true do |t|
     t.string   "title"
