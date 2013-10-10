@@ -2,7 +2,7 @@
 <div>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
 <div>Группа: <%= @docket.group %></div>
 
-<%= link_to "Редактировать", edit_subdivision_docket_path(@docket) %>
+<%= link_to "Редактировать", edit_subdivision_docket_path(@subdivision, @docket) %>
 <% attendances = @docket.attendances.map(&:kind).uniq %>
 
 <table>

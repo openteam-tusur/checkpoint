@@ -1,15 +1,40 @@
+<% attendances = @docket.attendances.map(&:kind).uniq %>
 <%= simple_form_for [:subdivision, @docket] do |f| %>
   <table>
-    <th>ФИО</th>
-    <th>Оценка</th>
-    <th>БРС</th>
-    <%= f.simple_fields_for :grades do |sf| %>
+    <thead>
       <tr>
-        <td><%= sf.object.student %></td>
-        <td><%= sf.input :mark, label: false %></td>
-        <td><%= sf.input :brs, label: false %></td>
-      </tr
-    <% end %>
-  </table>
-  <%= f.submit %>
+        <th rowspan='2'>ФИО студента</th>
+        <th colspan='<%= attendances.count %>'>Посещаемость</th>
+        <th rowspan='2'>Оценка</th>
+        <th rowspan='2'>БРС</th>
+      </tr>
+      <tr>
+        <% if attendances.any? %>
+          <% attendances.each do |attendance| %>
+            <th><%= Attendance.kind_values[attendance] %></th>
+          <% end %>
+        <% else %>
+          <th>&mdash;</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= f.simple_fields_for :grades do |sf| %>
+        <tr>
+          <td><%= sf.object.student %></td>
+          <% sf.object.student.attendances.where(:docket_id => @docket.id).order(&:kind).each do |attendance| %>
+            <td class='center'>
+              <%= attendance %>
+            </td>
+          <% end %>
+          <td><%= sf.input :mark, label: false %></td>
+          <td><%= sf.input :brs, label: false %></td>
+          </tr
+        <% end %>
+      </tbody>
+    </table>
+    <div class="buttons">
+      <%= f.submit 'Сохранить' %>
+      <%= link_to "Отмена", resource_path %>
+    </div>
 <% end %>
