@@ -8,6 +8,14 @@ ru:
     access_denied:          Доступ запрещен. Недостаточно прав.
 
   enumerize:
+    attendance:
+      kind:
+        lecture:            Лекции
+        practice:           Практики
+        laboratory:         Лабораторные работы
+        research:           Курсовые исследования
+        design:             Курсовые проектирования
+
     permission:
       role:
         administrator:      Админ

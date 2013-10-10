@@ -6,7 +6,8 @@ class Docket < ActiveRecord::Base
   belongs_to :subdivision
 
   has_many :grades, :dependent => :destroy
-  has_many :attendances, :dependent => :destroy
+  has_many :attendances, :dependent => :destroy, :order => :kind
+  has_many :students, :through => :grades
 
   alias_attribute :to_s, :discipline
 

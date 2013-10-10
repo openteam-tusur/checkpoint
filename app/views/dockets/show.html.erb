@@ -2,11 +2,41 @@
 <div>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
 <div>Группа: <%= @docket.group %></div>
 
-<ul class='list'>
-  <% @docket.grades.each do |grade|%>
-    <li>
-      <%= grade.student %>
-    </li>
-  <% end %>
-</ul>
 <%= link_to "Редактировать", edit_subdivision_docket_path(@docket) %>
+<% attendances = @docket.attendances.map(&:kind).uniq %>
+
+<table>
+  <thead>
+    <tr>
+      <th rowspan='2'>ФИО студента</th>
+      <th colspan='<%= attendances.count %>'>Посещаемость</th>
+      <th rowspan='2'>Оценка</th>
+      <th rowspan='2'>БРС</th>
+    </tr>
+    <tr>
+      <% if attendances.any? %>
+        <% attendances.each do |attendance| %>
+          <th><%= Attendance.kind_values[attendance] %></th>
+        <% end %>
+      <% else %>
+        <th>&mdash;</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @docket.grades.each do |grade|%>
+      <tr>
+        <td><%= grade.student %></td>
+
+        <% grade.student.attendances.where(:docket_id => @docket.id).order(&:kind).each do |attendance| %>
+          <td class='center'>
+            <%= attendance %>
+          </td>
+        <% end %>
+
+        <td class='center'><%= grade.mark || '&mdash;'.html_safe %></td>
+        <td class='center'><%= grade.brs || '&mdash;'.html_safe %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
