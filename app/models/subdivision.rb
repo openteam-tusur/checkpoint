@@ -5,6 +5,9 @@ class Subdivision < ActiveRecord::Base
   has_many :permissions, :as => :context
 
   scope :by_abbr, ->(_) { order(:abbr) }
+  scope :by_title, ->(_) { order(:title) }
 
-  alias_attribute :to_s, :abbr
+  def to_s
+    title || abbr
+  end
 end
