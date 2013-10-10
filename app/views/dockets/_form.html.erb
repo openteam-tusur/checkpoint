@@ -4,7 +4,9 @@
     <thead>
       <tr>
         <th rowspan='2'>ФИО студента</th>
-        <th colspan='<%= attendances.count %>'>Посещаемость</th>
+        <% if attendances.any? %>
+          <th colspan='<%= attendances.count %>'>Посещаемость</th>
+        <% end %>
         <th rowspan='2'>Оценка</th>
         <th rowspan='2'>БРС</th>
       </tr>
@@ -13,8 +15,6 @@
           <% attendances.each do |attendance| %>
             <th><%= Attendance.kind_values[attendance] %></th>
           <% end %>
-        <% else %>
-          <th>&mdash;</th>
         <% end %>
       </tr>
     </thead>
