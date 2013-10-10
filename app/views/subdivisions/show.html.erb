@@ -1,8 +1,15 @@
 <h1><%= @subdivision %></h1>
 <ul class='list'>
-  <% @subdivision.dockets.each do |docket| %>
+  <% @subdivision.dockets.group_by(&:discipline).each do |discipline, dockets| %>
     <li>
-      <%= link_to docket, [@subdivision, docket] %>
+      <%= discipline %>
+      <ul>
+        <% dockets.sort_by{|d| d.group.title }.each do |docket| %>
+          <li>
+            <%= link_to docket.group, [@subdivision, docket] %>
+          </li>
+        <% end %>
+      </ul>
     </li>
   <% end %>
 </ul>
