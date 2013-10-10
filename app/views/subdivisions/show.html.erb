@@ -2,11 +2,19 @@
 <ul class='list'>
   <% @subdivision.dockets.group_by(&:discipline).each do |discipline, dockets| %>
     <li>
-      <%= discipline %>
-      <ul>
+      <h2><%= discipline %></h2>
+      <ul class='dockets'>
         <% dockets.sort_by{|d| d.group.title }.each do |docket| %>
           <li>
-            <%= link_to docket.group, [@subdivision, docket] %>
+            <%= link_to "гр. #{docket.group}", [@subdivision, docket] %>
+            <span class="lecturer"><%= docket.lecturer %></span>
+
+            <div class="errors">
+              <span><%= 'нет студентов'                 if docket.students.empty? %></span>
+              <span><%= 'нет преподавателя'             if docket.lecturer.nil? %></span>
+              <span><%= 'нет информации о посещаемости' if docket.attendances.empty? %></span>
+              <span><%= 'не заполнена КТ'               if docket.grades.map(&:mark).compact.empty? %></span>
+            </div>
           </li>
         <% end %>
       </ul>
