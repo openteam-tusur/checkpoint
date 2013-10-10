@@ -1,0 +1,5 @@
+<h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
+<div>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
+<div>Группа: <%= @docket.group %></div>
+
+<%= render 'form' %>

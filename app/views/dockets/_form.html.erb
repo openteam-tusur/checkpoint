@@ -1,0 +1,15 @@
+<%= simple_form_for [:subdivision, @docket] do |f| %>
+  <table>
+    <th>ФИО</th>
+    <th>Оценка</th>
+    <th>БРС</th>
+    <%= f.simple_fields_for :grades do |sf| %>
+      <tr>
+        <td><%= sf.object.student %></td>
+        <td><%= sf.input :mark, label: false %></td>
+        <td><%= sf.input :brs, label: false %></td>
+      </tr
+    <% end %>
+  </table>
+  <%= f.submit %>
+<% end %>
