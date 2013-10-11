@@ -7,10 +7,9 @@ class DocketsController < ApplicationController
 
   def show
     show! do |format|
-      filename = [@docket.abbr, @docket.lecturer, @docket.group].join(', ')
-      filename += '.csv'
+      file = CsvExport.new(@docket)
       format.html
-      format.csv { send_data @docket.to_csv, type: 'text/csv; charset=utf-8; header=present', filename: filename and return }
+      format.csv { send_data file.to_csv, type: 'text/csv; charset=utf-8; header=present', filename: file.name and return }
     end
   end
 
