@@ -13,6 +13,18 @@ class Docket < ActiveRecord::Base
 
   accepts_nested_attributes_for :grades
 
+  def filled_marks?
+    !grades.actived.pluck(:mark).include?(nil)
+  end
+
+  def filled_brses?
+    !grades.actived.pluck(:brs).include?(nil)
+  end
+
+  def filled?
+    filled_marks? && filled_brses?
+  end
+
   def csv_header
     header = ['ФИО студента']
     attendances = self.attendances.map(&:kind).uniq

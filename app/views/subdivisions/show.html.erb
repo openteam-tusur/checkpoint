@@ -11,7 +11,7 @@
     <li>
       <%= link_to [docket.discipline, "гр. #{docket.group}", docket.lecturer].join(', '), [@subdivision, docket]  %>
       <div class="errors">
-        <span><%= 'не заполнена КТ' if docket.grades.map(&:mark).compact.empty? %></span>
+        <span><%= 'не заполнена КТ' unless docket.filled? %></span>
       </div>
     </li>
   <% end %>
