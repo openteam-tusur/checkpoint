@@ -1,4 +1,11 @@
 <h1><%= @subdivision %></h1>
+
+<div class="search_in_list_wrapper">
+  <%= simple_form_for :search do |f| %>
+    <%= f.input :query, :label => false, :placeholder => 'Найти по дисциплине, преподавателю или группе', :input_html => { :data => { :list => '.list.dockets' } } %>
+  <% end %>
+</div>
+
 <ul class='list dockets'>
   <% @subdivision.dockets.each do |docket| %>
     <li>
