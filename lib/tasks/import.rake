@@ -27,7 +27,9 @@ def import_groups_and_students(items)
 end
 
 def create_grades(student, docket)
-  student.grades.find_or_create_by_docket_id(docket.id)
+  student.grades.find_or_initialize_by_docket_id(docket.id).tap do |grade|
+    grade.save!(:validate => false)
+  end
 end
 
 def get_attendance_for(student, discipline)
