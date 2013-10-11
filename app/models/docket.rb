@@ -1,3 +1,4 @@
+require 'csv'
 class Docket < ActiveRecord::Base
   attr_accessible :discipline, :group_id, :lecturer_id, :grades_attributes
 
@@ -12,6 +13,8 @@ class Docket < ActiveRecord::Base
   alias_attribute :to_s, :discipline
 
   accepts_nested_attributes_for :grades
+
+  after_save :clear_grades
 
   def filled_marks?
     !grades.actived.pluck(:mark).include?(nil)
@@ -76,5 +79,10 @@ class Docket < ActiveRecord::Base
     else
       words.map{ |w| w.size > 3 ? w.first.mb_chars.upcase : w }.join
     end
+  end
+
+private
+  def clear_grades
+    self.grades.inactive.update_all(:mark => nil, :brs => nil)
   end
 end

@@ -5,5 +5,6 @@ class Grade < ActiveRecord::Base
   belongs_to :student
 
   scope :actived, -> { where(:active => true) }
+  scope :inactive, -> { where(:active => false) }
   validates_presence_of :mark, :brs, :if => :active?
 end
