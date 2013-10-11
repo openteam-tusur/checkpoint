@@ -3,6 +3,4 @@ class Grade < ActiveRecord::Base
 
   belongs_to :docket
   belongs_to :student
-
-  delegate :full_name, :to => :student, :prefix => true
 end

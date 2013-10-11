@@ -26,7 +26,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @docket.grades.each do |grade|%>
+    <% @docket.grades.sort_by{ |g| g.student }.each do |grade|%>
       <tr>
         <td><%= grade.student %></td>
 

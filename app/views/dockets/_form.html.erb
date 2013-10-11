@@ -20,7 +20,7 @@
       </tr>
     </thead>
     <tbody>
-      <%= f.simple_fields_for :grades do |sf| %>
+      <%= f.simple_fields_for :grades, f.object.grades.sort_by{ |g| g.student } do |sf| %>
         <tr>
           <td><%= sf.object.student %></td>
           <% sf.object.student.attendances.where(:docket_id => @docket.id).order(&:kind).each do |attendance| %>
