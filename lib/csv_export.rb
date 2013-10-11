@@ -4,7 +4,7 @@ class CsvExport < Struct.new(:exported_object)
   def to_csv(options = {})
     CSV.generate(options) do |csv|
       csv << csv_header
-      exported_object.grades.each do |grade|
+      exported_object.grades.sort_by{ |g| g.student }.each do |grade|
         info = []
         info << grade.student.to_s
         grade.student.attendances.where(:docket_id => exported_object.id).order(&:kind).each do |attendance|
