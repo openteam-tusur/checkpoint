@@ -1,0 +1,4 @@
+<%= simple_form_for :import, url: import_subdivision_docket_path(@subdivision, @docket) do |f| %>
+  <%= f.input_field :file, as: :file, label: false %>
+  <%= f.submit 'Импортировать' %>
+<% end %>

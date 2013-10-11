@@ -3,7 +3,8 @@
 <div>Группа: <%= @docket.group %></div>
 
 <%= link_to "Редактировать", edit_subdivision_docket_path(@subdivision, @docket) %>
-<%= link_to "Скачать", subdivision_docket_path(@docket, format: :csv) %>
+<%= link_to "Скачать", subdivision_docket_path(@subdivision, @docket, format: :csv) %>
+<%= render 'import_form' %>
 <% attendances = @docket.attendances.map(&:kind).uniq %>
 
 <table>
