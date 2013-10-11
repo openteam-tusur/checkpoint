@@ -9,10 +9,7 @@
 <ul class='list dockets'>
   <% @subdivision.dockets.each do |docket| %>
     <li>
-      <%= link_to docket.discipline, [@subdivision, docket]  %>
-      <span class="group">гр. <%= docket.group %>, </span>
-      <span class="lecturer"><%= docket.lecturer || '&mdash;'.html_safe %></span>
-
+      <%= link_to [docket.discipline, "гр. #{docket.group}", docket.lecturer].join(', '), [@subdivision, docket]  %>
       <div class="errors">
         <span><%= 'не заполнена КТ' if docket.grades.map(&:mark).compact.empty? %></span>
       </div>
