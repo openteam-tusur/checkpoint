@@ -1,4 +1,3 @@
-require 'csv'
 class Docket < ActiveRecord::Base
   attr_accessible :discipline, :group_id, :lecturer_id, :grades_attributes
 
