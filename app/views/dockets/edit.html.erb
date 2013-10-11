@@ -1,5 +1,24 @@
+<div class='breadcrumbs'>
+  <ul>
+    <% if can? :index, Subdivision %>
+      <li>
+        <%= link_to 'Список обеспечивающих кафедр', subdivisions_path %>
+      </li>
+    <% end %>
+    <li>
+      <%= link_to @subdivision, subdivision_path(@subdivision) %>
+    </li>
+    <li>
+      <%= link_to "Ведомость по предмету &laquo;#{@docket}&raquo;".html_safe, subdivision_docket_path(@subdivision, @docket) %>
+    </li>
+    <li>
+      <span>Редактирование</span>
+    </li>
+  </ul>
+</div>
+
 <h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
-<div>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
-<div>Группа: <%= @docket.group %></div>
+<div class='info'>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
+<div class='info'>Группа: <%= @docket.group %></div>
 
 <%= render 'form' %>

@@ -1,10 +1,34 @@
-<h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
-<div>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
-<div>Группа: <%= @docket.group %></div>
+<div class='breadcrumbs'>
+  <ul>
+    <% if can? :index, Subdivision %>
+      <li>
+        <%= link_to 'Список обеспечивающих кафедр', subdivisions_path %>
+      </li>
+    <% end %>
+    <li>
+      <%= link_to @subdivision, subdivision_path(@subdivision) %>
+    </li>
+    <li>
+      <span>Ведомость по предмету &laquo;<%= @docket %>&raquo;</span>
+    </li>
+  </ul>
+</div>
 
-<%= link_to "Редактировать", edit_subdivision_docket_path(@subdivision, @docket) %>
-<%= link_to "Скачать", subdivision_docket_path(@subdivision, @docket, format: :csv) %>
-<%= render 'import_form' %>
+<h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
+
+<div class="actions">
+  <%= link_to "Редактировать", edit_subdivision_docket_path(@subdivision, @docket) %>
+  <%= link_to "Скачать CSV", subdivision_docket_path(@subdivision, @docket, format: :csv) %>
+</div>
+
+<div class='info'>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
+<div class='info'>Группа: <%= @docket.group %></div>
+
+<div class="import_form_wrapper">
+  <h4>Импорт CSV:</h4>
+  <%= render 'import_form' %>
+</div>
+
 <% attendances = @docket.attendances.map(&:kind).uniq %>
 
 <table>

@@ -115,11 +115,14 @@ table
     text-align: center
 
   th, td
-    border: 1px solid #777
-    padding: 3px
+    border: 1px solid #aaa
+    padding: 5px
 
   .center
     text-align: center
+
+  td
+    font-size: 14px
 
 .dockets
   li
@@ -148,3 +151,61 @@ form
     color: #d63f46
     display: block
     font-size: 11px
+
+  th, td
+    padding: 3px 5px
+
+  .buttons
+    margin: 15px 0 0 0
+
+    input
+      font-size: 16px
+      margin: 0 10px 0 0
+
+    a
+      font-size: 14px
+
+.breadcrumbs
+  font-size: 10px
+  font-style: italic
+  margin: 25px 0
+
+  ul
+    +clearfix
+
+    li
+      float: left
+
+      &:after
+        content: '\2192'
+        margin: 0 5px 0 0
+
+      &:last-child
+        &:after
+          content: ''
+
+
+.info
+  font-size: 14px
+  margin: 10px 0
+
+.actions
+  font-size: 16px
+  float: right
+
+  a
+    margin: 0 0 0 10px
+
+.import_form_wrapper
+  +clearfix
+  font-size: 14px
+  line-height: 22px
+  margin: 0 0 15px 0
+
+  h4
+    float: left
+    line-height: 22px
+    margin: 0 15px 0 0
+
+  form
+    +clearfix

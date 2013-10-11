@@ -7,12 +7,12 @@ class Ability
 
     can :manage, :all if user.administrator?
 
-    can :read, Subdivision do |subdivision|
+    can :show, Subdivision do |subdivision|
       user.manager_of?(subdivision)
     end
 
     can :manage, Docket do |docket|
-      can? :read, docket.subdivision
+      can? :show, docket.subdivision
     end
   end
 end

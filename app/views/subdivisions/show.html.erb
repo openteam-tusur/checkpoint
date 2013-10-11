@@ -1,3 +1,16 @@
+<div class='breadcrumbs'>
+  <ul>
+    <% if can? :index, Subdivision %>
+      <li>
+        <%= link_to 'Список обеспечивающих кафедр', subdivisions_path %>
+      </li>
+    <% end %>
+    <li>
+      <span><%= @subdivision %></span>
+    </li>
+  </ul>
+</div>
+
 <h1><%= @subdivision %></h1>
 
 <div class="search_in_list_wrapper">
