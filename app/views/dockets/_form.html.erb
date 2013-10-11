@@ -1,5 +1,5 @@
 <% attendances = @docket.attendances.map(&:kind).uniq %>
-<%= simple_form_for [:subdivision, @docket] do |f| %>
+<%= simple_form_for [@subdivision, @docket] do |f| %>
   <table>
     <thead>
       <tr>

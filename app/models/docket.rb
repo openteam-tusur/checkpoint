@@ -30,7 +30,7 @@ class Docket < ActiveRecord::Base
       self.grades.each do |grade|
         info = []
         info << grade.student.to_s
-        grade.student.attendances.where(:docket_id => self.id).order(&:kind).each do |attendance| 
+        grade.student.attendances.where(:docket_id => self.id).order(&:kind).each do |attendance|
           info << attendance.to_s
         end
         info << grade.mark << grade.brs

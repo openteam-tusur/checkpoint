@@ -15,6 +15,7 @@
       <% end %>
       <th rowspan='2'>Оценка</th>
       <th rowspan='2'>БРС</th>
+      <th rowspan='2'>Обучается?</th>
     </tr>
     <tr>
       <% if attendances.any? %>
@@ -37,6 +38,7 @@
 
         <td class='center'><%= grade.mark || '&mdash;'.html_safe %></td>
         <td class='center'><%= grade.brs || '&mdash;'.html_safe %></td>
+        <td class="center"><%= grade.active? ? 'да' : 'нет' %></td>
       </tr>
     <% end %>
   </tbody>
