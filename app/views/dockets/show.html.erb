@@ -55,10 +55,18 @@
       <tr>
         <td><%= grade.student %></td>
 
-        <% grade.student.attendances.where(:docket_id => @docket.id).order(&:kind).each do |attendance| %>
+        <% student_attendances = grade.student.attendances.where(:docket_id => @docket.id).order(&:kind) %>
+
+        <% student_attendances.each do |attendance| %>
           <td class='center'>
             <%= attendance %>
           </td>
+        <% end %>
+
+        <% if (diff = student_attendances.count - attendances.count) < 0 %>
+           <% diff.abs.times do %>
+             <td class="center">&mdash;</td>
+           <% end %>
         <% end %>
 
         <td class='center'><%= grade.mark || '&mdash;'.html_safe %></td>
