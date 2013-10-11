@@ -9,6 +9,7 @@
         <% end %>
         <th rowspan='2'>Оценка</th>
         <th rowspan='2'>БРС</th>
+        <th rowspan='2'>Обучается?</th>
       </tr>
       <tr>
         <% if attendances.any? %>
@@ -29,12 +30,13 @@
           <% end %>
           <td><%= sf.input :mark, label: false %></td>
           <td><%= sf.input :brs, label: false %></td>
-          </tr
-        <% end %>
-      </tbody>
-    </table>
-    <div class="buttons">
-      <%= f.submit 'Сохранить' %>
-      <%= link_to "Отмена", resource_path %>
-    </div>
+          <td><%= sf.input :active, :label => false %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="buttons">
+    <%= f.submit 'Сохранить' %>
+    <%= link_to "Отмена", resource_path %>
+  </div>
 <% end %>

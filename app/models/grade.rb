@@ -1,5 +1,5 @@
 class Grade < ActiveRecord::Base
-  attr_accessible :brs, :mark
+  attr_accessible :brs, :mark, :active
 
   belongs_to :docket
   belongs_to :student

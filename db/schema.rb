@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131009033112) do
+ActiveRecord::Schema.define(:version => 20131011040324) do
 
   create_table "attendances", :force => true do |t|
     t.string   "kind"
@@ -44,8 +44,9 @@ ActiveRecord::Schema.define(:version => 20131009033112) do
     t.integer  "brs"
     t.integer  "student_id"
     t.integer  "docket_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+    t.boolean  "active",     :default => true
   end
 
   add_index "grades", ["docket_id"], :name => "index_grades_on_docket_id"
