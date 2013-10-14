@@ -12,6 +12,6 @@ class Attendance < ActiveRecord::Base
   end
 
   def to_s
-    "#{fact || '-'}/#{total}".html_safe
+    "#{fact || '-'} из #{total}".html_safe
   end
 end

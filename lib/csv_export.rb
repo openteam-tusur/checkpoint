@@ -2,7 +2,13 @@ require 'csv'
 
 class CsvExport < Struct.new(:exported_object)
   def to_csv(options = {})
-    CSV.generate(options) do |csv|
+    CSV.generate(:col_sep => ';', :force_quotes => true) do |csv|
+      csv << ["Предмет: #{exported_object.to_s}"]
+      csv << ["Преподаватель: #{exported_object.lecturer.to_s}"]
+      csv << ["Группа: #{exported_object.group.to_s}"]
+      csv << ['']
+      csv << ['0 - не аттестован, 2 - неудовлетварительно, 3 - удовлетварительно, 4 - хорошо, 5 - отлично']
+      csv << ['']
       csv << csv_header
       exported_object.grades.sort_by{ |g| g.student }.each do |grade|
         info = []
@@ -10,7 +16,7 @@ class CsvExport < Struct.new(:exported_object)
         grade.student.attendances.where(:docket_id => exported_object.id).order(&:kind).each do |attendance|
           info << attendance.to_s
         end
-        info << grade.mark << grade.brs
+        info << grade.mark
         csv << info
       end
     end
@@ -30,7 +36,7 @@ class CsvExport < Struct.new(:exported_object)
         header << Attendance.kind_values[attendance]
       end
     end
-    header << 'Оценка' << 'БРС'
+    header << 'Оценка'
   end
 
   def abbr
