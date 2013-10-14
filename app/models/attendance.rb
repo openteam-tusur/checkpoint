@@ -12,7 +12,7 @@ class Attendance < ActiveRecord::Base
   end
 
   def self.kind_value(kind_title)
-    self.class.enumerized_attributes['kind'].values.map{|v| { v => v.value}}[kind_title]
+    enumerized_attributes['kind'].values.map{|v| { v => v.value}}[kind_title]
   end
 
   def to_s
