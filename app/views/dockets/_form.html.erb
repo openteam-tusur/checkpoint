@@ -22,11 +22,19 @@
       <%= f.simple_fields_for :grades, f.object.grades.sort_by{ |g| g.student } do |sf| %>
         <tr>
           <td><%= sf.object.student %></td>
-          <% sf.object.student.attendances.where(:docket_id => @docket.id).order(&:kind).each do |attendance| %>
+          <% student_attendances = sf.object.student.attendances.where(:docket_id => @docket.id).order(&:kind) %>
+          <% student_attendances.each do |attendance| %>
             <td class='center'>
               <%= attendance %>
             </td>
           <% end %>
+
+          <% if (diff = student_attendances.count - attendances.count) < 0 %>
+            <% diff.abs.times do %>
+              <td class="center">&mdash;</td>
+            <% end %>
+          <% end %>
+
           <td><%= sf.input :mark, label: false, :include_blank => '--- не выбрано ---' %></td>
           <td><%= sf.input :active, :label => false %></td>
         </tr>
