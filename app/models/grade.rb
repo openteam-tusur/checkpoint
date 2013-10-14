@@ -1,4 +1,5 @@
 class Grade < ActiveRecord::Base
+  extend Enumerize
   attr_accessible :mark, :active
 
   belongs_to :docket
@@ -6,5 +7,6 @@ class Grade < ActiveRecord::Base
 
   scope :actived, -> { where(:active => true) }
   scope :inactive, -> { where(:active => false) }
-  validates_presence_of :mark, :if => :active?
+
+  enumerize :mark, :in => [0, 2, 3, 4, 5]
 end

@@ -11,7 +11,7 @@ class Docket < ActiveRecord::Base
 
   alias_attribute :to_s, :discipline
 
-  accepts_nested_attributes_for :grades
+  accepts_nested_attributes_for :grades, :reject_if => :all_blank
 
   after_save :clear_grades
 
