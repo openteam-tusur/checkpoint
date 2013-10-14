@@ -3,7 +3,7 @@ require 'csv'
 class CsvImport < Struct.new(:file, :imported_object)
   def import
     prepare_hash.each do |item|
-      surname, name, patronymic = item['ФИО студента'].split('\s',3)
+      surname, name, patronymic = item['ФИО студента'].split(/\s/,3)
       student = imported_object.students.find_by_name_and_surname_and_patronymic(name, surname, patronymic)
       grade = student.grades.find_or_create_by_docket_id(imported_object.id)
       grade.update_attributes(:mark => item['Оценка'], :active => true)
