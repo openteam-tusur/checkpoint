@@ -27,7 +27,7 @@
               <%= attendance %>
             </td>
           <% end %>
-          <td><%= sf.input :mark, label: false %></td>
+          <td><%= sf.input :mark, label: false, :include_blank => '--- не выбрано ---' %></td>
           <td><%= sf.input :active, :label => false %></td>
         </tr>
       <% end %>
