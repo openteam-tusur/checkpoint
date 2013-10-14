@@ -24,6 +24,7 @@ group :default do
   gem 'simple_form'
   gem 'sso-auth'
   gem 'validates_email_format_of'
+  gem 'whenever',           :require => false
 end
 
 group :development do
