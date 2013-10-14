@@ -10,6 +10,11 @@
   <% @subdivisions.each do |subdivision| %>
     <li>
       <%= link_to subdivision, subdivision %>
+    (<% if subdivision.permissions.any? %>
+        <%= subdivision.permissions.map(&:title).join(',').html_safe %>
+      <% else %>
+        <span class='alert'>ответственный не назначен</span>
+      <% end %>)
     </li>
   <% end %>
 </ul>

@@ -62,6 +62,13 @@ class Permission < ActiveRecord::Base
     end.html_safe
   end
 
+  def title
+    ''.tap do |s|
+      s << "&lt;#{user.email}&gt; #{user} &mdash; " if user.present?
+      s << "&lt;#{email}&gt; <span class='alert'>роль не активирована</span>" if user.nil?
+    end
+  end
+
 private
   def set_context_type
     self.context_type ||= 'Subdivision'
