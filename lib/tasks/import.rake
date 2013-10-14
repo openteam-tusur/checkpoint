@@ -41,7 +41,7 @@ def create_attendances(student, docket)
   return if attendances.has_key?('error')
   attendances.each do |discipline_kind, presences|
     student.attendances.find_or_initialize_by_docket_id_and_kind(:docket_id => docket.id, :kind => Attendance.kind_value(discipline_kind).to_s).tap do |attendance|
-      attendance.fact = presences['was']
+      attendance.fact = presences['was'].to_i + presences['valid_excuse'].to_i
       attendance.total = presences.map{|k,v| v}.reduce(:+)
       attendance.save!
     end
