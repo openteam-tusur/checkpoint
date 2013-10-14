@@ -19,16 +19,12 @@ class Docket < ActiveRecord::Base
     !grades.actived.pluck(:mark).include?(nil)
   end
 
-  def filled_brses?
-    !grades.actived.pluck(:brs).include?(nil)
-  end
-
   def filled?
-    filled_marks? && filled_brses?
+    filled_marks?
   end
 
 private
   def clear_grades
-    self.grades.inactive.update_all(:mark => nil, :brs => nil)
+    self.grades.inactive.update_all(:mark => nil)
   end
 end

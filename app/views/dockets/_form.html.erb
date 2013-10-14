@@ -8,7 +8,6 @@
           <th colspan='<%= attendances.count %>'>Посещаемость</th>
         <% end %>
         <th rowspan='2'>Оценка</th>
-        <th rowspan='2'>БРС</th>
         <th rowspan='2'>Обучается?</th>
       </tr>
       <tr>
@@ -29,7 +28,6 @@
             </td>
           <% end %>
           <td><%= sf.input :mark, label: false %></td>
-          <td><%= sf.input :brs, label: false %></td>
           <td><%= sf.input :active, :label => false %></td>
         </tr>
       <% end %>
