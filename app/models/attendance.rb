@@ -11,6 +11,10 @@ class Attendance < ActiveRecord::Base
     Hash[kind.values.map{|v| [v.to_s, v.text]} ]
   end
 
+  def self.kind_value(kind_title)
+    self.class.enumerized_attributes['kind'].values.map{|v| { v => v.value}}[kind_title]
+  end
+
   def to_s
     "#{fact || '-'} из #{total}".html_safe
   end
