@@ -124,3 +124,16 @@ task :import => :environment do
   puts Group.select{ |g| g.students.empty? }
   puts '+--------------------------------------------------+'
 end
+
+
+desc 'Import attendances'
+task :import_attendances => :environment do
+  dockets = Docket.all
+  pb = ProgressBar.new(dockets.count)
+  dockets.each do |docket|
+    docket.group.students.each do |student|
+      create_attendances(student, docket)
+    end
+    pb.increment!
+  end
+end
