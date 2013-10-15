@@ -64,7 +64,7 @@ class Permission < ActiveRecord::Base
 
   def title
     ''.tap do |s|
-      s << "&lt;#{user.email}&gt; #{user} &mdash; " if user.present?
+      s << "&lt;#{user.email}&gt; #{user}" if user.present?
       s << "&lt;#{email}&gt; <span class='alert'>роль не активирована</span>" if user.nil?
     end
   end
