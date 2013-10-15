@@ -8,6 +8,6 @@ class Person < ActiveRecord::Base
       s << surname
       s << name
       s << patronymic
-    end.join(' ')
+    end.compact.join(' ')
   end
 end
