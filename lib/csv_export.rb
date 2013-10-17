@@ -23,7 +23,7 @@ class CsvExport < Struct.new(:exported_object)
   end
 
   def name
-    Russian.translit([abbr, exported_object.lecturer, exported_object.group].join(', ')) + '.csv'
+    Russian.translit([abbr, exported_object.lecturer, exported_object.group].join('_')) + '.csv'
   end
 
   private
