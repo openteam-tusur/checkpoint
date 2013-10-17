@@ -9,6 +9,7 @@ class DocketsController < ApplicationController
     show! do |format|
       file = CsvExport.new(@docket)
       format.html
+      raise file.name.inspect
       format.csv { send_data file.to_csv.encode('cp1251', :invalid => :replace, :undef => :replace, :replace => ""),
                                                 :type => 'text/csv; charset=cp1251; header=present',
                                                 :disposition => 'attachment',

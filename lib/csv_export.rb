@@ -42,7 +42,7 @@ class CsvExport < Struct.new(:exported_object)
   def abbr
     ignored = %w[при из в и у над без до к на по о от при с]
     vocals = %w[а е ё и о у ы э ю я]
-    words = (exported_object.discipline.gsub(/\(.+\)|\/.+\Z|\*|\\.+\Z|:.+\Z|\.|\d+|-/, ' ').squish.split(' ') - ignored)
+    words = (exported_object.discipline.gsub(/\(.+\)|\/.+\Z|\*|\\.+\Z|:.+\Z|\.|\d+|-/, ' ').gsub(/["']/, '').squish.split(' ') - ignored)
 
     if words.one?
       word = words.first
