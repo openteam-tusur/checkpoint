@@ -10,11 +10,8 @@
   <% @subdivisions.each do |subdivision| %>
     <li>
       <%= link_to subdivision, subdivision %>
-    (<% if subdivision.permissions.any? %>
-        <%= subdivision.permissions.map(&:title).join(',').html_safe %>
-      <% else %>
-        <span class='alert'>ответственный не назначен</span>
-      <% end %>)
+      (<%= subdivision.dockets.joins(:grades).where('grades.mark is not null AND grades.active = ?', true).uniq.count %>/<%= subdivision.dockets.joins(:grades).where('grades.active = ?', true).uniq.count %>)
+      (<%= subdivision.permissions.any? ? subdivision.permissions.map(&:title).join(',').html_safe : "<span class='alert'>ответственный не назначен</span>".html_safe %>)
     </li>
   <% end %>
 </ul>
