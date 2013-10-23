@@ -26,6 +26,7 @@ group :default do
   gem 'sso-auth'
   gem 'validates_email_format_of'
   gem 'whenever',           :require => false
+  gem 'rubyzip'
 end
 
 group :development do

@@ -257,6 +257,7 @@ DEPENDENCIES
   progress_bar
   rails (~> 3.2)
   rails-erd
+  rubyzip
   russian
   sass-rails
   simple_form
