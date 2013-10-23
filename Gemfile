@@ -12,6 +12,7 @@ end
 
 group :default do
   gem 'attribute_normalizer'
+  gem 'axlsx'
   gem 'configliere'
   gem 'devise', '2.2.4'
   gem 'enumerize'
