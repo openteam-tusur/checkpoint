@@ -1,5 +1,5 @@
 class Subdivision < ActiveRecord::Base
-  attr_accessible :abbr, :title
+  attr_accessible :abbr, :title, :folder_name
 
   has_many :dockets, :dependent => :destroy, :order => 'discipline ASC'
   has_many :permissions, :as => :context
@@ -9,5 +9,9 @@ class Subdivision < ActiveRecord::Base
 
   def to_s
     title || abbr
+  end
+
+  def abbr_translit
+    Russian.translit(abbr)
   end
 end

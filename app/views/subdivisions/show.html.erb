@@ -19,6 +19,10 @@
   <% end %>
 </div>
 
+<div class="link_to_file">
+  <%= link_to "Скачать ведомости", "/grades/#{@subdivision.folder_name}/#{@subdivision.abbr_translit}.zip" if File.directory?("public/grades/#{@subdivision.folder_name}") %>
+</div>
+
 <ul class='list dockets'>
   <% @subdivision.dockets.each do |docket| %>
     <li>
