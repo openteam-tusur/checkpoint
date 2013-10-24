@@ -92,7 +92,7 @@ def to_zip
   directories.each do |dir|
     puts "Архивирование #{dir.gsub(/public\/grades\//,'')}"
     file_paths = Dir.glob("#{dir}/*.xlsx")
-    sub_abbr = Russian.translit(Subdivision.find_by_folder_name(dir.gsub(/public\/grades\//,'')).abbr)
+    sub_abbr = Subdivision.find_by_folder_name(dir.gsub(/public\/grades\//,'')).abbr_translit
     zip_file = "#{dir}/#{sub_abbr}.zip"
     Zip::File.open(zip_file, Zip::File::CREATE) do |zipfile|
       file_paths.each do |file_path|
