@@ -90,10 +90,11 @@ def to_zip
   directories = Dir.glob('public/grades/*').select {|f| File.directory? f}
   pb = ProgressBar.new(directories.count)
   directories.each do |dir|
-    puts "Архивирование #{dir.gsub(/public\/grades\//,'')}"
-    file_paths = Dir.glob("#{dir}/*.xlsx")
     sub_abbr = Subdivision.find_by_folder_name(dir.gsub(/public\/grades\//,'')).abbr_translit
+    puts "Архивирование #{sub_abbr}"
+    file_paths = Dir.glob("#{dir}/*.xlsx")
     zip_file = "#{dir}/#{sub_abbr}.zip"
+
     Zip::File.open(zip_file, Zip::File::CREATE) do |zipfile|
       file_paths.each do |file_path|
         file_name = file_path.split('/').last
