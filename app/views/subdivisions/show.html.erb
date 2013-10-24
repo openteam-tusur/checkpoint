@@ -21,8 +21,10 @@
   </div>
 
   <div class='link_to_file'>
-    <%= link_to "Скачать ведомости", "/grades/#{@subdivision.folder_name}/#{@subdivision.abbr_translit}.zip" if File.directory?("public/grades/#{@subdivision.folder_name}") %>
-    <span>(данные обновляются каждые 3 часа)</span>
+    <%= if File.directory?("public/grades/#{@subdivision.folder_name}") %>
+      <%= link_to "Скачать ведомости", "/grades/#{@subdivision.folder_name}/#{@subdivision.abbr_translit}.zip" %>
+      <span>(данные обновляются каждые 3 часа)</span>
+    <% end %>
   </div>
 </div>
 
