@@ -26,7 +26,7 @@ class Docket < ActiveRecord::Base
   def abbr
     ignored = %w[при из в и у над без до к на по о от при с]
     vocals = %w[а е ё и о у ы э ю я]
-    words = (self.discipline.gsub(/\(.+\)|\/.+\Z|\*|\\.+\Z|:.+\Z|\.|\d+|-/, ' ').gsub(/["']/, '').squish.split(' ') - ignored)
+    words = (self.discipline.gsub(/\(.+\)|\/.+\Z|\*|\\.+\Z|:.+\Z|\.|\d+|-/, ' ').gsub(/["',]/, '').squish.split(' ') - ignored)
 
     if words.one?
       word = words.first
