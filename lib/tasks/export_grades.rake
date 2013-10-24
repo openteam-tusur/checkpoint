@@ -57,7 +57,7 @@ def to_xls(group)
     wb.add_worksheet(:name => group.title, :page_setup => page_setup) do |sheet|
       info = []
       info << "МИНОБР РОССИИ\nТУСУР" << ''
-      info << "Успеваемость студентов по результатам первой контрольной точки\nпо состоянию на #{Time.now.strftime('%d.%m.%Y')}\nФакультет: #{attributes[:faculty]}  Курс: #{attributes[:course]}  Группа: #{group}".mb_chars.upcase
+      info << "Успеваемость студентов по результатам первой контрольной точки\nпо состоянию на #{Time.now.strftime('%d.%m.%Y')}\nФакультет: #{attributes[:faculty]}    Курс: #{attributes[:course]}    Группа: #{group}".mb_chars.upcase
       (group.dockets.count - 1).times { info << '' }
       sheet.add_row info, style: normal_without_border, height: 80
       sheet.merge_cells sheet.rows.first.cells[0..1]
