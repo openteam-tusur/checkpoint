@@ -118,6 +118,7 @@ def to_zip
         end
       end
     end
+    File.chmod(0644, zip_file)
     pb.increment!
   end
 end
