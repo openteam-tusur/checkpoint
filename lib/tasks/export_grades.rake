@@ -27,7 +27,8 @@ end
 
 def to_xls(group)
   attributes = group_attributes(group.contingent_number)
-  folder_name = Subdivision.find_by_abbr(attributes[:sub_faculty]).folder_name
+  subdivision = Subdivision.find_by_abbr(attributes[:sub_faculty])
+  folder_name = subdivision.folder_name
   dir = "public/grades/#{folder_name}/"
   package = Axlsx::Package.new
   wb = package.workbook
@@ -64,7 +65,8 @@ def to_xls(group)
       sheet.merge_cells sheet.rows.first.cells[2..-1]
       header = []
       header << '№' << 'ФИО Студента'
-      header += group.students.first.grades.flat_map(&:docket).sort_by{|d| d.discipline }.map(&:abbr)
+      dockets = group.students.first.grades.flat_map(&:docket).sort_by{|d| d.discipline }
+      header += dockets.map(&:abbr)
       sheet.add_row header, style: wrap_text
       group.students.each_with_index do |student, index|
         row = []
@@ -75,11 +77,22 @@ def to_xls(group)
         end
         sheet.add_row row, style: normal_text
       end
+      sheet.add_row []
+      dockets.each do |docket|
+        t = []
+        t << "#{docket.abbr} - #{docket.discipline}"
+        (group.dockets.count + 1).times {t << ''}
+        sheet.add_row t
+      end
+      sheet.rows[(3 + group.students.count)..-1].each do |row|
+        sheet.merge_cells row.cells[0..-1]
+      end
       sheet.column_widths 5, nil, 15
       sheet.col_style 0, left_align_without_border
       sheet.col_style 0, wrap_text, :row_offset => 1
       sheet.col_style 0, normal_text, :row_offset => 2
       sheet.col_style 1, left_align_text, :row_offset => 2
+      sheet.col_style 0, left_align_without_border, :row_offset => (3 + group.students.count)
       sheet.sheet_view.show_grid_lines = false
     end
   end
