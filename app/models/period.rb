@@ -14,4 +14,20 @@ class Period < ActiveRecord::Base
   def create_dockets
     Import.new(self).import
   end
+
+  def year
+    self.starts_at.strftime('%Y')
+  end
+
+  def timescale
+    "Начало: #{self.starts_at.strftime('%d.%m.%Y')}, конец: #{self.ends_at.strftime('%d.%m.%Y')}"
+  end
+
+  def docket_path
+    "public/grades/#{year}/#{self.season_type}/#{self.kind}"
+  end
+
+  def title
+    "#{self.season_type_text} #{year}, #{self.kind_text.mb_chars.downcase}"
+  end
 end

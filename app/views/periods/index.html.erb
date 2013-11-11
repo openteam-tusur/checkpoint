@@ -1,0 +1,9 @@
+<%= link_to "Добавить период", new_period_path %>
+<ul class="list periods">
+  <% @periods.each do |period| %>
+    <li>
+      <%= "#{period.title}. #{period.timescale}" %>
+      <%= link_to "Редактировать", edit_period_path(period) %>
+    </li>
+  <% end %>
+</ul>
