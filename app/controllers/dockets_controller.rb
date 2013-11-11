@@ -2,8 +2,15 @@ class DocketsController < ApplicationController
   inherit_resources
   load_and_authorize_resource
   belongs_to :subdivision
-  actions :all, :except => [:index, :destroy, :new, :create]
+  actions :all, :except => [:destroy, :new, :create]
   custom_actions :resource => :import
+  has_scope :by_period_id
+
+  def index
+    index!{
+      @period = Period.find(params[:period_id])
+    }
+  end
 
   def show
     show! do |format|
