@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131023080833) do
+ActiveRecord::Schema.define(:version => 20131107055351) do
 
   create_table "attendances", :force => true do |t|
     t.string   "kind"
@@ -33,10 +33,12 @@ ActiveRecord::Schema.define(:version => 20131023080833) do
     t.integer  "lecturer_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.integer  "period_id"
   end
 
   add_index "dockets", ["group_id"], :name => "index_dockets_on_group_id"
   add_index "dockets", ["lecturer_id"], :name => "index_dockets_on_lecturer_id"
+  add_index "dockets", ["period_id"], :name => "index_dockets_on_period_id"
   add_index "dockets", ["subdivision_id"], :name => "index_dockets_on_subdivision_id"
 
   create_table "grades", :force => true do |t|
@@ -68,6 +70,14 @@ ActiveRecord::Schema.define(:version => 20131023080833) do
   end
 
   add_index "people", ["group_id"], :name => "index_people_on_group_id"
+
+  create_table "periods", :force => true do |t|
+    t.date     "starts_at"
+    t.date     "ends_at"
+    t.string   "kind"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "permissions", :force => true do |t|
     t.integer  "user_id"
