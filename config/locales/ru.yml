@@ -4,6 +4,12 @@ ru:
       permission:
         context_id:         Кафедра
 
+      period:
+        kind: Тип
+        season_type: Тип семестра
+        starts_at: Дата начала
+        ends_at: Дата окончания
+
   cancan:
     access_denied:          Доступ запрещен. Недостаточно прав.
 
@@ -28,4 +34,15 @@ ru:
       role:
         administrator:      Админ
         manager:            Менеджер
+
+    period:
+      kind:
+        kt_1: Первая контрольная точка
+        kt_2: Вторая контрольная точка
+        exam_week: Зачетная неделя
+        exam_session: Экзаменационная сессия
+
+      season_type:
+        spring: Весенний семестр
+        autumn: Осенний семестр
 
