@@ -11,6 +11,11 @@ class Period < ActiveRecord::Base
   enumerize :kind, :in => [:kt_1, :kt_2, :exam_week, :exam_session]
   enumerize :season_type, :in => [:spring, :autumn]
 
+  def actual?
+    return true if Time.zone.today < self.ends_at
+    false
+  end
+
   def create_dockets
     Import.new(self).import
   end
