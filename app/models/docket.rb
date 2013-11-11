@@ -1,9 +1,10 @@
 class Docket < ActiveRecord::Base
-  attr_accessible :discipline, :group_id, :lecturer_id, :grades_attributes
+  attr_accessible :discipline, :group_id, :lecturer_id, :grades_attributes, :period_id
 
   belongs_to :group
   belongs_to :lecturer
   belongs_to :subdivision
+  belongs_to :period
 
   has_many :grades, :dependent => :destroy
   has_many :attendances, :dependent => :destroy, :order => :kind
