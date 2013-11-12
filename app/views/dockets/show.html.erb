@@ -9,6 +9,12 @@
       <%= link_to @subdivision, subdivision_path(@subdivision) %>
     </li>
     <li>
+      <%= link_to 'Список преподавателей', subdivision_dockets_path(@subdivision, :period_id => @docket.period.id) %>
+    </li>
+    <li>
+      <span><%= link_to "#{@docket.lecturer}, список ведомостей", lecturer_path(@docket.lecturer, :subdivision_id => @subdivision.id, :period_id => @docket.period.id) %></span>
+    </li>
+    <li>
       <span>Ведомость по предмету &laquo;<%= @docket %>&raquo;</span>
     </li>
   </ul>

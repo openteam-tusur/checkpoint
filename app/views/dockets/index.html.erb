@@ -9,17 +9,17 @@
       <%= link_to @subdivision, subdivision_path(@subdivision) %>
     </li>
     <li>
-      <span>Список ведомостей</span>
+      <span>Список преподавателей</span>
     </li>
   </ul>
 </div>
 
-<h1>Список ведомостей по предметам</h1>
+<h1>Список преподавателей</h1>
 
 <div class='search'>
   <div class='search_in_list_wrapper'>
     <%= simple_form_for :search do |f| %>
-      <%= f.input :query, :label => false, :placeholder => 'Найти по дисциплине, преподавателю или группе', :input_html => { :data => { :list => '.list.dockets' } } %>
+      <%= f.input :query, :label => false, :placeholder => 'Найти по дисциплине, преподавателю или группе', :input_html => { :data => { :list => '.list.lecturers' } } %>
     <% end %>
   </div>
   <div class='link_to_file'>
@@ -30,13 +30,10 @@
   </div>
 </div>
 
-<ul class='list dockets'>
-  <% @dockets.each do |docket| %>
+<ul class='list lecturers'>
+  <% @subdivision.lecturers.each do |lecturer| %>
     <li>
-      <%= link_to [docket.discipline, "гр. #{docket.group}", docket.lecturer].join(', '), [@subdivision, docket]  %>
-      <div class="errors">
-        <span><%= 'не заполнена КТ' unless docket.filled? %></span>
-      </div>
+      <%= link_to lecturer, lecturer_path(lecturer, :subdivision_id => @subdivision.id, :period_id => @period.id) %>
     </li>
-  <% end %>
+<% end %>
 </ul>

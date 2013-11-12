@@ -1,0 +1,39 @@
+<div class='breadcrumbs'>
+  <ul>
+    <% if can? :index, Subdivision %>
+      <li>
+        <%= link_to 'Список обеспечивающих кафедр', subdivisions_path %>
+      </li>
+    <% end %>
+    <li>
+      <%= link_to @subdivision, subdivision_path(@subdivision) %>
+    </li>
+    <li>
+      <%= link_to 'Список преподавателей', subdivision_dockets_path(@subdivision, :period_id => @period.id) %>
+    </li>
+    <li>
+      <span><%= @lecturer %>, список ведомостей</span>
+    </li>
+  </ul>
+</div>
+
+<h1><%= @lecturer %>, список ведомостей по предметам</h1>
+
+<div class='search'>
+  <div class='search_in_list_wrapper'>
+    <%= simple_form_for :search do |f| %>
+      <%= f.input :query, :label => false, :placeholder => 'Найти по дисциплине или группе', :input_html => { :data => { :list => '.list.dockets' } } %>
+    <% end %>
+  </div>
+</div>
+
+<ul class='list dockets'>
+  <% @dockets.each do |docket| %>
+    <li>
+      <%= link_to [docket.discipline, "гр. #{docket.group}", docket.lecturer].join(', '), [@subdivision, docket] %>
+      <div class="errors">
+        <span><%= 'не заполнена КТ' unless docket.filled? %></span>
+      </div>
+    </li>
+  <% end %>
+</ul>

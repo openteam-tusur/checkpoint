@@ -8,8 +8,8 @@ Checkpoint::Application.routes.draw do
   end
 
   resources :users,         :only   => [:index]
-
   resources :periods,       :except => [:show]
+  resources :lecturers,     :only   => [:show]
 
   root :to => 'application#index'
 end

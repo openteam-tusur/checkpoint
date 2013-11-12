@@ -3,6 +3,7 @@ class Subdivision < ActiveRecord::Base
 
   has_many :dockets, :dependent => :destroy, :order => 'discipline ASC'
   has_many :permissions, :as => :context
+  has_many :lecturers, :through => :dockets, :uniq => true, :order => 'surname ASC'
 
   scope :by_abbr, ->(_) { order(:abbr) }
   scope :by_title, ->(_) { order(:title) }
