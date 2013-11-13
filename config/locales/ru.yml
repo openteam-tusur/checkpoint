@@ -9,6 +9,7 @@ ru:
         season_type: Тип семестра
         starts_at: Дата начала
         ends_at: Дата окончания
+        graduate: Для 5 курса
 
   cancan:
     access_denied:          Доступ запрещен. Недостаточно прав.
@@ -39,10 +40,14 @@ ru:
       kind:
         kt_1: Первая контрольная точка
         kt_2: Вторая контрольная точка
-        exam_week: Зачетная неделя
         exam_session: Экзаменационная сессия
 
       season_type:
         spring: Весенний семестр
         autumn: Осенний семестр
 
+    docket:
+      kind:
+        qualification: Зачет
+        diff_qualification: Диф. зачет
+        exam: Экзамен
