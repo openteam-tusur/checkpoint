@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131112101455) do
+ActiveRecord::Schema.define(:version => 20131113024452) do
 
   create_table "attendances", :force => true do |t|
     t.string   "kind"
@@ -76,9 +76,10 @@ ActiveRecord::Schema.define(:version => 20131112101455) do
     t.date     "starts_at"
     t.date     "ends_at"
     t.string   "kind"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.string   "season_type"
+    t.boolean  "graduate",    :default => false
   end
 
   create_table "permissions", :force => true do |t|
