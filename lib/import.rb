@@ -16,18 +16,12 @@ class Import
     JSON.parse(open("#{Settings['students.url']}/api/v1/students?group=#{URI.encode(group_number)}").read)
   end
 
-  def import_groups_and_students(items)
-    groups = items.map {|item| item['dockets'].map{|d| d['group']}}.flatten.uniq
-    pb = ProgressBar.new(groups.count)
-    groups.each do |group|
-      group = Group.find_or_create_by_title(group)
-      get_students(group.contingent_number).each do |student_hash|
-        student = group.students.find_or_create_by_name_and_surname_and_patronymic(
-          :name => student_hash['firstname'],
-          :surname => student_hash['lastname'],
-          :patronymic => student_hash['patronymic'])
-      end
-      pb.increment!
+  def import_students(group)
+    get_students(group.contingent_number).each do |student_hash|
+      student = group.students.find_or_create_by_name_and_surname_and_patronymic(
+        :name => student_hash['firstname'],
+        :surname => student_hash['lastname'],
+        :patronymic => student_hash['patronymic'])
     end
   end
 
@@ -96,8 +90,6 @@ class Import
     response = open(file_url).read
     items = JSON.parse response
 
-    import_groups_and_students(items)
-
     items.each do |item|
       subdivision = Subdivision.find_or_initialize_by_abbr(item['abbr']).tap do |sub|
         sub.title = subdivision_titles[item['abbr']]
@@ -106,21 +98,10 @@ class Import
 
       puts "Импорт #{subdivision}"
 
-      item['dockets'].each do |discipline_hash|
-        group = Group.find_by_title(discipline_hash['group'])
-
-        lecturer = import_lecturer(discipline_hash['lecture'])
-
-        docket = subdivision.dockets.find_or_create_by_discipline_and_group_id_and_lecturer_id_and_period_id(
-          :discipline => discipline_hash['discipline'],
-          :group_id => group.id,
-          :lecturer_id => lecturer ? lecturer.id : nil,
-          :period_id => @period.id
-        )
-        group.students.each do |student|
-          create_grades(student, docket)
-          create_attendances(student, docket)
-        end
+      if @period.exam_session?
+        create_dockets(item['exam_session'], subdivision)
+      else
+        create_dockets(item['dockets'], subdivision)
       end
     end
 
@@ -128,5 +109,32 @@ class Import
     puts '         В следующих группах нет студентов'
     puts Group.select{ |g| g.students.empty? }
     puts '+--------------------------------------------------+'
+  end
+
+  def create_dockets(dockets_hash, subdivision)
+    dockets_hash.each do |discipline_hash|
+      group_hash = discipline_hash['group']
+      next if group_hash['course'] == 5 && @period.not_for_last_course?
+      next if @period.graduate && group_hash['course'] != 5
+      group = @period.groups.find_or_create_by_title(group_hash['number']).tap do |g|
+        g.course = group_hash['course'].to_i
+        g.save!
+      end
+      import_students(group)
+
+      lecturer = import_lecturer(discipline_hash['lecture'])
+
+      docket = subdivision.dockets.find_or_create_by_discipline_and_group_id_and_lecturer_id_and_period_id(
+        :discipline => discipline_hash['discipline'],
+        :group_id => group.id,
+        :lecturer_id => lecturer ? lecturer.id : Lecturer.find_by_surname('Преподаватель не указан').id,
+        :period_id => @period.id,
+        :kind => (discipline_hash['kind'] if discipline_hash['kind'])
+      )
+      group.students.each do |student|
+        create_grades(student, docket)
+        create_attendances(student, docket) if @period.not_session?
+      end
+    end
   end
 end

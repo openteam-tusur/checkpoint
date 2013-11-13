@@ -2,22 +2,35 @@ require 'import'
 
 class Period < ActiveRecord::Base
   extend Enumerize
-  attr_accessible :ends_at, :kind, :starts_at, :season_type
+  attr_accessible :ends_at, :kind, :starts_at, :season_type, :graduate
 
   has_many :dockets
+  has_many :groups
 
   after_create :create_dockets
 
-  enumerize :kind, :in => [:kt_1, :kt_2, :exam_week, :exam_session]
-  enumerize :season_type, :in => [:spring, :autumn]
+  scope :semester, -> {where('kind = :kind1 OR kind = :kind2', :kind1 => :kt_1, :kind2 => :kt_2)} 
+
+  enumerize :kind, :in => [:kt_1, :kt_2, :exam_session], :predicates => true
+  enumerize :season_type, :in => [:spring, :autumn], :predicates => true
 
   def actual?
     return true if Time.zone.today < self.ends_at
     false
   end
 
+  def not_session?
+    return true if self.kt_1? && self.kt_2?
+    false
+  end
+
+  def not_for_last_course?
+    return true if (self.kt_2? && self.autumn?) || self.spring? || (self.exam_session? && !self.graduate)
+    false
+  end
+
   def create_dockets
-    Import.new(self).import
+    Import.new(self).delay.import
   end
 
   def year
@@ -33,6 +46,9 @@ class Period < ActiveRecord::Base
   end
 
   def title
-    "#{self.season_type_text} #{year}, #{self.kind_text.mb_chars.downcase}"
+    "".tap do |s|
+      s << "#{self.season_type_text} #{year}, #{self.kind_text.mb_chars.downcase}"
+      s << ', 5 курс' if self.graduate
+    end
   end
 end
