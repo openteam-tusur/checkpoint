@@ -21,7 +21,7 @@ end
 
 desc 'Import attendances'
 task :import_attendances => :environment do
-  periods = Period.where('starts_at < :date and ends_at > :date',:date => Time.zone.today)
+  periods = Period.semester.where('starts_at < :date and ends_at > :date',:date => Time.zone.today)
   if periods.any?
     dockets = Docket.where(:period_id => periods.map(&:id))
     pb = ProgressBar.new(dockets.count)
