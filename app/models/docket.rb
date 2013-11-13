@@ -1,5 +1,7 @@
 class Docket < ActiveRecord::Base
-  attr_accessible :discipline, :group_id, :lecturer_id, :grades_attributes, :period_id
+  extend Enumerize
+
+  attr_accessible :discipline, :group_id, :lecturer_id, :grades_attributes, :period_id, :kind
 
   belongs_to :group
   belongs_to :lecturer
@@ -15,6 +17,10 @@ class Docket < ActiveRecord::Base
   accepts_nested_attributes_for :grades, :reject_if => :all_blank
 
   after_save :clear_grades
+
+  scope :by_period, ->(period) { where :period_id => period }
+
+  enumerize :kind, :in => [:qualification, :diff_qualification, :exam], :predicates => true
 
   def filled_marks?
     !grades.actived.pluck(:mark).include?(nil)
