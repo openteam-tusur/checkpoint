@@ -15,8 +15,10 @@
 
 <ul class='list periods'>
   <% @periods.each do |period| %>
-    <li>
-    <%= link_to "#{period.title}", subdivision_dockets_path(@subdivision, :period_id => period.id) %>
-    </li>
+    <% if @subdivision.dockets.by_period(period.id).any? %>
+      <li>
+        <%= link_to "#{period.title}", subdivision_dockets_path(@subdivision, :by_period => period.id) %>
+      </li>
+    <% end %>
   <% end %>
 </ul>
