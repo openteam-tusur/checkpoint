@@ -4,11 +4,12 @@ class DocketsController < ApplicationController
   belongs_to :subdivision
   actions :all, :except => [:destroy, :new, :create]
   custom_actions :resource => :import
-  has_scope :by_period_id
+  has_scope :by_period
 
   def index
     index!{
-      @period = Period.find(params[:period_id])
+      @period = Period.find(params[:by_period])
+      @lecturers = @dockets.flat_map(&:lecturer).uniq.sort_by(&:surname)
     }
   end
 

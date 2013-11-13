@@ -19,7 +19,7 @@
 <div class='search'>
   <div class='search_in_list_wrapper'>
     <%= simple_form_for :search do |f| %>
-      <%= f.input :query, :label => false, :placeholder => 'Найти по дисциплине, преподавателю или группе', :input_html => { :data => { :list => '.list.lecturers' } } %>
+      <%= f.input :query, :label => false, :placeholder => 'Найти по преподавателю', :input_html => { :data => { :list => '.list.lecturers' } } %>
     <% end %>
   </div>
   <div class='link_to_file'>
@@ -31,9 +31,9 @@
 </div>
 
 <ul class='list lecturers'>
-  <% @subdivision.lecturers.each do |lecturer| %>
+  <% @lecturers.each do |lecturer| %>
     <li>
-      <%= link_to lecturer, lecturer_path(lecturer, :subdivision_id => @subdivision.id, :period_id => @period.id) %>
+      <%= link_to lecturer, lecturer_path(lecturer, :subdivision_id => @subdivision.id, :by_period => @period.id) %>
     </li>
-<% end %>
+  <% end %>
 </ul>
