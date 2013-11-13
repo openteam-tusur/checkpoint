@@ -1,5 +1,5 @@
 class Group < ActiveRecord::Base
-  attr_accessible :title
+  attr_accessible :title, :course, :period_id
 
   has_many :students, :dependent => :destroy
   has_many :dockets
