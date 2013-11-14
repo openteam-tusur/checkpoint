@@ -4,8 +4,8 @@ class Period < ActiveRecord::Base
   extend Enumerize
   attr_accessible :ends_at, :kind, :starts_at, :season_type, :graduate
 
-  has_many :dockets
-  has_many :groups
+  has_many :dockets, :dependent => :destroy
+  has_many :groups, :dependent => :destroy
 
   after_create :create_dockets
 

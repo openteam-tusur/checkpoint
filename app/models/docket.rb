@@ -8,7 +8,9 @@ class Docket < ActiveRecord::Base
   belongs_to :subdivision
   belongs_to :period
 
-  has_many :grades, :dependent => :destroy
+  has_many :grades
+  has_many :conventional_grades, :dependent => :destroy
+  has_many :qualification_grades, :dependent => :destroy
   has_many :attendances, :dependent => :destroy, :order => :kind
   has_many :students, :through => :grades
 
