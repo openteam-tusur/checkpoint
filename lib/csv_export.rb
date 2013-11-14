@@ -7,7 +7,11 @@ class CsvExport < Struct.new(:exported_object)
       csv << ["Преподаватель: #{exported_object.lecturer.to_s}"]
       csv << ["Группа: #{exported_object.group.to_s}"]
       csv << ['']
-      csv << ['0 - не аттестован, 2 - неудовлетворительно, 3 - удовлетворительно, 4 - хорошо, 5 - отлично']
+      if exported_object.qualification?
+        csv << ['0 - не аттестован, 2 - не зачтено, 5 - зачтено']
+      else
+        csv << ['0 - не аттестован, 2 - неудовлетворительно, 3 - удовлетворительно, 4 - хорошо, 5 - отлично']
+      end
       csv << ['']
       csv << csv_header
       exported_object.grades.sort_by{ |g| g.student }.each do |grade|
@@ -23,7 +27,7 @@ class CsvExport < Struct.new(:exported_object)
   end
 
   def name
-    Russian.translit([exported_object.abbr, exported_object.lecturer, exported_object.group].join('_').gsub(/\s+/, '_')) + '.csv'
+    Russian.translit([exported_object.abbr, exported_object.lecturer, exported_object.group, (exported_object.kind_text.mb_chars.downcase if exported_object.kind)].compact.join('_').gsub(/\s+/, '_')) + '.csv'
   end
 
   private
