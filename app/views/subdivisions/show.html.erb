@@ -18,6 +18,7 @@
     <% if @subdivision.dockets.by_period(period.id).any? %>
       <li>
         <%= link_to "#{period.title}", subdivision_dockets_path(@subdivision, :by_period => period.id) %>
+        (<%= @subdivision.filled_dockets(period.id) %>/<%= @subdivision.dockets_count(period.id) %>)
       </li>
     <% end %>
   <% end %>
