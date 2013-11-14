@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131113062131) do
+ActiveRecord::Schema.define(:version => 20131113084758) do
 
   create_table "attendances", :force => true do |t|
     t.string   "kind"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20131113062131) do
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
     t.boolean  "active",     :default => true
+    t.string   "type"
   end
 
   add_index "grades", ["docket_id"], :name => "index_grades_on_docket_id"

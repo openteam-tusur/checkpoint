@@ -8,8 +8,6 @@ class Grade < ActiveRecord::Base
   scope :actived, -> { where(:active => true) }
   scope :inactive, -> { where(:active => false) }
 
-  enumerize :mark, :in => [0, 2, 3, 4, 5]
-
   def to_s
     return 'нет оценки' unless mark.present?
     return 'н/а' if mark.to_i.zero?
