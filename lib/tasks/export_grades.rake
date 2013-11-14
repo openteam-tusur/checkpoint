@@ -15,7 +15,7 @@ end
 def group_attributes(group_number)
   student_hash = get_students(group_number).first
   faculty = student_hash['education']['params']['faculty']['short_name']
-  sub_faculty = student_hash['education']['params']['sub_faculty']['short_name']
+  sub_faculty = student_hash['education']['params']['sub_faculty']
   course = student_hash['education']['params']['course']
 
   {:faculty => faculty, :sub_faculty => (FACULTY_ABBR[sub_faculty] || sub_faculty), :course => course}
@@ -27,7 +27,7 @@ end
 
 def to_xls(group)
   attributes = group_attributes(group.contingent_number)
-  subdivision = Subdivision.find_by_abbr(attributes[:sub_faculty])
+  subdivision = Subdivision.find_by_title(attributes[:sub_faculty]['sub_faculty_name']) || Subdivision.find_by_abbr(attributes[:sub_faculty]['short_name'])
   folder_name = subdivision.folder_name
   dir = "public/grades/#{folder_name}/"
   package = Axlsx::Package.new
