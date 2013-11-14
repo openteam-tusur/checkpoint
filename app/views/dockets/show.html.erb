@@ -76,7 +76,11 @@
            <% end %>
         <% end %>
 
-        <td class='center'><%= grade.mark || '&mdash;'.html_safe %></td>
+        <% if grade.is_a?(QualificationGrade) %>
+          <td class='center'><%= grade.mark_text || '&mdash;'.html_safe %></td>
+        <% else %>
+          <td class='center'><%= grade.mark || '&mdash;'.html_safe %></td>
+        <% end %>
         <td class="center"><%= grade.active? ? 'да' : 'нет' %></td>
       </tr>
     <% end %>
