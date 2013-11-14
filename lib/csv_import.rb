@@ -12,7 +12,8 @@ class CsvImport < Struct.new(:file, :imported_object)
 
   def prepare_hash
     csv_data = CSV.read(file, encoding: 'cp1251', :col_sep => ';')
-    headers = csv_data.shift(7).last.map {|i| i.strip.to_s }
+    row_shift = imported_object.kind ? 9 : 8
+    headers = csv_data.shift(row_shift).last.map {|i| i.strip.to_s }
     string_data = csv_data.map {|row| row.map {|cell| cell.to_s.strip } }
     string_data.map {|row| Hash[*headers.zip(row).flatten] }
   end

@@ -3,6 +3,8 @@ require 'csv'
 class CsvExport < Struct.new(:exported_object)
   def to_csv(options = {})
     CSV.generate(:col_sep => ';', :force_quotes => true) do |csv|
+      csv << ["#{exported_object.period.season_type_text}, #{exported_object.period.kind_text.mb_chars.downcase}"]
+      csv << ["#{exported_object.kind_text}"] if exported_object.kind
       csv << ["Предмет: #{exported_object.to_s}"]
       csv << ["Преподаватель: #{exported_object.lecturer.to_s}"]
       csv << ["Группа: #{exported_object.group.to_s}"]
