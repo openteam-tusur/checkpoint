@@ -3,6 +3,6 @@
   <%= f.input :ends_at %>
   <%= f.input :kind %>
   <%= f.input :season_type %>
-  <%= f.input :graduate, :as => :select %>
+  <%= f.input :graduate, :as => :select, :include_blank => false %>
   <%= f.submit 'Создать' %>
 <% end %>
