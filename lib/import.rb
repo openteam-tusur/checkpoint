@@ -26,8 +26,14 @@ class Import
   end
 
   def create_grades(student, docket)
-    student.grades.find_or_initialize_by_docket_id(docket.id).tap do |grade|
-      grade.save!(:validate => false)
+    if docket.qualification?
+      student.qualification_grades.find_or_initialize_by_docket_id(docket.id).tap do |grade|
+        grade.save!(:validate => false)
+      end
+    else
+      student.conventional_grades.find_or_initialize_by_docket_id(docket.id).tap do |grade|
+        grade.save!(:validate => false)
+      end
     end
   end
 
@@ -133,7 +139,7 @@ class Import
       )
       group.students.each do |student|
         create_grades(student, docket)
-        create_attendances(student, docket) if @period.not_session?
+        create_attendances(student, docket)
       end
     end
   end
