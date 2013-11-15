@@ -21,6 +21,7 @@ group :default do
   gem 'inherited_resources'
   gem 'pg'
   gem 'progress_bar'
+  gem "prawn", "~> 1.0.0.rc2"
   gem 'rails', '~> 3.2'
   gem 'russian'
   gem 'simple_form'
