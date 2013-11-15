@@ -1,0 +1,39 @@
+<div class='breadcrumbs'>
+  <ul>
+    <% if can? :index, Subdivision %>
+      <li>
+        <%= link_to 'Список обеспечивающих кафедр', subdivisions_path %>
+      </li>
+    <% end %>
+    <li>
+      <%= link_to @subdivision, subdivision_path(@subdivision) %>
+    </li>
+    <li>
+      <span>Список преподавателей</span>
+    </li>
+  </ul>
+</div>
+
+<h1>Список преподавателей</h1>
+<% if @lecturers.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>ФИО преподавателя</th>
+        <th>Email</th>
+        <th>Последний вход</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @lecturers.each do |lecturer| %>
+        <tr>
+          <td><%= lecturer %></td>
+          <td class='center'><%#= lecturer.user.email || 'не активирована роль' %></td>
+          <td class='center'><%#= l(permission.user.current_sign_in_at, :format => :short) if lecturer.user %></td>
+          <td class='center'><%#= link_to "удалить", permission_path(permission), :method => :delete, :confirm => 'Вы уверены?' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

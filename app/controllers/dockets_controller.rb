@@ -9,7 +9,6 @@ class DocketsController < ApplicationController
   def index
     index!{
       @period = Period.find(params[:by_period])
-      @lecturers = @dockets.flat_map(&:lecturer).uniq.sort_by(&:surname)
     }
   end
 

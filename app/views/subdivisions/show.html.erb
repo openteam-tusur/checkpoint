@@ -13,6 +13,8 @@
 
 <h1><%= @subdivision %></h1>
 
+<%= link_to "Список преподавателей", subdivision_lecturers_path(@subdivision) %>
+
 <ul class='list periods'>
   <% @periods.each do |period| %>
     <% if @subdivision.dockets.by_period(period.id).any? %>

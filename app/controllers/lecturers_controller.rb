@@ -1,6 +1,7 @@
 class LecturersController < ApplicationController
   inherit_resources
-  actions :show
+  belongs_to :subdivision
+  actions :index, :show
 
   def show
     show!{
