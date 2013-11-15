@@ -22,16 +22,23 @@
         <th>ФИО преподавателя</th>
         <th>Email</th>
         <th>Последний вход</th>
-        <th></th>
       </tr>
     </thead>
     <tbody>
-      <% @lecturers.each do |lecturer| %>
+      <% {}.tap do |h| @lecturers.each {|l| h[l] = l.permissions.first} end.each do |lecturer, permission| %>
         <tr>
           <td><%= lecturer %></td>
-          <td class='center'><%#= lecturer.user.email || 'не активирована роль' %></td>
-          <td class='center'><%#= l(permission.user.current_sign_in_at, :format => :short) if lecturer.user %></td>
-          <td class='center'><%#= link_to "удалить", permission_path(permission), :method => :delete, :confirm => 'Вы уверены?' %></td>
+          <td class='center'>
+            <% if permission %>
+              <%= permission.email %>
+              <%= link_to "удалить", subdivision_lecturer_permission_path(@subdivision, lecturer, permission), :method => :delete, :confirm => 'Вы уверены?'  %>
+            <% else %>
+              <%= link_to "предоставить доступ", new_subdivision_lecturer_permission_path(@subdivision, lecturer) %>
+            <% end %>
+          </td>
+          <td class='center'>
+            <%= permission.try(&:user) ? l(permission.user.current_sign_in_at, :format => :short) : 'роль не активирована' %>
+          </td>
         </tr>
       <% end %>
     </tbody>

@@ -1,0 +1,29 @@
+<div class='breadcrumbs'>
+  <ul>
+    <% if can? :index, Subdivision %>
+      <li>
+        <%= link_to 'Список обеспечивающих кафедр', subdivisions_path %>
+      </li>
+    <% end %>
+    <li>
+      <%= link_to @subdivision, subdivision_path(@subdivision) %>
+    </li>
+    <li>
+      <%= link_to "Список преподавателей", subdivision_lecturers_path(@subdivision) %>
+    </li>
+  </ul>
+</div>
+<h1><%= @lecturer %></h1>
+<%= simple_form_for [@subdivision, @lecturer, resource] do |f| %>
+  <%= f.input :role, :as => :hidden, :input_html => { :value => "lecturer" }  %>
+  <%= f.input :email,
+              :input_html => { :class => 'need_autocomplete for_emails' },
+              :label => 'Пользователь',
+              :placeholder => 'Начните электронную почту' %>
+  <%= f.input :user_id, :as => :hidden %>
+
+  <div class="buttons">
+    <%= f.submit 'Сохранить' %>
+    <%= link_to 'Отмена', subdivision_lecturers_path(@subdivision) %>
+  </div>
+<% end %>

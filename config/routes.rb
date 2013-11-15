@@ -2,7 +2,9 @@ Checkpoint::Application.routes.draw do
   resources :permissions,   :except => [:show, :edit, :update]
 
   resources :subdivisions,  :only   => [:index, :show] do
-    resources :lecturers
+    resources :lecturers, :only => [:index] do
+      resources :permissions, :only => [:new, :create, :destroy], :controller => :lecturer_permissions
+    end
     resources :dockets, :except => [:destroy, :new, :create] do
       post :import, :on => :member
     end

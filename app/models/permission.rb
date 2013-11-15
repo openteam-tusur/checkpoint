@@ -42,12 +42,12 @@ class Permission < ActiveRecord::Base
   end
 
   enumerize :role,
-    :in => [:administrator, :manager],
+    :in => [:administrator, :manager, :lecturer],
     :default => :manager,
     :predicates => { :prefix => true },
     :scope => true
 
-  sso_auth_permission :roles => %w[administrator manager]
+  sso_auth_permission :roles => %w[administrator manager lecturer]
 
   def self.activate_for_user(user)
     where(:email => user.email).update_all :user_id => user.id
