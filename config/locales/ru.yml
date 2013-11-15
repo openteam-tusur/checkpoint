@@ -14,6 +14,17 @@ ru:
   cancan:
     access_denied:          Доступ запрещен. Недостаточно прав.
 
+  period:
+    results:
+      kind:
+        kt_1: первой контролькой точки
+        kt_2: второй контрольной точки
+        exam_session: экзаменационной сессии
+      season_type:
+        autumn: осеннего семестра
+        spring: весеннего семестра
+
+
   enumerize:
     attendance:
       kind:
