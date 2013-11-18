@@ -12,6 +12,7 @@ Checkpoint::Application.routes.draw do
 
   resources :users,         :only   => [:index]
   resources :periods do
+    post :import, :on => :member
     resources :groups, :only => [:destroy]
   end
   resources :lecturers,     :only   => [:show] do

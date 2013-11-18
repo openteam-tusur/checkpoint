@@ -1,5 +1,3 @@
-require 'import'
-
 class Period < ActiveRecord::Base
   extend Enumerize
   attr_accessible :ends_at, :kind, :starts_at, :season_type, :graduate

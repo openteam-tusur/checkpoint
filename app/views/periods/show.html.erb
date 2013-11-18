@@ -1,0 +1,43 @@
+<div class='breadcrumbs'>
+  <ul>
+    <li>
+      <%= link_to "Все периоды", periods_path %>
+    </li>
+  </ul>
+</div>
+
+<h1><%= "#{@period.title} #{@period.timescale}" %></h1>
+
+<div class='info'>Укажите патерн номером групп для загрузки ведомостей</div>
+<%= simple_form_for :import, url: import_period_path(@period) do |f| %>
+  <%= f.input_field :group_pattern %>
+  <%= f.submit 'Загрузить' %>
+<% end %>
+
+<div class='info'><%= I18n.t(:groups, :count => @period.groups.count) %></div>
+<div class='info'><%= I18n.t(:dockets, :count => @period.dockets.count) %></div>
+<div class='info'><%= I18n.t(:dockets, :count => @period.dockets.filled.uniq.count) %> заполнено</div>
+
+
+<div class="actions">
+  <%= link_to "Редактировать", edit_period_path(@period) %>
+</div>
+
+<div class='search'>
+  <div class='search_in_list_wrapper'>
+    <%= simple_form_for :search do |f| %>
+      <%= f.input :query, :label => false, :placeholder => 'поиск', :input_html => { :data => { :list => '.list.groups' } } %>
+    <% end %>
+  </div>
+</div>
+
+<ul class="list groups">
+  <% @period.groups.order(:title).each do |group| %>
+    <li class='info'>
+      <%= group %>
+      <div class="actions">
+        <%= link_to "Удалить", period_group_path(@period, group) %>
+      </div>
+    </li>
+  <% end %>
+</ul>
