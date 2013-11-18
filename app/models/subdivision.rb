@@ -8,8 +8,15 @@ class Subdivision < ActiveRecord::Base
   scope :by_abbr, ->(_) { order(:abbr) }
   scope :by_title, ->(_) { order(:title) }
 
+  after_create :set_folder_name
+
   def to_s
     title || abbr
+  end
+
+  def set_folder_name
+    self.folder_name = SecureRandom.hex(15)
+    save!
   end
 
   def abbr_translit
