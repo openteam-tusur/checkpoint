@@ -12,7 +12,9 @@ Checkpoint::Application.routes.draw do
 
   resources :users,         :only   => [:index]
   resources :periods,       :except => [:show]
-  resources :lecturers,     :only   => [:show]
+  resources :lecturers,     :only   => [:show] do
+    resources :dockets, :except => [:destroy, :new, :create], :controller => :lecturer_dockets
+  end
 
   root :to => 'application#index'
 end

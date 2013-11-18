@@ -1,5 +1,5 @@
 <% attendances = @docket.attendances.map(&:kind).uniq %>
-<%= simple_form_for [@subdivision, @docket] do |f| %>
+<%= simple_form_for [parent, @docket] do |f| %>
   <table>
     <thead>
       <tr>
@@ -8,7 +8,9 @@
           <th colspan='<%= attendances.count %>'>Посещаемость</th>
         <% end %>
         <th rowspan='2'>Оценка</th>
-        <th rowspan='2'>Должен изучать дисциплину?</th>
+        <% unless parent.is_a?(Lecturer) %>
+          <th rowspan='2'>Должен изучать дисциплину?</th>
+        <% end %>
       </tr>
       <tr>
         <% if attendances.any? %>
@@ -36,7 +38,9 @@
           <% end %>
 
           <td><%= sf.input :mark, label: false, :include_blank => '--- не выбрано ---' %></td>
-          <td><%= sf.input :active, :label => false %></td>
+          <% unless parent.is_a?(Lecturer) %>
+            <td><%= sf.input :active, :label => false %></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>

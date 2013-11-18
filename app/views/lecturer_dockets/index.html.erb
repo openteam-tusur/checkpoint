@@ -1,0 +1,31 @@
+<div class='breadcrumbs'>
+  <ul>
+    <li>
+      <%= link_to @lecturer, lecturer_path(@lecturer) %>
+    </li>
+    <li>
+      <%= link_to @period.title, lecturer_dockets_path(@lecturer, :by_period => @period.id) %>
+    </li>
+  </ul>
+</div>
+
+<h1>Список ведомостей</h1>
+
+<div class='search'>
+  <div class='search_in_list_wrapper'>
+    <%= simple_form_for :search do |f| %>
+      <%= f.input :query, :label => false, :placeholder => 'поиск ведомости', :input_html => { :data => { :list => '.list.dockets' } } %>
+    <% end %>
+  </div>
+</div>
+
+<ul class='list dockets'>
+  <% @dockets.each do |docket| %>
+    <li>
+      <%= link_to [docket.discipline, "гр. #{docket.group}", docket.lecturer, (docket.kind_text.mb_chars.downcase if docket.kind)].compact.join(', '), [@lecturer, docket] %>
+      <div class="errors">
+        <span><%= 'не заполнена ведомость' unless docket.filled? %></span>
+      </div>
+    </li>
+  <% end %>
+</ul>

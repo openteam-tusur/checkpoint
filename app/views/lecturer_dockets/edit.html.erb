@@ -1,0 +1,19 @@
+<div class='breadcrumbs'>
+  <ul>
+    <li>
+      <%= link_to @lecturer, lecturer_path(@lecturer) %>
+    </li>
+    <li>
+      <%= link_to @docket.period.title, lecturer_dockets_path(@lecturer, :by_period => @docket.period.id) %>
+    </li>
+    <li>
+      <%= link_to "Ведомость по предмету &laquo;#{@docket}&raquo;".html_safe, lecturer_docket_path(@lecturer, @docket) %>
+    </li>
+  </ul>
+</div>
+
+<h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
+<div class='info'>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
+<div class='info'>Группа: <%= @docket.group %></div>
+
+<%= render 'dockets/form' %>

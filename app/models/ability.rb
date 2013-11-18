@@ -11,6 +11,10 @@ class Ability
       user.manager_of?(subdivision)
     end
 
+    can :show, Lecturer do |lecturer|
+      user.permissions.map(&:context).include?(lecturer)
+    end
+
     can :manage, Docket do |docket|
       can? :show, docket.subdivision
     end
