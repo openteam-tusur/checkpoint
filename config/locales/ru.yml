@@ -24,6 +24,13 @@ ru:
         autumn: осеннего семестра
         spring: весеннего семестра
 
+  docket:
+    kind:
+      exam: Экзаменационная ведомость
+      qualification: Зачетная ведомость
+      diff_qualification: |
+                          Зачетная ведомость
+                          (дифференцированный зачет)
 
   enumerize:
     attendance:

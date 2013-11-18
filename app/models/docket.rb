@@ -34,6 +34,10 @@ class Docket < ActiveRecord::Base
     filled_marks?
   end
 
+  def examination?
+    return true if self.qualification? || self.diff_qualification? || self.exam?
+  end
+
   def abbr
     ignored = %w[при из в и у над без до к на по о от при с]
     vocals = %w[а е ё и о у ы э ю я]

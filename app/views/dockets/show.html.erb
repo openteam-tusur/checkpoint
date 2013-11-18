@@ -14,11 +14,16 @@
   </ul>
 </div>
 
-<h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
+<% if @docket.examination? %>
+  <h1><%= t("docket.kind.#{@docket.kind}").gsub(/\n/,'') %> по предмету &laquo;<%= @docket %>&raquo;</h1>
+<% else %>
+  <h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
+<% end %>
 
 <div class="actions">
   <%= link_to "Редактировать", edit_subdivision_docket_path(@subdivision, @docket) if @docket.period.actual? %>
   <%= link_to "Скачать CSV", subdivision_docket_path(@subdivision, @docket, format: :csv) %>
+  <%= link_to "Скачать PDF", subdivision_docket_path(@subdivision, @docket, format: :pdf) unless @docket.period.not_session? %>
 </div>
 
 <div class='info'>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
