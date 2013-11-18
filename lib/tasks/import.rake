@@ -17,21 +17,19 @@ def create_attendances(student, docket)
   end
 end
 
-
-
 desc 'Import attendances'
 task :import_attendances => :environment do
-  periods = Period.semester.where('starts_at < :date and ends_at > :date',:date => Time.zone.today)
-  if periods.any?
-    dockets = Docket.where(:period_id => periods.map(&:id))
-    pb = ProgressBar.new(dockets.count)
-    dockets.each do |docket|
-      docket.group.students.each do |student|
-        create_attendances(student, docket)
+  periods = Period.all
+  periods.each do |period|
+    if period.actual?
+      puts "Импорт успеваемости для #{I18n.t("period.results.kind.#{period.kind}")}, #{I18n.t("period.results.season_type.#{period.season_type}")}, #{period.starts_at.strftime('%Y')}"
+      pb = ProgressBar.new(period.dockets.count)
+      period.dockets.each do |docket|
+        docket.group.students.each do |student|
+          create_attendances(student, docket)
+        end
+        pb.increment!
       end
-      pb.increment!
     end
-  else
-    puts "Ошибка! Не задан период."
   end
 end
