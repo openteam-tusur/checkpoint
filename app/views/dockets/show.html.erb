@@ -23,7 +23,7 @@
 <div class="actions">
   <%= link_to "Редактировать", edit_subdivision_docket_path(@subdivision, @docket) if @docket.period.actual? %>
   <%= link_to "Скачать CSV", subdivision_docket_path(@subdivision, @docket, format: :csv) %>
-  <%= link_to "Скачать PDF", subdivision_docket_path(@subdivision, @docket, format: :pdf) unless @docket.period.not_session? %>
+  <%= link_to "Скачать PDF", subdivision_docket_path(@subdivision, @docket, format: :pdf) if @docket.examination? %>
 </div>
 
 <div class='info'>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
