@@ -22,4 +22,8 @@ class Group < ActiveRecord::Base
   def contingent_number
     CONTINGENT_GROUP_NUMBERS[title] || title
   end
+
+  def translited_title
+    Russian.translit(self.title)
+  end
 end

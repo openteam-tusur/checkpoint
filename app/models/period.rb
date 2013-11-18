@@ -19,7 +19,7 @@ class Period < ActiveRecord::Base
   end
 
   def not_session?
-    return true if self.kt_1? && self.kt_2?
+    return true if self.kt_1? || self.kt_2?
     false
   end
 

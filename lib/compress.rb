@@ -9,7 +9,11 @@ class Compress
     directories.each do |dir|
       sub_abbr = Subdivision.find_by_folder_name(dir.gsub(/#{@period.docket_path}\//,'')).abbr_translit
       puts "Архивирование #{sub_abbr}"
-      file_paths = Dir.glob("#{dir}/*.xlsx")
+      if @period.not_session?
+        file_paths = Dir.glob("#{dir}/*.xlsx")
+      else
+        file_paths = Dir.glob("#{dir}/*.pdf")
+      end
       zip_file = "#{dir}/#{sub_abbr}.zip"
 
       Zip::File.open(zip_file, Zip::File::CREATE) do |zipfile|

@@ -21,7 +21,7 @@ class DocketsController < ApplicationController
                                                 :type => 'text/csv; charset=cp1251; header=present',
                                                 :disposition => 'attachment',
                                                 :filename => csv_file.name and return }
-      format.pdf { send_data pdf_file.generate,
+      format.pdf { send_data pdf_file.render,
                    :type => 'text/csv; charset=cp1251; header=present',
                    :disposition => 'attachment',
                    :filename => pdf_file.name and return }

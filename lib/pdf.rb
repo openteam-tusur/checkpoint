@@ -1,4 +1,7 @@
 require 'prawn'
+require 'open-uri'
+require 'fileutils'
+
 class Pdf
   def initialize(docket)
     @docket = docket
@@ -6,6 +9,25 @@ class Pdf
 
   def pdf
     @pdf ||= Prawn::Document.new(:page_size => 'A4')
+  end
+
+  def render
+    generate
+    pdf.render
+  end
+
+  def render_to_file
+    generate
+    pdf.render_file(filename)
+  end
+
+  def get_directory(dir)
+    FileUtils.mkdir_p(dir)
+  end
+
+  def filename
+    dir = get_directory("#{@docket.period.docket_path}/#{@docket.subdivision.folder_name}/")
+    "#{dir.first}#{@docket.group.translited_title}.pdf"
   end
 
   def name
@@ -116,6 +138,5 @@ class Pdf
     pdf.text marks_line, :size => 12, :align => :center
     pdf.move_down 40
     pdf.text 'Декан факультета _______________, подпись экзаменатора ____________', :size => 12, :align => :center
-    pdf.render
   end
 end
