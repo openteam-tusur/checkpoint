@@ -11,6 +11,9 @@ ru:
         ends_at: Дата окончания
         graduate: Для 5 курса
 
+      docket:
+        lecturer_id: Преподаватель
+
   cancan:
     access_denied:          Доступ запрещен. Недостаточно прав.
 

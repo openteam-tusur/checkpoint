@@ -1,5 +1,14 @@
 <% attendances = @docket.attendances.map(&:kind).uniq %>
 <%= simple_form_for [parent, @docket] do |f| %>
+  <h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
+  <div class='info'>
+    <% if can?(:change_lecturer, @docket) %>
+      <%= f.input :lecturer_id, :collection => @subdivision.lecturers, :label_method => :full_name %>
+    <% else %>
+      Преподаватель: <%= @docket.lecturer || 'Не указано' %>
+  <% end %>
+</div>
+  <div class='info'>Группа: <%= @docket.group %></div>
   <table>
     <thead>
       <tr>
