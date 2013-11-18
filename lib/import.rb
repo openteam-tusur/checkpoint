@@ -90,13 +90,30 @@ class Import
       'ЭМИС' => 'Кафедра экономической математики, информатики и статистики',
       'ЭП' => 'Кафедра электронных приборов',
       'ЭС' => 'Кафедра электронных систем',
-      'ЭСАУ' => 'Кафедра электронных средств автоматизации и управления'
+      'ЭСАУ' => 'Кафедра электронных средств автоматизации и управления',
+      'РТФ' => 'Радиотехнический факультет',
+      'РКФ' => 'Радиоконструкторский факультет',
+      'ФЭТ' => 'Факультет электронной техники',
+      'ФСУ' => 'Факультет систем управления',
+      'ФВС' => 'Факультет вычислительных систем',
+      'ГФ' => 'Гуманитарный факультет',
+      'ЭФ' => 'Экономический факультет',
+      'ФИТ' => 'Факультет инновационных технологий',
+      'ЮФ' => 'Юридический факультет',
+      'ФМС' => 'Факультет моделирования систем',
+      'ВФ' => 'Вечерный факультет'
     }
     file_url = Settings['subdivisions.url']
     response = open(file_url).read
     items = JSON.parse response
 
-    items.each do |item|
+    if @period.exam_session?
+      subdivision_items = items['exam_session']
+    else
+      subdivision_items = items['checkpoint']
+    end
+
+    subdivision_items.each do |item|
       subdivision = Subdivision.find_or_initialize_by_abbr(item['abbr']).tap do |sub|
         sub.title = subdivision_titles[item['abbr']]
         sub.save!
@@ -104,11 +121,7 @@ class Import
 
       puts "Импорт #{subdivision}"
 
-      if @period.exam_session?
-        create_dockets(item['exam_session'], subdivision)
-      else
-        create_dockets(item['dockets'], subdivision)
-      end
+      create_dockets(item['dockets'], subdivision)
     end
 
     puts '+--------------------------------------------------+'
