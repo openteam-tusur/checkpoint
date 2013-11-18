@@ -23,10 +23,7 @@
     <% end %>
   </div>
   <div class='link_to_file'>
-    <% if File.directory?("#{@period.docket_path}/#{@subdivision.folder_name}") %>
-      <%= link_to "Скачать ведомости", "#{@period.docket_path}/#{@subdivision.folder_name}/#{@subdivision.abbr_translit}.zip" %>
-      <span>(данные обновляются каждые 3 часа)</span>
-    <% end %>
+    <%= summary_dockets_link(@period, @subdivision) %>
   </div>
 </div>
 
