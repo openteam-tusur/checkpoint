@@ -14,12 +14,17 @@ class DocketsController < ApplicationController
 
   def show
     show! do |format|
-      file = CsvExport.new(@docket)
+      csv_file = CsvExport.new(@docket)
+      pdf_file = Pdf.new(@docket)
       format.html
-      format.csv { send_data file.to_csv.encode('cp1251', :invalid => :replace, :undef => :replace, :replace => ""),
+      format.csv { send_data csv_file.to_csv.encode('cp1251', :invalid => :replace, :undef => :replace, :replace => ""),
                                                 :type => 'text/csv; charset=cp1251; header=present',
                                                 :disposition => 'attachment',
-                                                :filename => file.name and return }
+                                                :filename => csv_file.name and return }
+      format.pdf { send_data pdf_file.generate,
+                   :type => 'text/csv; charset=cp1251; header=present',
+                   :disposition => 'attachment',
+                   :filename => pdf_file.name and return }
     end
   end
 
