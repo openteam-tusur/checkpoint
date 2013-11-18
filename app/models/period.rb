@@ -9,6 +9,7 @@ class Period < ActiveRecord::Base
 
   after_create :create_dockets
 
+  default_scope order('id DESC')
   scope :semester, -> {where('kind = :kind1 OR kind = :kind2', :kind1 => :kt_1, :kind2 => :kt_2)} 
 
   enumerize :kind, :in => [:kt_1, :kt_2, :exam_session], :predicates => true
