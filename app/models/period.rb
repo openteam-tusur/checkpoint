@@ -7,8 +7,6 @@ class Period < ActiveRecord::Base
   has_many :dockets, :dependent => :destroy
   has_many :groups, :dependent => :destroy
 
-  after_create :create_dockets
-
   default_scope order('id DESC')
   scope :semester, -> {where('kind = :kind1 OR kind = :kind2', :kind1 => :kt_1, :kind2 => :kt_2)} 
 
@@ -28,10 +26,6 @@ class Period < ActiveRecord::Base
   def not_for_last_course?
     return true if (self.kt_2? && self.autumn?) || self.spring? || (self.exam_session? && !self.graduate)
     false
-  end
-
-  def create_dockets
-    Import.new(self).delay.import
   end
 
   def year
