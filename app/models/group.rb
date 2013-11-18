@@ -2,7 +2,7 @@ class Group < ActiveRecord::Base
   attr_accessible :title, :course, :period_id
 
   has_many :students, :dependent => :destroy
-  has_many :dockets
+  has_many :dockets, :dependent => :destroy
 
   alias_attribute :to_s, :title
   alias_attribute :contingent_number, :title

@@ -2,8 +2,12 @@
 <ul class="list periods">
   <% @periods.each do |period| %>
     <li>
-      <%= "#{period.title}. #{period.timescale}" %>
-      <%= link_to "Редактировать", edit_period_path(period) %>
+      <%= link_to "#{period.title}. #{period.timescale}", period %>
+      <div>
+        <span class='groups'><%= I18n.t(:groups, :count => period.groups.count) %>, </span>
+        <span class='dockets'><%= I18n.t(:dockets, :count => period.dockets.count) %>, </span>
+        <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => period.dockets.filled.uniq.count) %></span>
+      </div>
     </li>
   <% end %>
 </ul>

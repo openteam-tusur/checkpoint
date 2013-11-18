@@ -78,3 +78,16 @@ ru:
         qualification: Зачет
         diff_qualification: Диф. зачет
         exam: Экзамен
+  groups:
+   zero: нет групп
+   one: "%{count} группа"
+   few: "%{count} группы"
+   many: "%{count} групп"
+   other: "%{count} групп"
+
+  dockets:
+   zero: нет ведомостей
+   one: "%{count} ведомость"
+   few: "%{count} ведомости"
+   many: "%{count} ведомостей"
+   other: "%{count} ведомостей"

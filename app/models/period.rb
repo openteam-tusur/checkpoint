@@ -8,7 +8,7 @@ class Period < ActiveRecord::Base
   has_many :groups, :dependent => :destroy
 
   default_scope order('id DESC')
-  scope :semester, -> {where('kind = :kind1 OR kind = :kind2', :kind1 => :kt_1, :kind2 => :kt_2)} 
+  scope :semester, -> {where('kind = :kind1 OR kind = :kind2', :kind1 => :kt_1, :kind2 => :kt_2)}
 
   enumerize :kind, :in => [:kt_1, :kt_2, :exam_session], :predicates => true
   enumerize :season_type, :in => [:spring, :autumn], :predicates => true
@@ -33,7 +33,7 @@ class Period < ActiveRecord::Base
   end
 
   def timescale
-    "Начало: #{self.starts_at.strftime('%d.%m.%Y')}, конец: #{self.ends_at.strftime('%d.%m.%Y')}"
+    "с #{self.starts_at.strftime('%d.%m.%Y')} по #{self.ends_at.strftime('%d.%m.%Y')}"
   end
 
   def docket_path
