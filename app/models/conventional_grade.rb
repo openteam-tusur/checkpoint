@@ -1,3 +1,3 @@
 class ConventionalGrade < Grade
-  enumerize :mark, :in => [0, 2, 3, 4, 5]
+  enumerize :mark, :in => [5, 4, 3, 2, 0]
 end
