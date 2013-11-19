@@ -2,8 +2,9 @@ require 'open-uri'
 require 'progress_bar'
 
 class Import
-  def initialize(period)
+  def initialize(period, group_pattern)
     @period = period
+    @group_pattern = Regexp.new(group_pattern || ".*")
   end
 
   def import_lecturer(full_name)
@@ -54,6 +55,20 @@ class Import
   end
 
   def import
+    file_url = Settings['subdivisions.url']
+    response = open(file_url).read
+    group_items = JSON.parse response
+
+    group_items.each do |group_item|
+      next if !group_item['group'].match(@group_pattern)
+      group = @period.groups.find_or_create_by_title(group_item['group'])
+      import_students(group)
+      docket_items = @period.exam_session? ? group_item['exam_dockets'] : group_item['checkpoint_dockets']
+      create_dockets(docket_items, group)
+    end
+  end
+
+  def create_dockets(dockets_hash, group)
     subdivision_titles = {
       'АОИ' => 'Кафедра автоматизации обработки информации',
       'АСУ' => 'Кафедра автоматизированных систем управления',
@@ -101,47 +116,15 @@ class Import
       'ФИТ' => 'Факультет инновационных технологий',
       'ЮФ' => 'Юридический факультет',
       'ФМС' => 'Факультет моделирования систем',
-      'ВФ' => 'Вечерный факультет'
+      'ВФ' => 'Заочный и вечерний факультет'
     }
-    file_url = Settings['subdivisions.url']
-    response = open(file_url).read
-    items = JSON.parse response
 
-    if @period.exam_session?
-      subdivision_items = items['exam_session']
-    else
-      subdivision_items = items['checkpoint']
-    end
-
-    subdivision_items.each do |item|
-      subdivision = Subdivision.find_or_initialize_by_abbr(item['abbr']).tap do |sub|
-        sub.title = subdivision_titles[item['abbr']]
+    dockets_hash.each do |discipline_hash|
+      subdivision = Subdivision.find_or_initialize_by_abbr(discipline_hash['subdivision_abbr']).tap do |sub|
+        sub.title = subdivision_titles[discipline_hash['subdivision_abbr']]
         sub.save!
       end
-
-      puts "Импорт #{subdivision}"
-
-      create_dockets(item['dockets'], subdivision)
-    end
-
-    puts '+--------------------------------------------------+'
-    puts '         В следующих группах нет студентов'
-    puts Group.select{ |g| g.students.empty? }
-    puts '+--------------------------------------------------+'
-  end
-
-  def create_dockets(dockets_hash, subdivision)
-    dockets_hash.each do |discipline_hash|
-      group_hash = discipline_hash['group']
-      next if group_hash['course'] == 5 && @period.not_for_last_course?
-      next if @period.graduate && group_hash['course'] != 5
-      group = @period.groups.find_or_create_by_title(group_hash['number']).tap do |g|
-        g.course = group_hash['course'].to_i
-        g.save!
-      end
-      import_students(group)
-
-      lecturer = import_lecturer(discipline_hash['lecture'])
+      lecturer = import_lecturer(discipline_hash['lecturer'])
 
       docket = subdivision.dockets.find_or_create_by_discipline_and_group_id_and_lecturer_id_and_period_id(
         :discipline => discipline_hash['discipline'],
