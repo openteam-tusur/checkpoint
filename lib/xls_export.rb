@@ -4,6 +4,7 @@ require 'fileutils'
 require 'progress_bar'
 
 class XlsExport
+  attr_reader :period, :previous_period
 
   def initialize(period)
     @faculty_abbr = {
@@ -70,6 +71,32 @@ class XlsExport
     dockets_hash
   end
 
+  def average_mark(grades)
+    count = 0
+    total = 0
+    grades.each do |grade|
+      if grade.mark
+        total += grade.mark.to_i
+        count += 1
+      end
+    end
+
+    return 'нет оценки' if count == 0
+    (total / count.to_f).round(2)
+  end
+
+  def average_grades(student_hash)
+    kt1 = student_hash[:dockets].map {|d| d[:grades]}.map {|d| d[:kt_1]}.compact
+    kt2 = student_hash[:dockets].map {|d| d[:grades]}.map {|d| d[:kt_2]}.compact
+
+    {:kt_1 => average_mark(kt1), :kt_2 => average_mark(kt2)}
+  end
+
+  def empty_cells_count(dockets_count)
+    return (2 * dockets_count + 1) if @period.kt_2?
+    docekts_count - 1
+  end
+
   def to_xls(group)
     previous_group = @previous_period.groups.find_by_title(group.title) if @previous_period
     attributes = group_attributes(group.contingent_number)
@@ -122,7 +149,7 @@ class XlsExport
         info = []
         info << "МИНОБР РОССИИ\nТУСУР" << ''
         info << "Успеваемость студентов по результатам #{I18n.t("period.results.kind.#{@period.kind}")} #{I18n.t("period.results.season_type.#{@period.season_type}")}\nпо состоянию на #{Time.now.strftime('%d.%m.%Y')}\nФакультет: #{attributes[:faculty]}    Курс: #{attributes[:course]}    Группа: #{group}".mb_chars.upcase
-        (group.dockets.count - 1).times { info << '' }
+        empty_cells_count(group.dockets.count).times { info << '' }
         sheet.add_row info, style: normal_without_border, height: 80
         sheet.merge_cells sheet.rows.first.cells[0..1]
         sheet.merge_cells sheet.rows.first.cells[2..-1]
@@ -134,6 +161,7 @@ class XlsExport
           dockets.each do |docket|
             header << docket.abbr << ''
           end
+          header << 'Среднее значение' << ''
           h_row = sheet.add_row header, style: wrap_text
           h_row.cells.each_with_index do |cell, index|
             if index > 1 && index % 2 == 0
@@ -143,7 +171,7 @@ class XlsExport
 
           periods_header = []
           periods_header << '' << ''
-          dockets.count.times do
+          (dockets.count + 1).times do
             periods_header << 'КТ 1' << 'КТ 2'
           end
           sheet.add_row periods_header, style: wrap_text
@@ -164,6 +192,10 @@ class XlsExport
               row << docket[:grades][:kt_1].to_s
             end
           end
+          if @period.kt_2?
+            average_grades = average_grades(student)
+            row << average_grades[:kt_1].to_s << average_grades[:kt_2].to_s
+          end
           sheet.add_row row, style: normal_text
         end
 
@@ -172,7 +204,7 @@ class XlsExport
           t = []
           t << "#{docket.abbr} - #{docket.discipline}"
           (group.dockets.count + 1).times {t << ''}
-          sheet.add_row t
+          sheet.add_row t, :height => 30
         end
         sheet.rows[(3 + group.students.count)..-1].each do |row|
           sheet.merge_cells row.cells[0..-1]
