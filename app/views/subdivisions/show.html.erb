@@ -17,11 +17,9 @@
 
 <ul class='list periods'>
   <% @periods.each do |period| %>
-    <% if @subdivision.dockets.by_period(period.id).any? %>
-      <li>
-        <%= link_to "#{period.title}", subdivision_dockets_path(@subdivision, :by_period => period.id) %>
-        (<%= @subdivision.filled_dockets(period.id) %>/<%= @subdivision.dockets_count(period.id) %>)
-      </li>
-    <% end %>
+    <li>
+      <%= link_to "#{period.title}", subdivision_dockets_path(@subdivision, :by_period => period.id) %>
+      (<%= @subdivision.filled_dockets(period.id) %>/<%= @subdivision.dockets_count(period.id) %>)
+    </li>
   <% end %>
 </ul>

@@ -21,15 +21,15 @@
 <% end %>
 
 <div class="actions">
-  <%= link_to "Редактировать", edit_subdivision_docket_path(@subdivision, @docket) if @docket.period.actual? %>
-  <%= link_to "Скачать CSV", subdivision_docket_path(@subdivision, @docket, format: :csv) %>
+  <%= link_to "Редактировать", edit_subdivision_docket_path(@subdivision, @docket) if can? :edit, @docket %>
+  <%= link_to "Скачать CSV", subdivision_docket_path(@subdivision, @docket, format: :csv) if can? :import, @docket %>
   <%= link_to "Скачать PDF", subdivision_docket_path(@subdivision, @docket, format: :pdf) if @docket.examination? %>
 </div>
 
 <div class='info'>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
 <div class='info'>Группа: <%= @docket.group %></div>
 
-<% if @docket.period.actual? %>
+<% if can? :import, @docket %>
   <div class="import_form_wrapper">
     <h4>Импорт CSV:</h4>
     <%= render 'import_form' %>

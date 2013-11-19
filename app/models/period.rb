@@ -12,8 +12,12 @@ class Period < ActiveRecord::Base
   enumerize :season_type, :in => [:spring, :autumn], :predicates => true
 
   def actual?
-    return true if Time.zone.today < self.ends_at
+    return true if Time.zone.today <= self.ends_at
     false
+  end
+
+  def editable?
+    Time.zone.today >= starts_at && Time.zone.today <= ends_at
   end
 
   def not_session?

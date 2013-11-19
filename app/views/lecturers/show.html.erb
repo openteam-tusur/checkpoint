@@ -2,11 +2,9 @@
 
 <ul class='list periods'>
   <% @periods.each do |period| %>
-    <% if @lecturer.dockets.by_period(period.id).any? %>
-      <li>
-        <%= link_to "#{period.title}", lecturer_dockets_path(@lecturer, :by_period => period.id) %>
-        (<%= @lecturer.filled_dockets(period.id) %>/<%= @lecturer.dockets_count(period.id) %>)
-      </li>
-    <% end %>
+    <li>
+      <%= link_to "#{period.title}", lecturer_dockets_path(@lecturer, :by_period => period.id) %>
+      (<%= @lecturer.filled_dockets(period.id) %>/<%= @lecturer.dockets_count(period.id) %>)
+    </li>
   <% end %>
 </ul>

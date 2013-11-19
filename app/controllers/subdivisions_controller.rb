@@ -6,7 +6,7 @@ class SubdivisionsController < ApplicationController
 
   def show
     show!{
-      @periods = Period.all
+      @periods = Period.all.select {|p| can?(:read, p) && @subdivision.dockets.by_period(p.id).any?}
     }
   end
 end

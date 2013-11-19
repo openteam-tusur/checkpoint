@@ -12,7 +12,7 @@
 <h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
 
 <div class="actions">
-  <%= link_to "Редактировать", edit_lecturer_docket_path(@lecturer, @docket) if @docket.period.actual? %>
+  <%= link_to "Редактировать", edit_lecturer_docket_path(@lecturer, @docket) if can? :edit, @docket %>
 </div>
 
 <div class='info'>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
