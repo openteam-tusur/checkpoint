@@ -14,6 +14,7 @@ group :default do
   gem 'attribute_normalizer'
   gem 'axlsx'
   gem 'configliere'
+  gem 'daemons'
   gem 'delayed_job_active_record'
   gem 'devise', '2.2.4'
   gem 'enumerize'
