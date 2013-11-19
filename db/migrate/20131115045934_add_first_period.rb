@@ -1,6 +1,5 @@
 class AddFirstPeriod < ActiveRecord::Migration
   def up
-    Period.skip_callback(:create, :after, :create_dockets)
     period = Period.create(
       :starts_at => Time.zone.parse('2013-10-14'),
       :ends_at => Time.zone.parse('2013-10-25'),
