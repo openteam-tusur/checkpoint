@@ -3,8 +3,12 @@
 <ul class='list periods'>
   <% @periods.each do |period| %>
     <li>
-      <%= link_to "#{period.title}", lecturer_dockets_path(@lecturer, :by_period => period.id) %>
-      (<%= @lecturer.filled_dockets(period.id) %>/<%= @lecturer.dockets_count(period.id) %>)
+      <div class='info'
+        <%= link_to "#{period.title}", lecturer_dockets_path(@lecturer, :by_period => period.id) %>
+        (<%= period.timescale %>)
+      </div>
+      <span class='dockets'><%= I18n.t(:dockets, :count => @lecturer.dockets.count) %>, </span>
+      <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => @lecturer.dockets.filled.uniq.count) %></span>
     </li>
   <% end %>
 </ul>

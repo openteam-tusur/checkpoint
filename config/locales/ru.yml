@@ -86,7 +86,7 @@ ru:
    other: "%{count} групп"
 
   dockets:
-   zero: нет ведомостей
+   zero: 0 ведомостей
    one: "%{count} ведомость"
    few: "%{count} ведомости"
    many: "%{count} ведомостей"
