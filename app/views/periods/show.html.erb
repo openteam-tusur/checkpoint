@@ -34,10 +34,15 @@
 <ul class="list groups">
   <% @period.groups.order(:title).each do |group| %>
     <li class='info'>
-      <%= group %>
+      <div class='info'><%= group %></div>
+      <%= content_tag :span, 'в группе нет студентов', class: error if group.students.empty? %>
+      <%= content_tag :span, I18n.t(:students, :count => group.students.count) if group.students.any? %>
+      <span class='dockets'><%= I18n.t(:dockets, :count => group.dockets.count) %>, </span>
+      <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => group.dockets.filled.uniq.count) %></span>
       <div class="actions">
         <%= link_to "Удалить", period_group_path(@period, group) %>
       </div>
+      <hr />
     </li>
   <% end %>
 </ul>

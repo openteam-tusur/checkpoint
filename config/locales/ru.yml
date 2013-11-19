@@ -91,3 +91,10 @@ ru:
    few: "%{count} ведомости"
    many: "%{count} ведомостей"
    other: "%{count} ведомостей"
+
+  students:
+   zero: нет студентов
+   one: "%{count} студент"
+   few: "%{count} студента"
+   many: "%{count} студентов"
+   other: "%{count} студентов"
