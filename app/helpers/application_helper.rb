@@ -3,10 +3,11 @@ module ApplicationHelper
     if period.id == 1
       path = "/grades/#{subdivision.folder_name}"
     else
-      path = "/grades/#{period.year}/#{period.season_type}/#{period.kind}/#{subdivision.folder_name}"
+      path = "/grades/#{period.year}/#{period.season_type}/#{period.kind}_#{period.id}/#{subdivision.folder_name}"
     end
-    if File.directory?("public#{path}")
-      link_to "Скачать #{I18n.t("docket.file_format.#{file_format}")}", "#{path}/#{subdivision.abbr_translit}_#{file_format}.zip"
+    file_name = "#{subdivision.abbr_translit}_#{file_format}"
+    if File.exist?("public#{path}/#{file_name}.zip")
+      link_to "Скачать #{I18n.t("docket.file_format.#{file_format}")}", "#{path}/#{file_name}.zip"
     end
   end
 end

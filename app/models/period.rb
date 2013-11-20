@@ -39,7 +39,7 @@ class Period < ActiveRecord::Base
   end
 
   def docket_path
-    "public/grades/#{year}/#{self.season_type}/#{self.kind}"
+    "public/grades/#{year}/#{self.season_type}/#{self.kind}_#{self.id}"
   end
 
   def title
