@@ -102,7 +102,11 @@ class XlsExport
   def to_xls(group)
     previous_group = @previous_period.groups.find_by_title(group.title) if @previous_period
     attributes = group_attributes(group.contingent_number)
-    subdivision = Subdivision.find_by_title(attributes[:sub_faculty]['sub_faculty_name']) || Subdivision.find_by_abbr(sub_abbr(attributes[:sub_faculty]['short_name']))
+    subdivision = if @period.not_session?
+                    Subdivision.find_by_title(attributes[:sub_faculty]['sub_faculty_name']) || Subdivision.find_by_abbr(sub_abbr(attributes[:sub_faculty]['short_name']))
+                  else
+                    group.dockets.map(&:subdivision).uniq.first
+                  end
     student_hashes = if @period.kt_2? 
                         student_dockets_hash(group, previous_group)
                       else
