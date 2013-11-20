@@ -33,7 +33,7 @@ class Ability
        can? :read, docket && docket.period.editable?
     end
 
-    can :change_lecturer, Docket do |doket|
+    can :change_lecturer, Docket do |docket|
       can? :show, docket.subdivision && docket.period.editable?
     end
 
