@@ -7,38 +7,49 @@ class Ability
 
     can :manage, :all if user.administrator?
 
-    can :show, Subdivision do |subdivision|
-      user.manager_of?(subdivision)
+    if user.manager?
+      can :read, Subdivision do |subdivision|
+        user.manager_of?(subdivision)
+      end
+
+      can :read, Period
+
+      can :read, Lecturer
+
+      can :read, Docket do |docket|
+        can? :read, docket.subdivision
+      end
+
+      can :manage, Docket do |docket|
+        can? :read, docket.subdivision
+        docket.period.editable?
+      end
+
+      can :change_lecturer, Docket do |docket|
+        can? :manage, docket
+      end
+
+      can :import, Docket do |docket|
+        can? :manage, docket && !docket.period.exam_session?
+      end
     end
 
-    can :show, Period do |period|
-      user.manager?
-      user.lecturer? && !period.exam_session?
-    end
+    if user.lecturer?
+      can :read, Lecturer do |lecturer|
+        user.permissions.map(&:context).include?(lecturer)
+      end
 
-    can :show, Lecturer do |lecturer|
-      user.permissions.map(&:context).include?(lecturer)
-    end
+      can :read, Period do |period|
+        user.lecturer? && !period.exam_session?
+      end
 
-    can :manage, Docket do |docket|
-      can? :show, docket.subdivision && docket.period.editable?
-    end
+      can :read, Docket do |docket|
+        can? :read, docket.lecturer
+      end
 
-    can :read, Docket do |docket|
-      can? :show, docket.subdivision
-      docket.lecturer.permissions.map(&:user).include?(user)
-    end
-
-    can :edit, Docket do |docket|
-       can? :read, docket && docket.period.editable?
-    end
-
-    can :change_lecturer, Docket do |docket|
-      can? :show, docket.subdivision && docket.period.editable?
-    end
-
-    can :import, Docket do |docket|
-      can? :show, docket.subdivision && docket.period.editable? && !docket.period.exam_session?
+      can :edit, Docket do |docket|
+        can? :read, docket && docket.period.editable?
+      end
     end
   end
 end

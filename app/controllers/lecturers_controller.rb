@@ -4,6 +4,12 @@ class LecturersController < ApplicationController
   actions :index, :show
   load_and_authorize_resource
 
+  def index
+    index! {
+      authorize! :read, @subdivision
+    }
+  end
+
   def show
     show!{
       @periods = Period.all.select {|p| can?(:show, p) && @lecturer.dockets.by_period(p.id).any?}
