@@ -34,6 +34,10 @@ ru:
       diff_qualification: |
                           Зачетная ведомость
                           (дифференцированный зачет)
+    file_format:
+      xlsx: сводные ведомости
+      pdf:  экзаменационные ведомости
+      csv:  CSV ведомости
 
   enumerize:
     attendance:
