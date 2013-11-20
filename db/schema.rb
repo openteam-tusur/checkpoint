@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131115045934) do
+ActiveRecord::Schema.define(:version => 20131120015844) do
 
   create_table "attendances", :force => true do |t|
     t.string   "kind"
@@ -87,8 +87,9 @@ ActiveRecord::Schema.define(:version => 20131115045934) do
     t.string   "patronymic"
     t.string   "type"
     t.integer  "group_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "contingent_id"
   end
 
   add_index "people", ["group_id"], :name => "index_people_on_group_id"

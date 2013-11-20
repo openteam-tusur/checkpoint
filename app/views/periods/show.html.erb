@@ -40,7 +40,7 @@
       <span class='dockets'><%= I18n.t(:dockets, :count => group.dockets.count) %>, </span>
       <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => group.dockets.filled.uniq.count) %></span>
       <div class="actions">
-        <%= link_to "Удалить", period_group_path(@period, group) %>
+        <%= link_to "Удалить", period_group_path(@period, group), :method => :delete, :confirm => 'Вы уверены?' %>
       </div>
       <hr />
     </li>

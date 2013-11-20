@@ -19,10 +19,11 @@ class Import
 
   def import_students(group)
     get_students(group.contingent_number).each do |student_hash|
-      student = group.students.find_or_create_by_name_and_surname_and_patronymic(
+      student = group.students.find_or_create_by_name_and_surname_and_patronymic_and_contingent_id(
         :name => student_hash['firstname'],
         :surname => student_hash['lastname'],
-        :patronymic => student_hash['patronymic'])
+        :patronymic => student_hash['patronymic'],
+        :contingent_id => student_hash['person_id'])
     end
   end
 
@@ -60,8 +61,11 @@ class Import
     group_items = JSON.parse response
 
     group_items.each do |group_item|
-      next if !group_item['group'].match(@group_pattern)
-      group = @period.groups.find_or_create_by_title(group_item['group'])
+      next if !group_item['group']['number'].match(@group_pattern)
+      group = @period.groups.find_or_initialize_by_title(group_item['group']['number']).tap do |gr|
+        gr.course = group_item['group']['course']
+        gr.save
+      end
       import_students(group)
       docket_items = @period.exam_session? ? group_item['exam_dockets'] : group_item['checkpoint_dockets']
       create_dockets(docket_items, group)

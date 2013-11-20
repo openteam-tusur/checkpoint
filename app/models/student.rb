@@ -1,4 +1,5 @@
 class Student < Person
+  attr_accessible :contingent_id
   has_many :grades
   has_many :dockets, :through => :grades
   has_many :conventional_grades
