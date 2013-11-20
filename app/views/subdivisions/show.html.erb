@@ -22,8 +22,8 @@
         <%= link_to "#{period.title}", subdivision_dockets_path(@subdivision, :by_period => period.id) %>
         (<%= period.timescale %>)
       </div>
-      <span class='dockets'><%= I18n.t(:dockets, :count => @subdivision.dockets.count) %>, </span>
-      <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => @subdivision.dockets.filled.uniq.count) %></span>
+      <span class='dockets'><%= I18n.t(:dockets, :count => @subdivision.dockets.by_period(period.id).count) %>, </span>
+      <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => @subdivision.dockets.by_period(period.id).filled.uniq.count) %></span>
     </li>
   <% end %>
 </ul>

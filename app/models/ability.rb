@@ -46,7 +46,7 @@ class Ability
         can?(:read, docket.lecturer)
       end
 
-      can :edit, Docket do |docket|
+      can [:edit, :update], Docket do |docket|
         can?(:read, docket) && docket.period.editable?
       end
     end
