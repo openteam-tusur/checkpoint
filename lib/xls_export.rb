@@ -12,7 +12,9 @@ class XlsExport
       'ЭКОНОМ' => 'Экономики'
     }
     @period = period
-    @previous_period = Period.where(:kind => :kt_1, :season_type => @period.season_type).where('id < ?', @period.id).order('id DESC').select {|p| p.starts_at.strftime('%Y') == @period.starts_at.strftime('%Y')}.first
+    @previous_period = if @period.kt_2?
+                         Period.where(:kind => :kt_1, :season_type => @period.season_type).where('id < ?', @period.id).order('id DESC').select {|p| p.starts_at.strftime('%Y') == @period.starts_at.strftime('%Y')}.first
+                       end
   end
 
   def get_students(group_number)
@@ -94,7 +96,7 @@ class XlsExport
 
   def empty_cells_count(dockets_count)
     return (2 * dockets_count + 1) if @period.kt_2?
-    docekts_count - 1
+    dockets_count - 1
   end
 
   def to_xls(group)
