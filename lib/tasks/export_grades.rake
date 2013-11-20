@@ -9,12 +9,13 @@ task :export_grades => :environment do
   periods.each do |period|
     next unless (period.actual? && period.groups.any?)
 
-    puts "Экспорт #{period.title}"
+    puts "Экспорт #{period.title}, Period ID: #{period.id}"
     xls_export = XlsExport.new(period)
     compress = Compress.new(period)
     gb = ProgressBar.new(period.groups.count)
     db = ProgressBar.new(period.dockets.count)
 
+    puts 'Экспорт XLS'
     period.groups.each do |group|
       xls_export.to_xls(group)
       gb.increment!
@@ -22,6 +23,7 @@ task :export_grades => :environment do
     compress.to_zip('xlsx')
 
     if period.not_session?
+      puts 'Экспорт CSV'
       period.dockets.each do |docket|
         CsvExport.new(docket).to_csv_file
         db.increment!
@@ -30,6 +32,7 @@ task :export_grades => :environment do
     end
 
     unless period.not_session?
+      puts 'Экспорт PDF'
       db = ProgressBar.new(period.dockets.count)
       period.dockets.each do |docket|
         Pdf.new(docket).render_to_file
