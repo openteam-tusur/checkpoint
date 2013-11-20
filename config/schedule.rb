@@ -4,6 +4,6 @@
    rake :import_attendances
  end
 
- every 3.hours do
+ every 1.day, :at => '2:00 am' do
    rake :export_grades
  end
