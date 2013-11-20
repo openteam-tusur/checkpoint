@@ -17,20 +17,19 @@ class Ability
       can :read, Lecturer
 
       can :read, Docket do |docket|
-        can? :read, docket.subdivision
+        can?(:read, docket.subdivision)
       end
 
-      can :manage, Docket do |docket|
-        can? :read, docket.subdivision
-        docket.period.editable?
+      can [:edit, :update], Docket do |docket|
+        can?(:read, docket.subdivision) && docket.period.editable?
       end
 
       can :change_lecturer, Docket do |docket|
-        can? :manage, docket
+        can?(:edit, docket)
       end
 
       can :import, Docket do |docket|
-        can? :manage, docket && !docket.period.exam_session?
+        can?(:edit, docket) && !docket.period.exam_session?
       end
     end
 
@@ -44,11 +43,11 @@ class Ability
       end
 
       can :read, Docket do |docket|
-        can? :read, docket.lecturer
+        can?(:read, docket.lecturer)
       end
 
       can :edit, Docket do |docket|
-        can? :read, docket && docket.period.editable?
+        can?(:read, docket) && docket.period.editable?
       end
     end
   end
