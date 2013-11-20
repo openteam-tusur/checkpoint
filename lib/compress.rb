@@ -10,6 +10,7 @@ class Compress
       sub_abbr = Subdivision.find_by_folder_name(dir.gsub(/#{@period.docket_path}\//,'')).abbr_translit
       puts "Архивирование #{sub_abbr}"
       file_paths = Dir.glob("#{dir}/*.#{format}")
+      next if file_paths.empty?
       zip_file = "#{dir}/#{sub_abbr}_#{format}.zip"
 
       Zip::File.open(zip_file, Zip::File::CREATE) do |zipfile|
