@@ -25,7 +25,7 @@
   <div class='link_to_file'>
     <%= summary_dockets_link(@period, @subdivision, 'pdf') unless @period.not_session?%>
     <%= summary_dockets_link(@period, @subdivision, 'xlsx') if @period.not_session?%>
-    <%= summary_dockets_link(@period, @subdivision, 'csv') if @period.not_session?%>
+    <%= summary_dockets_link(@period, @subdivision, 'csv') if (@period.not_session? && @period.editable?) %>
   </div>
 </div>
 
