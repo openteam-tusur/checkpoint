@@ -3,18 +3,14 @@ class Compress
     @period = period
   end
 
-  def to_zip
+  def to_zip(format)
     directories = Dir.glob("#{@period.docket_path}/*").select {|f| File.directory? f}
     pb = ProgressBar.new(directories.count)
     directories.each do |dir|
       sub_abbr = Subdivision.find_by_folder_name(dir.gsub(/#{@period.docket_path}\//,'')).abbr_translit
       puts "Архивирование #{sub_abbr}"
-      if @period.not_session?
-        file_paths = Dir.glob("#{dir}/*.xlsx")
-      else
-        file_paths = Dir.glob("#{dir}/*.pdf")
-      end
-      zip_file = "#{dir}/#{sub_abbr}.zip"
+      file_paths = Dir.glob("#{dir}/*.#{format}")
+      zip_file = "#{dir}/#{sub_abbr}_#{format}.zip"
 
       Zip::File.open(zip_file, Zip::File::CREATE) do |zipfile|
         file_paths.each do |file_path|
