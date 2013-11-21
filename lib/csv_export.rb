@@ -48,6 +48,7 @@ class CsvExport
     file = to_csv.encode('cp1251', :invalid => :replace, :undef => :replace, :replace => "")
      File.open("#{get_directory(file_path).first}#{@docket.group.translited_title}.csv","w:cp1251") do |f|
        f.write(file)
+       f.close
      end
   end
 
