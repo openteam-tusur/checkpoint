@@ -27,7 +27,7 @@ class Pdf
 
   def filename
     dir = get_directory("#{@docket.period.docket_path}/#{@docket.subdivision.folder_name}/")
-    "#{dir.first}#{@docket.group.translited_title}.pdf"
+    "#{dir.first}#{@docket.group.translited_title}_#{@docket.abbr_translited}.pdf"
   end
 
   def name
