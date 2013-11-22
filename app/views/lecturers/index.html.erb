@@ -1,6 +1,6 @@
 <div class='breadcrumbs'>
   <ul>
-    <% if can? :index, Subdivision %>
+    <% if can? :manage, Subdivision %>
       <li>
         <%= link_to 'Список обеспечивающих кафедр', subdivisions_path %>
       </li>
