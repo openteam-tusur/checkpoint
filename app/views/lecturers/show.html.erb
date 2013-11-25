@@ -8,7 +8,7 @@
         (<%= period.timescale %>)
       </div>
       <span class='dockets'><%= I18n.t(:dockets, :count => @lecturer.dockets.by_period(period.id).count) %>, </span>
-      <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => @lecturer.dockets.by_period(period.id).filled.uniq.count) %></span>
+      <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => @lecturer.dockets.by_period(period.id).filled.count) %></span>
     </li>
   <% end %>
 </ul>

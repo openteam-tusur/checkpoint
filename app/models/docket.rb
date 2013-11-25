@@ -20,9 +20,9 @@ class Docket < ActiveRecord::Base
 
   after_save :clear_grades
 
-  scope :by_period,       ->(period)  { where :period_id => period }
-  scope :filled,   ->          { joins(:grades).where('grades.mark is not null AND grades.active = ?', true) }
-  scope :with_active_grades, ->          { joins(:grades).where('grades.active = ?', true) }
+  scope :by_period,           ->(period) { where :period_id => period }
+  scope :filled,              ->         { joins(:grades).where("grades.mark is not null AND grades.active = :true OR grades.mark is null AND grades.active != :true", :true => true).uniq }
+  scope :with_active_grades,  ->         { joins(:grades).where('grades.active = ?', true).uniq }
 
   enumerize :kind, :in => [:qualification, :diff_qualification, :exam], :predicates => true
 

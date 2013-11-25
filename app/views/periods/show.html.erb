@@ -16,7 +16,7 @@
 
 <div class='info'><%= I18n.t(:groups, :count => @period.groups.count) %></div>
 <div class='info'><%= I18n.t(:dockets, :count => @period.dockets.count) %></div>
-<div class='info'><%= I18n.t(:dockets, :count => @period.dockets.filled.uniq.count) %> заполнено</div>
+<div class='info'><%= I18n.t(:dockets, :count => @period.dockets.filled.count) %> заполнено</div>
 
 
 <div class="actions">
