@@ -12,6 +12,10 @@ class Grade < ActiveRecord::Base
     return 'нет оценки' unless mark.present?
     return 'н/а' if mark.to_i.zero?
 
-    mark 
+    if self.is_a?(QualificationGrade)
+      mark_text
+    else
+      mark
+    end
   end
 end
