@@ -1,4 +1,13 @@
-<%= link_to "Добавить роль", new_permission_path %>
+<div class='permissions_links'>
+  <div class='filter'>
+    <%= link_to 'Все', permissions_path %><span>(<%= Permission.all.count %>)</span>
+    <%= link_to 'Менеджеры', permissions_path(:by_role => :manager) %><span>(<%= Permission.by_role(:manager).count %>)</span>
+    <%= link_to 'Преподаватели', permissions_path(:by_role => :lecturer) %><span>(<%= Permission.by_role(:lecturer).count %>)</span>
+  </div>
+  <div class='add_permission'>
+    <%= link_to "Добавить роль", new_permission_path %>
+  </div>
+</div>
 
 <table>
   <thead>
