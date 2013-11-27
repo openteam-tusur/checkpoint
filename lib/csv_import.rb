@@ -6,15 +6,20 @@ class CsvImport < Struct.new(:file, :imported_object)
       surname, name, patronymic = item['ФИО студента'].split(/\s/,3)
       student = imported_object.students.find_by_name_and_surname_and_patronymic(name, surname, patronymic)
       grade = student.grades.find_or_create_by_docket_id(imported_object.id)
-      grade.update_attributes(:mark => item['Оценка'], :active => true)
+      grade.update_attributes(:mark => item['Оценка'], :active => active?(item['Должен изучать дисциплину?']))
     end
   end
 
   def prepare_hash
     csv_data = CSV.read(file, encoding: 'cp1251', :col_sep => ';')
-    row_shift = imported_object.kind ? 9 : 8
+    row_shift = imported_object.kind ? 10 : 9
     headers = csv_data.shift(row_shift).last.map {|i| i.strip.to_s }
     string_data = csv_data.map {|row| row.map {|cell| cell.to_s.strip } }
     string_data.map {|row| Hash[*headers.zip(row).flatten] }
+  end
+
+  def active?(val)
+    return false if val == '0'
+    true
   end
 end
