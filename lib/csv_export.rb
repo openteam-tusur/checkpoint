@@ -66,6 +66,6 @@ class CsvExport
         header << Attendance.kind_values[attendance]
       end
     end
-    header << 'Оценка' << 'Должен изучать дисциплину?'
+    header << 'Оценка'
   end
 end
