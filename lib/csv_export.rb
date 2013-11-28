@@ -22,7 +22,6 @@ class CsvExport
       else
         csv << ['Оценка: 0 - не аттестован, 2 - неудовлетворительно, 3 - удовлетворительно, 4 - хорошо, 5 - отлично']
       end
-      csv << ['Должен изучать дисциплину: 0 - нет, 1 - да']
       csv << ['']
       csv << csv_header
       @docket.grades.sort_by{ |g| g.student }.each do |grade|
@@ -32,15 +31,9 @@ class CsvExport
           info << attendance.to_s
         end
         info << grade.mark
-        info << should_study_discipline(grade)
         csv << info
       end
     end
-  end
-
-  def should_study_discipline(grade)
-    return '1' if grade.active?
-    '0'
   end
 
   def get_directory(dir)
