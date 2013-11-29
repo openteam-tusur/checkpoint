@@ -6,7 +6,7 @@ require 'progress_bar'
 def to_xlsx(period, compress)
   xls_export = XlsExport.new(period)
   puts 'Экспорт XLS'
-  pb = ProgressBar.new(period.dockets.count)
+  pb = ProgressBar.new(period.groups.count)
 
   period.groups.each do |group|
     xls_export.to_xls(group)
