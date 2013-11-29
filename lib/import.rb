@@ -2,7 +2,7 @@ require 'open-uri'
 require 'progress_bar'
 
 class Import
-  def initialize(period, group_pattern)
+  def initialize(period, group_pattern = '.*')
     @period = period
     @group_pattern = Regexp.new(group_pattern || ".*")
   end
@@ -52,6 +52,23 @@ class Import
         attendance.total = presences.map{|k,v| v}.reduce(:+)
         attendance.save!
       end
+    end
+  end
+
+  def reimport_dockets
+    file_url = Settings['subdivisions.url']
+    response = open(file_url).read
+    group_items = JSON.parse response
+
+    group_items.each do |group_item|
+      next if !@period.groups.map(&:title).include?(group_item['group']['number'])
+      group = @period.groups.find_or_initialize_by_title(group_item['group']['number']).tap do |gr|
+        gr.course = group_item['group']['course']
+        gr.save
+      end
+      import_students(group)
+      docket_items = @period.exam_session? ? group_item['exam_dockets'] : group_item['checkpoint_dockets']
+      create_dockets(docket_items, group)
     end
   end
 
@@ -130,12 +147,12 @@ class Import
       end
       lecturer = import_lecturer(discipline_hash['lecturer'])
 
-      docket = subdivision.dockets.find_or_create_by_discipline_and_group_id_and_lecturer_id_and_period_id(
+      docket = subdivision.dockets.find_or_create_by_discipline_and_group_id_and_lecturer_id_and_period_id_and_kind(
         :discipline => discipline_hash['discipline'],
         :group_id => group.id,
         :lecturer_id => lecturer ? lecturer.id : Lecturer.find_by_surname('Преподаватель не указан').id,
         :period_id => @period.id,
-        :kind => (discipline_hash['kind'] if discipline_hash['kind'])
+        :kind => discipline_hash['kind'] || :kt
       )
       group.students.each do |student|
         create_grades(student, docket)

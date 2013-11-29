@@ -24,7 +24,7 @@ class Docket < ActiveRecord::Base
   scope :filled,              ->         { joins(:grades).where("grades.mark is not null AND grades.active = :true OR grades.mark is null AND grades.active != :true", :true => true).uniq }
   scope :with_active_grades,  ->         { joins(:grades).where('grades.active = ?', true).uniq }
 
-  enumerize :kind, :in => [:qualification, :diff_qualification, :exam], :predicates => true
+  enumerize :kind, :in => [:qualification, :diff_qualification, :exam, :kt], :predicates => true, :default => :kt
 
   def filled_marks?
     !grades.actived.pluck(:mark).include?(nil)
