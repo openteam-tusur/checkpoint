@@ -57,17 +57,25 @@ class XlsExport
       end
   end
 
+  def dockets_array(student, previous_group)
+    [].tap do |arr|
+      ['kt', 'qualification', 'diff_qualification', 'exam'].each do |kind|
+        student.dockets.by_kind(kind).sort_by(&:discipline).map do |docket|
+          arr << {
+            :docket => docket,
+            :grades => get_grades(docket, student, previous_group)
+          }
+        end
+      end
+    end
+  end
+
   def student_dockets_hash(current_group, previous_group = nil)
     dockets_hash = []
     current_group.students.map do |student|
       dockets_hash << {
         :student => student,
-        :dockets => student.dockets.sort_by(&:discipline).map do |docket|
-          {
-            :docket => docket,
-            :grades => get_grades(docket, student, previous_group)
-          }
-        end
+        :dockets => dockets_array(student, previous_group)
       }
     end
     dockets_hash
