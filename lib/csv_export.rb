@@ -12,7 +12,7 @@ class CsvExport
   def to_csv(options = {})
     CSV.generate(:col_sep => ';', :force_quotes => true) do |csv|
       csv << ["#{@docket.period.season_type_text}, #{@docket.period.kind_text.mb_chars.downcase}"]
-      csv << ["#{@docket.kind_text}"] if @docket.kind
+      csv << ["#{@docket.kind_text}"] if @docket.examination?
       csv << ["Предмет: #{@docket.to_s}"]
       csv << ["Преподаватель: #{@docket.lecturer.to_s}"]
       csv << ["Группа: #{@docket.group.to_s}"]
