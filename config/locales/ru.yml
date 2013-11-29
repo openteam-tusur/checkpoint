@@ -67,6 +67,7 @@ ru:
       role:
         administrator:      Админ
         manager:            Менеджер
+        lecturer:           Преподаватель
 
     period:
       kind:

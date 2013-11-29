@@ -70,6 +70,15 @@ class Permission < ActiveRecord::Base
     end
   end
 
+  def label
+    return context.abbr if context.is_a?(Subdivision)
+    return context.short_name if context.is_a?(Person)
+  end
+
+  def context_url
+    "/#{context_type.underscore.pluralize}/#{context.id}"
+  end
+
 private
   def set_context_type
     self.context_type ||= 'Subdivision'

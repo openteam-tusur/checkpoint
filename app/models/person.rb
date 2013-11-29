@@ -11,4 +11,12 @@ class Person < ActiveRecord::Base
       s << patronymic
     end.compact.join(' ')
   end
+
+  def short_name
+    [].tap do |s|
+      s << surname
+      s << name.split(//).first
+      s << patronymic.split(//).first
+    end.compact.join(' ')
+  end
 end

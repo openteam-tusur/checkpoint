@@ -1,6 +1,14 @@
 <% if current_user %>
   <span class='current_user'><%= current_user.sso_auth_name %></span>
   <%= link_to 'Выход', destroy_user_session_path %>
+  <% if current_user.permissions.many? %>
+    <div class='select_context'>
+      <%= form_tag root_path, :method => "get", :class => 'go-to-select' do %>
+        <span>Контекст:</span>
+        <%= select_tag :context, options_for_select(current_user.permissions.map {|p| [p.label, p.context_url]}), :include_blank => true, :class => 'select' %>
+      <% end %>
+    </div>
+  <% end %>
 <% else %>
   <%= link_to 'Вход в систему', user_omniauth_authorize_path(:identity)  %>
 <% end %>
