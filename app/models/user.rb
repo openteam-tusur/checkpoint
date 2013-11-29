@@ -2,16 +2,14 @@ class User < ActiveRecord::Base
   sso_auth_user
 
   has_many :permissions, :dependent => :destroy
+  has_many :subdivisions, :through => :permissions, :source => :context, :source_type => 'Subdivision', :uniq => true
+  has_many :lecturers, :through => :permissions, :source => :context, :source_type => 'Person', :uniq => true
 
   scope :with_permissions, proc { |role| joins(:permissions).where(:permissions => { :role => role }).uniq }
   scope :by_surname, ->(_) { order('last_name ASC') }
 
   def as_json(options = {})
     super(:only => [:id]).merge({ :label => "#{to_s} <#{email}>", :value => email })
-  end
-
-  def subdivision
-    permissions.first.context
   end
 
   def to_s
