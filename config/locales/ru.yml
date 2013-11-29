@@ -29,6 +29,7 @@ ru:
 
   docket:
     kind:
+      kt: контрольная точка
       exam: Экзаменационная ведомость
       qualification: Зачетная ведомость
       diff_qualification: |
@@ -82,6 +83,8 @@ ru:
         qualification: Зачет
         diff_qualification: Диф. зачет
         exam: Экзамен
+        kt: КТ
+
   groups:
    zero: нет групп
    one: "%{count} группа"
