@@ -3,7 +3,7 @@
  end
 
  every 1.day, :at => '03:00 am' do
-   rake 'export:xlsx', :output => { :error => 'log/error-export_xlsx.log', :standard => 'log/export_xlsx.log'}
+   rake 'export:consolidated_pdf', :output => { :error => 'log/error-export_xlsx.log', :standard => 'log/export_xlsx.log'}
  end
  every 1.day, :at => '04:00 am' do
    rake 'export:csv', :output => { :error => 'log/error-export_csv.log', :standard => 'log/export_csv.log'}
