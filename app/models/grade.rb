@@ -9,7 +9,7 @@ class Grade < ActiveRecord::Base
   scope :inactive, -> { where(:active => false) }
 
   def to_s
-    return 'нет оценки' unless mark.present?
+    return '-' unless mark.present?
     return 'н/а' if mark.to_i.zero?
 
     if self.is_a?(QualificationGrade)

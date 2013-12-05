@@ -9,7 +9,12 @@ class Compress
     directories.each do |dir|
       sub_abbr = Subdivision.find_by_folder_name(dir.gsub(/#{@period.docket_path}\//,'')).abbr_translit
       puts "Архивирование #{sub_abbr}"
-      file_paths = Dir.glob("#{dir}/*.#{format}")
+      case format
+      when 'consolidated_pdf'
+        file_paths = Dir.glob("#{dir}/consolidated/*.pdf")
+      else
+        file_paths = Dir.glob("#{dir}/*.#{format}")
+      end
       next if file_paths.empty?
       zip_file = "#{dir}/#{sub_abbr}_#{format}.zip"
 

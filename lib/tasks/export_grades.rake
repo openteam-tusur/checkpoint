@@ -1,18 +1,17 @@
-require 'xls_export'
+require 'consolidated_export'
 require 'csv_export'
 require 'compress'
 require 'progress_bar'
 
-def to_xlsx(period, compress)
-  xls_export = XlsExport.new(period)
-  puts 'Экспорт XLS'
+def to_consolidated_pdf(period, compress)
+  puts 'Экспорт сводных ведомостей'
   pb = ProgressBar.new(period.groups.count)
 
   period.groups.each do |group|
-    xls_export.to_xls(group)
+    ConsolidatedExport.new(period, group).render_to_file
     pb.increment!
   end
-  compress.to_zip('xlsx')
+  compress.to_zip('consolidated_pdf')
 end
 
 def to_csv(period, compress)
@@ -53,8 +52,8 @@ end
 
 namespace :export do
   desc 'export xlsx dockets'
-  task :xlsx => :environment do
-    export('xlsx')
+  task :consolidated_pdf => :environment do
+    export('consolidated_pdf')
   end
 
   desc 'export csv dockets'
