@@ -39,7 +39,7 @@ class Permission < ActiveRecord::Base
   scope :by_role, ->(role)  { where(:role => role) }
 
   normalize_attribute :email do |value|
-    value.present? ? value.downcase : value
+    value.present? ? value.downcase.squish : value
   end
 
   enumerize :role,
