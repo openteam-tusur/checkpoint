@@ -75,7 +75,7 @@ class Pdf
   end
 
   def docket_header2
-    "Кафедра #{get_group_info[:sub_faculty]}, преподаватель #{lecturer}, дата ________"
+    "Кафедра #{@docket.providing_subdivision.abbr}, преподаватель #{lecturer}, дата ________"
   end
 
   def discipline_header
