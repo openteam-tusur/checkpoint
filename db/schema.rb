@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131128095720) do
+ActiveRecord::Schema.define(:version => 20131205091509) do
 
   create_table "attendances", :force => true do |t|
     t.string   "kind"
@@ -47,10 +47,13 @@ ActiveRecord::Schema.define(:version => 20131128095720) do
     t.integer  "subdivision_id"
     t.integer  "group_id"
     t.integer  "lecturer_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
     t.integer  "period_id"
     t.string   "kind"
+    t.integer  "providing_subdivision_id"
+    t.integer  "releasing_subdivision_id"
+    t.integer  "faculty_id"
   end
 
   add_index "dockets", ["group_id"], :name => "index_dockets_on_group_id"

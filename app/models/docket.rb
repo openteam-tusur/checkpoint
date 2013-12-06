@@ -1,12 +1,17 @@
 class Docket < ActiveRecord::Base
   extend Enumerize
 
-  attr_accessible :discipline, :group_id, :lecturer_id, :grades_attributes, :period_id, :kind
+  attr_accessible :discipline, :group_id, :lecturer_id, :grades_attributes,
+                  :period_id, :kind, :subdivision_id, :releasing_subdivision_id,
+                  :providing_subdivision_id, :faculty_id
 
+  belongs_to :faculty,                :class_name => Subdivision
   belongs_to :group
   belongs_to :lecturer
-  belongs_to :subdivision
   belongs_to :period
+  belongs_to :providing_subdivision,  :class_name => Subdivision
+  belongs_to :releasing_subdivision,  :class_name => Subdivision
+  belongs_to :subdivision
 
   has_many :grades
   has_many :conventional_grades, :dependent => :destroy
