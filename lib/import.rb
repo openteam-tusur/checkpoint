@@ -108,27 +108,6 @@ class Import
     end
   end
 
-  def group_attributes(group)
-    student_hash = get_students(group.contingent_number).first
-    faculty = student_hash['education']['params']['faculty']
-    sub_faculty = student_hash['education']['params']['sub_faculty']
-
-    {:faculty => faculty, :sub_faculty => sub_faculty}
-  end
-
-  def sub_abbr(abbr)
-    faculty_abbr = {'ЭМиС' => 'ЭМИС', 'ЭКОНОМ' => 'Экономики'}
-    faculty_abbr[abbr] || abbr
-  end
-
-  def get_subdivision(group, type)
-    attributes = group_attributes(group)
-    sub = Subdivision.find_by_title(attributes[type]["#{type.to_s}_name"]) || Subdivision.find_by_abbr(sub_abbr(attributes[type]['short_name']))
-    unless sub
-      sub = Subdivision.create(:abbr => attributes[type]['short_name'], :title => subdivision_titles[attributes[type]['short_name']])
-    end
-  end
-
   def reimport_dockets
     file_url = Settings['subdivisions.url']
     response = open(file_url).read
@@ -177,11 +156,6 @@ class Import
         :lecturer_id => lecturer ? lecturer.id : Lecturer.find_by_surname('Преподаватель не указан').id,
         :period_id => @period.id,
         :kind => discipline_hash['kind'] || :kt
-      )
-      docket.update_attributes(
-        :faculty_id => get_subdivision(group, :faculty).id,
-        :releasing_subdivision_id => get_subdivision(group, :sub_faculty).id,
-        :providing_subdivision_id => subdivision.id
       )
       group.students.each do |student|
         create_grades(student, docket)
