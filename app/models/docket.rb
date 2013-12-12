@@ -4,7 +4,7 @@ class Docket < ActiveRecord::Base
 
   attr_accessible :discipline, :group_id, :lecturer_id, :grades_attributes,
                   :period_id, :kind, :subdivision_id, :releasing_subdivision_id,
-                  :providing_subdivision_id, :faculty_id
+                  :providing_subdivision_id, :faculty_id, :discipline_cycle
 
   belongs_to :faculty,                :class_name => Subdivision
   belongs_to :group
@@ -34,6 +34,7 @@ class Docket < ActiveRecord::Base
   scope :by_kind,             ->(kind)   { where(:kind => kind) }
 
   enumerize :kind, :in => [:qualification, :diff_qualification, :exam, :kt], :predicates => true, :default => :kt
+  enumerize :discipline_cycle, :in => [:elective, :alternative, :gpo, :general], :predicates => true, :default => :general
 
   def set_subdivisions
     self.update_attributes(:providing_subdivision_id => self.subdivision_id,
