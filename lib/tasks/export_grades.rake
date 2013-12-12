@@ -52,17 +52,23 @@ end
 
 namespace :export do
   desc 'export xlsx dockets'
-  task :consolidated_pdf => :environment do
+  task :consolidated => :environment do
     export('consolidated_pdf')
+    message = I18n.localize(Time.now, :format => :short) + "Экспорт сводных ведомостей выполнен"
+    Airbrake.notify(:error_class => "rake export:consolidated", :error_message => message)
   end
 
   desc 'export csv dockets'
   task :csv => :environment do
     export('csv')
+    message = I18n.localize(Time.now, :format => :short) + "Экспорт CSV ведомостей выполнен"
+    Airbrake.notify(:error_class => "rake export:csv", :error_message => message)
   end
 
   desc 'export pdf dockets'
   task :pdf => :environment do
     export('pdf')
+    message = I18n.localize(Time.now, :format => :short) + "Экспорт PDF ведомостей выполнен"
+    Airbrake.notify(:error_class => "rake export:pdf", :error_message => message)
   end
 end
