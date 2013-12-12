@@ -16,7 +16,7 @@ class Period < ActiveRecord::Base
   end
 
   def actual?
-    return true if Time.zone.today <= self.ends_at
+    return true if Time.zone.today <= self.ends_at + 1
     false
   end
 
