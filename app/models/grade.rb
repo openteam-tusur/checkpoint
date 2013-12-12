@@ -1,6 +1,6 @@
 class Grade < ActiveRecord::Base
   extend Enumerize
-  attr_accessible :mark, :active
+  attr_accessible :mark, :active, :student_id
 
   belongs_to :docket
   belongs_to :student

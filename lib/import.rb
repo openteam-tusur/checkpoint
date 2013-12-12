@@ -80,18 +80,6 @@ class Import
     end
   end
 
-  def create_grades(student, docket)
-    if docket.qualification?
-      student.qualification_grades.find_or_initialize_by_docket_id(docket.id).tap do |grade|
-        grade.save!(:validate => false)
-      end
-    else
-      student.conventional_grades.find_or_initialize_by_docket_id(docket.id).tap do |grade|
-        grade.save!(:validate => false)
-      end
-    end
-  end
-
   def get_attendance_for(student, discipline)
     JSON.parse(open(URI.encode("#{Settings['attendance.url']}api/attendance?group=#{student.group.title}&student=#{student.full_name}&discipline=#{discipline}")).read)
   end
@@ -158,7 +146,6 @@ class Import
         :kind => discipline_hash['kind'] || :kt
       )
       group.students.each do |student|
-        create_grades(student, docket)
         create_attendances(student, docket)
       end
     end
