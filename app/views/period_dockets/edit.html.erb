@@ -1,0 +1,15 @@
+<div class='breadcrumbs'>
+  <ul>
+    <li>
+      <%= link_to 'Список периодов', periods_path %>
+    </li>
+    <li>
+      <%= link_to @period, period_path(@period) %>
+    </li>
+    <li>
+      <%= link_to "гр. #{@group}", period_group_path(@period, @group) %>
+    </li>
+  </ul>
+</div>
+
+<%= render 'form' %>
