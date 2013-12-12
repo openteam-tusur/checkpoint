@@ -27,6 +27,7 @@
 </div>
 
 <div class='info'>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
+<div class='info'>Цикл дисциплины: <%= @docket.discipline_cycle_text %></div>
 <div class='info'>Группа: <%= @docket.group %></div>
 
 <% if can? :import, @docket %>
