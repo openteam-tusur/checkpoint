@@ -11,6 +11,10 @@ class Period < ActiveRecord::Base
   enumerize :kind, :in => [:kt_1, :kt_2, :exam_session], :predicates => true
   enumerize :season_type, :in => [:spring, :autumn], :predicates => true
 
+  def to_s
+    "#{title} #{timescale}"
+  end
+
   def actual?
     return true if Time.zone.today <= self.ends_at
     false

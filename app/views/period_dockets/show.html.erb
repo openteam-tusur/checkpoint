@@ -1,0 +1,28 @@
+<div class='breadcrumbs'>
+  <ul>
+    <li>
+      <%= link_to 'Список периодов', periods_path %>
+    </li>
+    <li>
+      <%= link_to @period, period_path(@period) %>
+    </li>
+    <li>
+      <%= link_to "гр. #{@group}", period_group_path(@period, @group) %>
+    </li>
+  </ul>
+</div>
+
+<% if @docket.examination? %>
+  <h1><%= t("docket.kind.#{@docket.kind}").gsub(/\n/,'') %> по предмету &laquo;<%= @docket %>&raquo;</h1>
+<% else %>
+  <h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
+<% end %>
+
+<div class="actions">
+  <%= link_to "Редактировать", edit_period_group_docket_path(@period, @group, @docket) if can? :edit, @docket %>
+</div>
+
+<div class='info'>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
+<div class='info'>Группа: <%= @docket.group %></div>
+
+<%= render @docket %>
