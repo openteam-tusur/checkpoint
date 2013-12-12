@@ -5,6 +5,12 @@ class PeriodDocketsController < ApplicationController
     belongs_to :group
   end
   actions :all, :except => [:index]
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:new, :create]
+
+  def new
+    new! {
+      authorize! :create, @docket
+    }
+  end
 
 end

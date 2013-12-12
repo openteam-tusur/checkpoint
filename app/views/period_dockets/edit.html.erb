@@ -11,5 +11,9 @@
     </li>
   </ul>
 </div>
-
+<div class="actions">
+  <%= link_to "Удалить ведомость",
+    period_group_docket_path(@period, @group), :method => :delete,
+    :confirm => "Уверены что хотите удалить ведомость?" if can? :destoy, @docket %>
+</div>
 <%= render 'form' %>

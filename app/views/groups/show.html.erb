@@ -13,6 +13,10 @@
 <%= content_tag :span, 'в группе нет студентов', class: error if @group.students.empty? %>
 <%= content_tag :span, I18n.t(:students, :count => @group.students.count) if @group.students.any? %>
 
+<div class="actions">
+  <%= link_to "Добавить ведомость", new_period_group_docket_path(@period, @group) if can? :create, @docket %>
+</div>
+
 <div class='search'>
   <div class='search_in_list_wrapper'>
     <%= simple_form_for :search do |f| %>

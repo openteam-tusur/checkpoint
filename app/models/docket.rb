@@ -14,6 +14,8 @@ class Docket < ActiveRecord::Base
   belongs_to :releasing_subdivision,  :class_name => Subdivision
   belongs_to :subdivision
 
+  validates_presence_of :discipline, :discipline_cycle, :kind, :providing_subdivision_id, :subdivision_id
+
   has_many :grades
   has_many :conventional_grades, :dependent => :destroy
   has_many :qualification_grades, :dependent => :destroy
@@ -34,7 +36,7 @@ class Docket < ActiveRecord::Base
   scope :by_kind,             ->(kind)   { where(:kind => kind) }
 
   enumerize :kind, :in => [:qualification, :diff_qualification, :exam, :kt], :predicates => true, :default => :kt
-  enumerize :discipline_cycle, :in => [:elective, :alternative, :gpo, :general], :predicates => true, :default => :general
+  enumerize :discipline_cycle, :in => [:general, :gpo, :alternative, :elective], :predicates => true, :default => :general
 
   def set_subdivisions
     self.update_attributes(:providing_subdivision_id => self.subdivision_id,

@@ -22,6 +22,7 @@
   <%= link_to "Редактировать", edit_period_group_docket_path(@period, @group, @docket) if can? :edit, @docket %>
 </div>
 
+<div class='info'>Цикл дисциплины: <%= @docket.discipline_cycle_text || 'Не указано' %></div>
 <div class='info'>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
 <div class='info'>Группа: <%= @docket.group %></div>
 

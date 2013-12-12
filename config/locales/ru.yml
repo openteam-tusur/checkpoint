@@ -12,8 +12,14 @@ ru:
         graduate: Для 5 курса
 
       docket:
+        discipline: Дисциплина
+        subdivision_id: Подразделение (для ввода)
+        providing_subdivision_id: Обеспечивающая кафедра
+        releasing_subdivision_id: Выпускающая кафедра
+        faculty_id: Факультет
         lecturer_id: Преподаватель
         discipline_cycle: Цикл дисциплины
+        kind: Форма контроля
 
   cancan:
     access_denied:          Доступ запрещен. Недостаточно прав.

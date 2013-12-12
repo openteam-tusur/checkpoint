@@ -2,13 +2,32 @@
 <%= simple_form_for [@period, @group, @docket] do |f| %>
   <h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
   <div class='info'>
+    <%= f.input :discipline %>
+  </div>
+  <div class='info'>
+    <%= f.input :subdivision_id, :collection => Subdivision.all %>
+  </div>
+  <div class='info'>
+    <%= f.input :providing_subdivision_id, :collection => Subdivision.all %>
+  </div>
+  <div class='info'>
+    <%= f.input :releasing_subdivision_id, :collection => Subdivision.all %>
+  </div>
+  <div class='info'>
+    <%= f.input :faculty_id, :collection => Subdivision.all %>
+  </div>
+  <div class='info'>
     <% if can?(:change_lecturer, @docket) %>
       <%= f.input :lecturer_id, :collection => @docket.providing_subdivision.lecturers, :label_method => :full_name %>
     <% else %>
       Преподаватель: <%= @docket.lecturer || 'Не указано' %>
   <% end %>
-  <%= f.input :kind %>
-  <%= f.input :discipline_cycle %>
+  <div class='info'>
+    <%= f.input :kind %>
+  </div>
+  <div class='info'>
+    <%= f.input :discipline_cycle %>
+  </div>
 </div>
   <div class='info'>Группа: <%= @docket.group %></div>
   <table>
