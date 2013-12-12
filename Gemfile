@@ -11,6 +11,7 @@ group :assets do
 end
 
 group :default do
+  gem 'airbrake'
   gem 'attribute_normalizer'
   gem 'axlsx'
   gem 'configliere'
@@ -21,15 +22,15 @@ group :default do
   gem 'has_scope'
   gem 'inherited_resources'
   gem 'pg'
+  gem 'prawn', '~> 1.0.0.rc2'
   gem 'progress_bar'
-  gem "prawn", "~> 1.0.0.rc2"
   gem 'rails', '~> 3.2'
+  gem 'rubyzip'
   gem 'russian'
   gem 'simple_form'
   gem 'sso-auth'
   gem 'validates_email_format_of'
   gem 'whenever',           :require => false
-  gem 'rubyzip'
 end
 
 group :development do
@@ -43,5 +44,4 @@ end
 
 group :production do
   gem 'unicorn'
-  gem 'airbrake'
 end
