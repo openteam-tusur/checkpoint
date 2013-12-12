@@ -1,4 +1,5 @@
 class Docket < ActiveRecord::Base
+  include DocketSubdivision
   extend Enumerize
 
   attr_accessible :discipline, :group_id, :lecturer_id, :grades_attributes,
@@ -24,6 +25,7 @@ class Docket < ActiveRecord::Base
   accepts_nested_attributes_for :grades, :reject_if => :all_blank
 
   after_save :clear_grades
+  after_create :set_subdivisions
 
   scope :by_period,           ->(period) { where :period_id => period }
   scope :filled,              ->         { joins(:grades).where("grades.mark is not null AND grades.active = :true OR grades.mark is null AND grades.active != :true", :true => true).uniq }
@@ -31,6 +33,12 @@ class Docket < ActiveRecord::Base
   scope :by_kind,             ->(kind)   { where(:kind => kind) }
 
   enumerize :kind, :in => [:qualification, :diff_qualification, :exam, :kt], :predicates => true, :default => :kt
+
+  def set_subdivisions
+    self.update_attributes(:providing_subdivision_id => self.subdivision_id,
+                             :releasing_subdivision_id => get_subdivision(self.group, :sub_faculty).id,
+                             :faculty_id => get_subdivision(self.group, :faculty).id)
+  end
 
   def filled_marks?
     !grades.actived.pluck(:mark).include?(nil)
