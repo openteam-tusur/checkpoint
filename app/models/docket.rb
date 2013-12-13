@@ -14,7 +14,7 @@ class Docket < ActiveRecord::Base
   belongs_to :releasing_subdivision,  :class_name => Subdivision
   belongs_to :subdivision
 
-  validates_presence_of :discipline, :discipline_cycle, :kind, :providing_subdivision_id, :subdivision_id
+  validates_presence_of :discipline, :kind, :subdivision_id
 
   has_many :grades
   has_many :conventional_grades, :dependent => :destroy
@@ -36,7 +36,7 @@ class Docket < ActiveRecord::Base
   scope :by_kind,             ->(kind)   { where(:kind => kind) }
 
   enumerize :kind, :in => [:qualification, :diff_qualification, :exam, :kt], :predicates => true, :default => :kt
-  enumerize :discipline_cycle, :in => [:general, :gpo, :alternative, :elective], :predicates => true, :default => :general
+  enumerize :discipline_cycle, :in => [:general, :gpo, :alternative, :elective], :predicates => true
 
   def set_subdivisions
     self.update_attributes(:providing_subdivision_id => self.subdivision_id,
@@ -47,9 +47,9 @@ class Docket < ActiveRecord::Base
   def create_grades
     group.students.each do |student|
       if self.qualification?
-        self.qualification_grades.create(:student_id => student.id)
+        self.qualification_grades.find_or_create_by_student_id(:student_id => student.id)
       else
-        self.conventional_grades.create(:student_id => student.id)
+        self.conventional_grades.find_or_create_by_student_id(:student_id => student.id)
       end
     end
   end
