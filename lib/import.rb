@@ -1,7 +1,9 @@
 require 'open-uri'
 require 'progress_bar'
+require 'contingent_students'
 
 class Import
+
   def initialize(period, group_pattern = '.*')
     @period = period
     @group_pattern = Regexp.new(group_pattern || ".*")
@@ -66,20 +68,6 @@ class Import
     Lecturer.find_or_create_by_name_and_patronymic_and_surname(:name => name, :patronymic => patronymic, :surname => surname)
   end
 
-  def get_students(group_number)
-    JSON.parse(open("#{Settings['students.url']}/api/v1/students?group=#{URI.encode(group_number)}").read)
-  end
-
-  def import_students(group)
-    get_students(group.contingent_number).each do |student_hash|
-      student = group.students.find_or_create_by_name_and_surname_and_patronymic_and_contingent_id(
-        :name => student_hash['firstname'],
-        :surname => student_hash['lastname'],
-        :patronymic => student_hash['patronymic'],
-        :contingent_id => student_hash['person_id'])
-    end
-  end
-
   def get_attendance_for(student, discipline)
     JSON.parse(open(URI.encode("#{Settings['attendance.url']}api/attendance?group=#{student.group.title}&student=#{student.full_name}&discipline=#{discipline}")).read)
   end
@@ -107,7 +95,7 @@ class Import
         gr.course = group_item['group']['course']
         gr.save
       end
-      import_students(group)
+      ContingentStudents.new(group).import_students
       docket_items = @period.exam_session? ? group_item['exam_dockets'] : group_item['checkpoint_dockets']
       create_dockets(docket_items, group)
     end
@@ -124,7 +112,7 @@ class Import
         gr.course = group_item['group']['course']
         gr.save
       end
-      import_students(group)
+      ContingentStudents.new(group).import_students
       docket_items = @period.exam_session? ? group_item['exam_dockets'] : group_item['checkpoint_dockets']
       create_dockets(docket_items, group)
     end
@@ -145,6 +133,10 @@ class Import
         :period_id => @period.id,
         :kind => discipline_hash['kind'] || :kt
       )
+      unless docket.discipline_cycle
+        docket.update_attributes(:discipline_cycle => discipline_hash['discipline_cycle'])
+      end
+      docket.create_grades
       group.students.each do |student|
         create_attendances(student, docket)
       end
