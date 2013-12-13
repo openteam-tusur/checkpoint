@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'progress_bar'
+require 'contingent_students'
 
 def get_attendance_for(student, discipline)
   JSON.parse(open(URI.encode("#{Settings['attendance.url']}api/attendance?group=#{student.group.title}&student=#{student.full_name}&discipline=#{discipline}")).read)
@@ -28,6 +29,22 @@ task :import_attendances => :environment do
         docket.group.students.each do |student|
           create_attendances(student, docket)
         end
+        pb.increment!
+      end
+    end
+  end
+end
+
+desc 'Synchronize students'
+task :sync_students => :environment do
+  periods = Period.all
+  periods.each do |period|
+    if period.actual?
+      puts "Импорт студентов для #{I18n.t("period.results.kind.#{period.kind}")}, #{I18n.t("period.results.season_type.#{period.season_type}")}, #{period.starts_at.strftime('%Y')}"
+      pb = ProgressBar.new(period.groups.count)
+      period.groups.each do |group|
+        ContingentStudents.new(group).import_students
+        group.dockets.map(&:create_grades)
         pb.increment!
       end
     end
