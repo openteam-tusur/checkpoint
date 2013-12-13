@@ -1,6 +1,7 @@
 require 'prawn'
 require 'open-uri'
 require 'fileutils'
+require 'contingent_students'
 
 module ::Prawn
   class Table
@@ -40,16 +41,12 @@ class ConsolidatedExport
   end
 
   def group_attributes
-    student_hash = get_students.first
+    student_hash = ContingentStudents.new(@group).get_students.first
     faculty = student_hash['education']['params']['faculty']['short_name']
     sub_faculty = student_hash['education']['params']['sub_faculty']
     course = student_hash['education']['params']['course']
 
     {:faculty => faculty, :sub_faculty => sub_faculty, :course => course}
-  end
-
-  def get_students
-    JSON.parse(open("#{Settings['students.url']}/api/v1/students?group=#{URI.encode(@group.contingent_number)}").read)
   end
 
   def subdivision

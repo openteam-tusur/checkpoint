@@ -1,4 +1,6 @@
 require 'open-uri'
+require 'contingent_students'
+
 module DocketSubdivision
 
   def sub_abbr(abbr)
@@ -11,15 +13,11 @@ module DocketSubdivision
   end
 
   def group_attributes(group)
-    student_hash = get_students(group).first
+    student_hash = ContingentStudents.new(group).get_students.first
     faculty = student_hash['education']['params']['faculty']
     sub_faculty = student_hash['education']['params']['sub_faculty']
 
     {:faculty => faculty, :sub_faculty => sub_faculty}
-  end
-
-  def get_students(group)
-    JSON.parse(open("#{Settings['students.url']}/api/v1/students?group=#{URI.encode(group.contingent_number)}").read)
   end
 
   def get_subdivision(group, type)
