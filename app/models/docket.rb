@@ -39,9 +39,8 @@ class Docket < ActiveRecord::Base
   enumerize :discipline_cycle, :in => [:general, :gpo, :alternative, :elective], :predicates => true
 
   def set_subdivisions
-    self.update_attributes(:providing_subdivision_id => self.subdivision_id,
-                             :releasing_subdivision_id => get_subdivision(self.group, :sub_faculty).id,
-                             :faculty_id => get_subdivision(self.group, :faculty).id)
+    self.update_attributes(:releasing_subdivision_id => get_subdivision(self.group, :sub_faculty).id,
+                           :faculty_id => get_subdivision(self.group, :faculty).id)
   end
 
   def create_grades

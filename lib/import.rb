@@ -124,6 +124,15 @@ class Import
         sub.title = subdivision_titles[discipline_hash['subdivision_abbr']]
         sub.save!
       end
+
+      if @period.not_session?
+        providing_subdivision = subdivision
+      else
+        providing_subdivision = Subdivision.find_or_initialize_by_abbr(discipline_hash['providing_subdivision_abbr']).tap do |sub|
+          sub.title = subdivision_titles[discipline_hash['providing_subdivision_abbr']]
+          sub.save!
+        end
+      end
       lecturer = import_lecturer(discipline_hash['lecturer'])
 
       docket = subdivision.dockets.find_or_create_by_discipline_and_group_id_and_lecturer_id_and_period_id_and_kind(
@@ -133,6 +142,7 @@ class Import
         :period_id => @period.id,
         :kind => discipline_hash['kind'] || :kt
       )
+      docket.update_attributes(:providing_subdivision_id => providing_subdivision.id)
       unless docket.discipline_cycle
         docket.update_attributes(:discipline_cycle => discipline_hash['discipline_cycle'])
       end
