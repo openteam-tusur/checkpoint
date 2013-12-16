@@ -49,11 +49,11 @@ class Period < ActiveRecord::Base
   end
 
   def json_path
-    "public/files/#{year}/#{self.season_type}/"
+    "public/files/api/#{year}/#{self.season_type}/"
   end
 
   def json_url
-    "#{Settings[:app][:url]}files/#{year}/#{self.season_type}/period_#{id}.json"
+    "#{Settings[:app][:url]}files/api/#{year}/#{self.season_type}/period_#{id}.json"
   end
 
   def title
