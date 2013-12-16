@@ -1,4 +1,8 @@
 Checkpoint::Application.routes.draw do
+  namespace :api do
+    resources :periods, :only => :index
+  end
+
   resources :permissions,   :except => [:show, :edit, :update]
 
   resources :subdivisions,  :only   => [:index, :show] do
