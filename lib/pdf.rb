@@ -67,7 +67,7 @@ class Pdf
   end
 
   def lecturer
-    if @docket.lecturer.surname == 'Преподаватель не указан'
+    if @docket.lecturer.nil? || @docket.lecturer.surname == 'Преподаватель не указан'
       '_' * 15
     else
       @docket.lecturer.to_s
