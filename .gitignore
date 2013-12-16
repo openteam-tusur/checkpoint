@@ -8,6 +8,7 @@
 /config/settings.yml
 /config/sunspot.yml
 /db/*.sqlite3
+/public/files/*
 /log/*.log
 /log/*.log.lck
 /public/assets
