@@ -70,7 +70,7 @@ class Docket < ActiveRecord::Base
   end
 
   def kind_translited
-    Russian.translit(self.kind_text)
+    Russian.translit(self.kind_text).gsub(/\s+/, '_').downcase
   end
 
   def abbr
