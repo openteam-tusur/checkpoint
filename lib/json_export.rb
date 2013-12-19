@@ -15,6 +15,7 @@ class JsonExport
       :students => @period.students.map do |student|
         {
           :contingent_id => student.contingent_id,
+          :group_number => student.group.to_s,
           :disciplines => student.dockets.map do |docket|
             {
               :discipline => docket.discipline,
