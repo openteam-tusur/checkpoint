@@ -13,6 +13,7 @@
 </div>
 <h1>Добавление ведомости для гр. <%= @group %></h1>
 <%= simple_form_for [@period, @group, @docket] do |f| %>
+  <%= f.input :period_id, :as => :hidden, :input_html => {:value => @period.id} %>
   <div class='info'>
     <%= f.input :discipline %>
   </div>

@@ -1,5 +1,6 @@
 <% attendances = @docket.attendances.map(&:kind).uniq %>
 <%= simple_form_for [@period, @group, @docket] do |f| %>
+  <%= f.input :period_id,:as => :hidden, :input_html => {:value => @period.id} %>
   <h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
   <div class='info'>
     <%= f.input :discipline %>
