@@ -82,16 +82,36 @@ body
     margin: 0 5px
 
 .search
-  +clearfix
+  padding: 5px 0
 
   .search_in_list_wrapper
     float: left
 
-  .link_to_file
-    float: right
-    font-size: 18px
-    span
-      font-size: 12px
+.links_to_file
+  font-size: 18px
+  position: relative
+  float: right
+  z-index: 1000
+
+  span
+    font-size: 12px
+
+  .links
+    display: none
+    position: absolute
+    right: 0
+    top: 0
+    padding-top: 25px
+
+    li
+      text-align: right
+
+  &:hover
+    .links
+      display: block
+      height: 200px
+      width: 450px
+      z-index: 1000
 
 .message_wrapper
   display: block
@@ -113,6 +133,8 @@ body
 .list
   +clearfix
   margin: 25px 0
+  z-index: 999
+  width: 100%
 
   li
     font-size: 14px

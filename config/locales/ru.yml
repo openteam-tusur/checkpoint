@@ -43,7 +43,8 @@ ru:
                           Зачетная ведомость
                           (дифференцированный зачет)
     file_format:
-      consolidated_pdf: сводные ведомости
+      consolidated_pdf: сводные ведомости в PDF
+      consolidated_xls: сводные ведомости в XLS
       pdf:  экзаменационные ведомости
       csv:  CSV ведомости
 

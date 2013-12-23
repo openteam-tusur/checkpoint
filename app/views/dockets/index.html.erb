@@ -18,14 +18,19 @@
 
 <div class='search'>
   <div class='search_in_list_wrapper'>
-    <%= simple_form_for :search do |f| %>
+    <%= simple_form_for :search, :html => { :class => 'search_form' } do |f| %>
       <%= f.input :query, :label => false, :placeholder => 'Найти по названию предмета, номеру группы, преподавателю', :input_html => { :data => { :list => '.list.dockets' } } %>
     <% end %>
   </div>
-  <div class='link_to_file'>
-    <%= summary_dockets_link(@period, @subdivision, 'pdf') unless @period.not_session?%>
-    <%= summary_dockets_link(@period, @subdivision, 'consolidated_pdf') %>
-    <%= summary_dockets_link(@period, @subdivision, 'csv') if (@period.not_session? && @period.editable?) %>
+
+  <div class='links_to_file'>
+    <%= link_to 'Скачать', '#' %>
+    <ul class='links'>
+      <li><%= summary_dockets_link(@period, @subdivision, 'pdf') unless @period.not_session?%></li>
+      <li><%= summary_dockets_link(@period, @subdivision, 'consolidated_pdf') %></li>
+      <li><%= summary_dockets_link(@period, @subdivision, 'consolidated_xls') %></li>
+      <li><%= summary_dockets_link(@period, @subdivision, 'csv') if (@period.not_session? && @period.editable?) %></li>
+    </ul>
   </div>
 </div>
 

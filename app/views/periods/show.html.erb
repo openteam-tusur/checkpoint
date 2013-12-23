@@ -25,7 +25,7 @@
 
 <div class='search'>
   <div class='search_in_list_wrapper'>
-    <%= simple_form_for :search do |f| %>
+    <%= simple_form_for :search, :html => { :class => 'search_form' } do |f| %>
       <%= f.input :query, :label => false, :placeholder => 'поиск', :input_html => { :data => { :list => '.list.groups' } } %>
     <% end %>
   </div>
