@@ -2,6 +2,14 @@ require 'prawn'
 require 'open-uri'
 require 'fileutils'
 
+module ::Prawn
+  class Table
+    def column_widths
+      [20, 180] + (3..cells.row(0).count - 1).map { ((@pdf.bounds.right - 300)/(cells.row(0).count - 2)).to_i } + [100]
+    end
+  end
+end
+
 class Pdf
   def initialize(docket)
     @docket = docket
@@ -40,7 +48,7 @@ class Pdf
                                                 :italic => "#{Rails.root}/lib/assets/Times-Roman-Italic.ttf",
                                                 :bold_italic => "#{Rails.root}/lib/assets/Times-Roman-Bold-Italic.ttf"
                                               }
-    pdf.font 'Times-Roman', :size => 8
+    pdf.font 'Times-Roman', :size => 10
   end
 
   def tusur_title
@@ -130,9 +138,6 @@ class Pdf
 
     pdf.table(table, :position => :center) do
       row(0).style(:align => :center)
-      column(2).width = 75
-      column(3..4).width = 70
-      column(-1).width = 100
     end
     pdf.move_down 15
     pdf.text marks_line, :size => 12, :align => :center
