@@ -12,6 +12,8 @@ class Compress
       case format
       when 'consolidated_pdf'
         file_paths = Dir.glob("#{dir}/consolidated/*.pdf")
+      when 'consolidated_xls'
+        file_paths = Dir.glob("#{dir}/consolidated/*.xlsx")
       else
         file_paths = Dir.glob("#{dir}/*.#{format}")
       end

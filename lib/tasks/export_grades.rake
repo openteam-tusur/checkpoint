@@ -14,6 +14,17 @@ def to_consolidated_pdf(period, compress)
   compress.to_zip('consolidated_pdf')
 end
 
+def to_consolidated_xls(period, compress)
+  puts 'Экспорт сводных ведомостей'
+  pb = ProgressBar.new(period.groups.count)
+
+  period.groups.each do |group|
+    XlsExport.new(period, group).to_xls
+    pb.increment!
+  end
+  compress.to_zip('consolidated_xls')
+end
+
 def to_csv(period, compress)
   if period.not_session?
     puts 'Экспорт CSV'
@@ -51,11 +62,18 @@ def export(format)
 end
 
 namespace :export do
-  desc 'export xlsx dockets'
-  task :consolidated => :environment do
+  desc 'export pdf consolidated dockets'
+  task :consolidated_pdf => :environment do
     export('consolidated_pdf')
-    message = I18n.localize(Time.now, :format => :short) + "Экспорт сводных ведомостей выполнен"
-    Airbrake.notify(:error_class => "rake export:consolidated", :error_message => message)
+    message = I18n.localize(Time.now, :format => :short) + "Экспорт сводных ведомостейш в PDF выполнен"
+    Airbrake.notify(:error_class => "rake export:consolidated_pdf", :error_message => message)
+  end
+
+  desc 'export xlsx consolidated dockets'
+  task :consolidated_xls => :environment do
+    export('consolidated_xls')
+    message = I18n.localize(Time.now, :format => :short) + "Экспорт сводных ведомостей в XLS выполнен"
+    Airbrake.notify(:error_class => "rake export:consolidated_xls", :error_message => message)
   end
 
   desc 'export csv dockets'
