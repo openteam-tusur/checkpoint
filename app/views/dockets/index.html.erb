@@ -23,15 +23,14 @@
     <% end %>
   </div>
 
-  <div class='links_to_file'>
-    <%= link_to 'Скачать', '#' %>
-    <ul class='links'>
-      <li><%= summary_dockets_link(@period, @subdivision, 'pdf') unless @period.not_session?%></li>
-      <li><%= summary_dockets_link(@period, @subdivision, 'consolidated_pdf') %></li>
-      <li><%= summary_dockets_link(@period, @subdivision, 'consolidated_xls') %></li>
-      <li><%= summary_dockets_link(@period, @subdivision, 'csv') if (@period.not_session? && @period.editable?) %></li>
-    </ul>
-  </div>
+  <% if summary_dockets_links.any? %>
+    <div class='links_to_file'>
+      <%= link_to 'Скачать', '#' %>
+      <ul class='links'>
+        <%= summary_dockets_links.join("\n").html_safe %>
+      </ul>
+    </div>
+  <% end %>
 </div>
 
 <ul class='list dockets'>
