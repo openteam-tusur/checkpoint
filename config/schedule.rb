@@ -21,3 +21,7 @@
  every 1.day, :at => '07:00 am' do
    rake :export_json, :output => { :error => 'log/error-export_json.log', :standart => 'log/export_json.log' }
  end
+
+ every 1.day, :at => '11:00 pm' do
+   rake  :sync_students, :output => { :error => 'log/error-import_students.log', :standart => 'log/import_students' }
+ end

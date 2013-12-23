@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class ContingentStudents
   def initialize(group)
     @group = group
