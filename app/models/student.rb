@@ -7,4 +7,8 @@ class Student < Person
   has_many :attendances, :order => :kind
 
   default_scope order('surname ASC')
+
+  def with_active_grades?
+    grades.actived.any?
+  end
 end

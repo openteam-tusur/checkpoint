@@ -13,10 +13,12 @@ class JsonExport
       :kind => @period.season_type_text,
       :year => @period.year,
       :students => @period.students.map do |student|
+        next unless student.with_active_grades?
         {
           :contingent_id => student.contingent_id,
           :group_number => student.group.to_s,
           :disciplines => student.dockets.map do |docket|
+            next unless docket.grades.find_by_student_id(student.id).active?
             {
               :discipline => docket.discipline,
               :kind => docket.kind_text,
@@ -26,9 +28,9 @@ class JsonExport
               :discipline_cycle => docket.discipline_cycle_text,
               :updated_at => docket.grades.find_by_student_id(student.id).updated_at.strftime('%Y-%m-%d')
             }
-          end
+          end.compact
         }
-      end
+      end.compact
     }
   end
 
