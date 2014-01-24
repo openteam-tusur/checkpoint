@@ -14,7 +14,7 @@ class Docket < ActiveRecord::Base
   belongs_to :releasing_subdivision,  :class_name => Subdivision
   belongs_to :subdivision
 
-  validates_presence_of :discipline, :kind, :subdivision_id
+  validates_presence_of :discipline, :kind, :subdivision_id, :providing_subdivision, :discipline_cycle
 
   has_many :grades
   has_many :conventional_grades, :dependent => :destroy
@@ -29,6 +29,7 @@ class Docket < ActiveRecord::Base
   after_save :clear_grades
   after_create :set_subdivisions
   after_create :create_grades
+
 
   scope :by_period,           ->(period) { where :period_id => period }
   scope :filled,              ->         { joins(:grades).where("grades.mark is not null AND grades.active = :true OR grades.mark is null AND grades.active != :true", :true => true).uniq }

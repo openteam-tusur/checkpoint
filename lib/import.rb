@@ -135,13 +135,15 @@ class Import
       end
       lecturer = import_lecturer(discipline_hash['lecturer'])
 
-      docket = subdivision.dockets.find_or_create_by_discipline_and_group_id_and_lecturer_id_and_period_id_and_kind(
+      docket = subdivision.dockets.find_or_initialize_by_discipline_and_group_id_and_lecturer_id_and_period_id_and_kind(
         :discipline => discipline_hash['discipline'],
         :group_id => group.id,
         :lecturer_id => lecturer ? lecturer.id : Lecturer.find_by_surname('Преподаватель не указан').id,
         :period_id => @period.id,
         :kind => discipline_hash['kind'] || :kt
-      )
+      ).tap do |d|
+        d.save(:validate => false)
+      end
       docket.update_attributes(:providing_subdivision_id => providing_subdivision.id)
       unless docket.discipline_cycle
         docket.update_attributes(:discipline_cycle => discipline_hash['discipline_cycle'])
