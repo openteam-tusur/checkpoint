@@ -19,6 +19,7 @@ group :default do
   gem 'delayed_job_active_record'
   gem 'devise', '2.2.4'
   gem 'enumerize'
+  gem 'grape'
   gem 'has_scope'
   gem 'inherited_resources'
   gem 'pg'
