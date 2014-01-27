@@ -2,10 +2,6 @@ class API < Grape::API
   prefix :api
   format :json
 
-  params do
-    requires :uid, :type => Integer
-  end
-
   get :permissions do
     user = User.find_by_uid(params[:uid])
     return { :error => 'User not found' } unless user.present?
