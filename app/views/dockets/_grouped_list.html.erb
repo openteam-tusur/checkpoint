@@ -1,0 +1,21 @@
+<% @dockets.group_by(&:period).each do |period, dockets| %>
+  <h3><%= period.title %></h2>
+  <% if summary_dockets_links(period).any? %>
+    <div class='links_to_file'>
+      <%= link_to 'Скачать', '#' %>
+      <ul class='links'>
+        <%= summary_dockets_links(period).join("\n").html_safe %>
+      </ul>
+    </div>
+  <% end %>
+  <ul class='list dockets'>
+    <% dockets.each do |docket| %>
+      <li>
+        <%= link_to [docket.discipline, "гр. #{docket.group}", docket.lecturer, (docket.kind_text.mb_chars.downcase if docket.kind)].compact.join(', '), [@subdivision, docket] %>
+        <div class="errors">
+          <span><%= 'не заполнена ведомость' unless docket.filled? %></span>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

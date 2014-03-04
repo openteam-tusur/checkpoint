@@ -5,10 +5,11 @@ class DocketsController < ApplicationController
   actions :all, :except => [:destroy, :new, :create]
   custom_actions :resource => :import
   has_scope :by_period
+  has_scope :editable_unfilled
 
   def index
     index!{
-      @period = Period.find(params[:by_period])
+      @period = Period.find(params[:by_period]) if params[:by_period].present?
     }
   end
 

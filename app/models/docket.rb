@@ -33,8 +33,11 @@ class Docket < ActiveRecord::Base
 
   scope :by_period,           ->(period) { where :period_id => period }
   scope :filled,              ->         { joins(:grades).where("grades.mark is not null AND grades.active = :true OR grades.mark is null AND grades.active != :true", :true => true).uniq }
+  scope :unfilled,            ->         { joins(:grades).where("grades.mark is null AND grades.active = :true", :true => true).uniq }
   scope :with_active_grades,  ->         { joins(:grades).where('grades.active = ?', true).uniq }
   scope :by_kind,             ->(kind)   { where(:kind => kind) }
+  scope :editable,            ->         { joins(:period).where('periods.starts_at <= :time and periods.ends_at >= :time', :time => Time.zone.now).uniq }
+  scope :editable_unfilled,   ->(_)      { editable.unfilled }
 
   enumerize :kind, :in => [:qualification, :diff_qualification, :exam, :kt], :predicates => true, :default => :kt
   enumerize :discipline_cycle, :in => [:general, :gpo, :alternative, :elective], :predicates => true
