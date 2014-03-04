@@ -13,7 +13,7 @@
 
 <h1><%= @subdivision %></h1>
 
-<%= link_to "Список преподавателей", subdivision_lecturers_path(@subdivision) %>
+<%= link_to "Список преподавателей", subdivision_lecturers_path(@subdivision) unless @subdivision.title.match(/факультет/i) %>
 
 <ul class='list periods'>
   <% @periods.each do |period| %>
