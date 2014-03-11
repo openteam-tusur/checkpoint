@@ -6,6 +6,9 @@ Checkpoint::Application.routes.draw do
   resources :permissions,   :except => [:show, :edit, :update]
 
   resources :subdivisions,  :only   => [:index, :show] do
+    resources :periods, :only => []  do
+      resources :groups, :only => [:show]
+    end
     resources :lecturers, :only => [:index] do
       resources :permissions, :only => [:new, :create, :destroy], :controller => :lecturer_permissions
     end
@@ -18,7 +21,7 @@ Checkpoint::Application.routes.draw do
   resources :periods do
     post :import, :on => :member
     post :add_group, :on => :member
-    resources :groups, :only => [:destroy, :show] do
+    resources :groups, :only => [:destroy, :show], :controller => :period_groups do
       resources :dockets, :except => [:index], :controller => :period_dockets
     end
   end

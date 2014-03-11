@@ -2,25 +2,16 @@ require 'open-uri'
 require 'axlsx'
 require 'fileutils'
 require 'contingent_students'
+require 'dockets_grades'
 require 'progress_bar'
 
 class XlsExport
+  include DocketsGrades
   attr_reader :period, :previous_period
 
   def initialize(period, group)
     @group = group
     @period = period
-  end
-
-  def faculty_abbr
-    @faculty_abbr ||= {
-      'ЭМиС' => 'ЭМИС',
-      'ЭКОНОМ' => 'Экономики'
-    }
-  end
-
-  def sub_abbr(abbr)
-    faculty_abbr[abbr] || abbr
   end
 
   def previous_period
@@ -33,65 +24,12 @@ class XlsExport
     @pervious_group ||= previous_period.groups.find_by_title(@group.title) if previous_period
   end
 
-  def group_attributes
-    student_hash = ContingentStudents.new(@group).get_students.first
-    faculty = student_hash['education']['params']['faculty']['short_name']
-    sub_faculty = student_hash['education']['params']['sub_faculty']
-    course = student_hash['education']['params']['course']
-
-    {:faculty => faculty, :sub_faculty => sub_faculty, :course => course}
-  end
-
   def subdivision
     @subdivision ||= if @period.not_session?
-                       Subdivision.find_by_title(group_attributes[:sub_faculty]['sub_faculty_name']) || Subdivision.find_by_abbr(sub_abbr(group_attributes[:sub_faculty]['short_name']))
+                       @group.chair
                      else
-                       @group.dockets.map(&:subdivision).uniq.first
+                       @group.faculty
                      end
-  end
-
-  def student_dockets_hash
-    dockets_hash = []
-    @group.students.map do |student|
-      dockets_hash << {
-        :student => student,
-        :dockets => dockets_array(student)
-      }
-    end
-
-    dockets_hash
-  end
-
-  def dockets_array(student)
-    [].tap do |arr|
-      ['kt', 'qualification', 'diff_qualification', 'exam'].each do |kind|
-        student.dockets.by_kind(kind).sort_by(&:discipline).map do |docket|
-          arr << {
-            :docket => docket,
-            :grades => get_grades(docket, student)
-          }
-        end
-      end
-    end
-  end
-
-  def get_grades(docket, student)
-    if previous_group
-      {
-        :kt_2 => docket.grades.find_by_student_id(student.id),
-        :kt_1 => get_prev_grade(docket, student)
-      }
-    else
-      { :kt_1 => docket.grades.find_by_student_id(student.id) }
-    end
-  end
-
-  def get_prev_grade(docket, student)
-    prev_student = previous_group.students.find_by_name_and_surname(student.name, student.surname)
-    return nil unless prev_student
-    prev_docket = previous_period.dockets.find_by_discipline_and_group_id(docket.discipline, previous_group.id)
-    return nil unless prev_docket
-    prev_docket.grades.find_by_student_id(prev_student.id)
   end
 
   def average_mark(grades)
@@ -113,11 +51,6 @@ class XlsExport
     kt2 = student[:dockets].map {|d| d[:grades]}.map {|d| d[:kt_2]}.compact
 
     {:kt_1 => average_mark(kt1), :kt_2 => (@period.kt_1? ? '' : average_mark(kt2))}
-  end
-
-
-  def docket_disciplines
-    student_dockets_hash.first[:dockets].map {|d| d[:docket]}
   end
 
   def get_directory(dir)
@@ -177,7 +110,7 @@ class XlsExport
       wb.add_worksheet(:name => @group.title, :page_setup => page_setup) do |sheet|
         info = []
         info << "МИНОБР РОССИИ\nТУСУР" << ''
-        info << "Успеваемость студентов по результатам #{I18n.t("period.results.kind.#{@period.kind}")} #{I18n.t("period.results.season_type.#{@period.season_type}")}\nпо состоянию на #{Time.now.strftime('%d.%m.%Y')}\nФакультет: #{group_attributes[:faculty]} Курс: #{group_attributes[:course]} Группа: #{@group}".mb_chars.upcase
+        info << "Успеваемость студентов по результатам #{I18n.t("period.results.kind.#{@period.kind}")} #{I18n.t("period.results.season_type.#{@period.season_type}")}\nпо состоянию на #{Time.now.strftime('%d.%m.%Y')}\nФакультет: #{@group.faculty} Курс: #{@group.course} Группа: #{@group}".mb_chars.upcase
         empty_cells_count(@group.dockets.count).times { info << '' }
         sheet.add_row info, style: normal_without_border, height: 80
         sheet.merge_cells sheet.rows.first.cells[0..1]

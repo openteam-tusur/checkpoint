@@ -1,0 +1,38 @@
+<div class='breadcrumbs'>
+  <ul>
+    <li>
+      <%= link_to 'Список периодов', periods_path %>
+    </li>
+    <li>
+      <%= link_to @period, period_path(@period) %>
+    </li>
+  </ul>
+</div>
+
+<h1>Список ведомостей гр.<%= @group %> в <%= @period %></h1>
+<%= content_tag :span, 'в группе нет студентов', class: error if @group.students.empty? %>
+<%= content_tag :span, I18n.t(:students, :count => @group.students.count) if @group.students.any? %>
+
+<div class="actions">
+  <%= link_to "Добавить ведомость", new_period_group_docket_path(@period, @group) if can? :create, @docket %>
+</div>
+
+<div class='search'>
+  <div class='search_in_list_wrapper'>
+    <%= simple_form_for :search do |f| %>
+      <%= f.input :query, :label => false, :placeholder => 'Найти по названию предмета, номеру группы, преподавателю', :input_html => { :data => { :list => '.list.dockets' } } %>
+    <% end %>
+  </div>
+</div>
+
+<ul class='list dockets'>
+  <% @group.dockets.each do |docket| %>
+    <li>
+      <%= link_to [docket.discipline, docket.lecturer, (docket.kind_text.mb_chars.downcase if docket.kind)].compact.join(', '),
+        [@period, @group, docket] %>
+      <div class="errors">
+        <span><%= 'не заполнена ведомость' unless docket.filled? %></span>
+      </div>
+    </li>
+  <% end %>
+</ul>

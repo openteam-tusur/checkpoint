@@ -11,7 +11,7 @@
   <ul class='list dockets'>
     <% dockets.each do |docket| %>
       <li>
-        <%= link_to [docket.discipline, "гр. #{docket.group}", docket.lecturer, (docket.kind_text.mb_chars.downcase if docket.kind)].compact.join(', '), [@subdivision, docket] %>
+        <%= link_to [docket.discipline, "гр. #{docket.group}", docket.lecturer, (docket.kind_text.mb_chars.downcase if docket.kind)].compact.join(', '), subdivision_docket_path(@subdivision, docket) %>
         <div class="errors">
           <span><%= 'не заполнена ведомость' unless docket.filled? %></span>
         </div>

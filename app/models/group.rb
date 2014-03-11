@@ -1,11 +1,19 @@
 class Group < ActiveRecord::Base
-  attr_accessible :title, :course, :period_id
+  attr_accessible :title, :course, :period_id, :faculty_id, :chair_id
 
   has_many :students, :dependent => :destroy
   has_many :dockets, :dependent => :destroy
 
+  belongs_to :chair,   :class_name => 'Subdivision::Chair'
+  belongs_to :faculty, :class_name => 'Subdivision::Faculty'
+  belongs_to :period
+
   alias_attribute :to_s, :title
   alias_attribute :contingent_number, :title
+
+  scope :ordered,   -> { order(:title)}
+  scope :by_period_desc, -> { order('period_id DESC') }
+  scope :by_period_asc, -> { order('period_id ASC') }
 
   CONTINGENT_GROUP_NUMBERS = {
     '012-М1' => '012М/1',
@@ -27,5 +35,9 @@ class Group < ActiveRecord::Base
 
   def translited_title
     Russian.translit(self.title)
+  end
+
+  def self.newest_period_for(title)
+    where(:title => title).by_period_desc.first.period
   end
 end

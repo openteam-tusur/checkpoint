@@ -19,30 +19,45 @@
   <h3>Необходимо заполнить <%= link_to I18n.t(:dockets, :count => @subdivision.dockets.editable_unfilled(1).count), subdivision_dockets_path(@subdivision, :editable_unfilled => true) %></h3>
 <% end %>
 
-<ul class='list periods'>
-  <% @periods.each do |period| %>
-    <li>
-      <div class='info'>
-        <%= link_to "#{period.title}", subdivision_dockets_path(@subdivision, :by_period => period.id) %>
-        <% if summary_dockets_links(period).any? %>
-          <div class='links_to_file'>
-            <%= link_to 'Скачать', '#' %>
-            <ul class='links'>
-              <%= summary_dockets_links(period).join("\n").html_safe %>
-            </ul>
-          </div>
+<div class='periods_list'>
+  <ul class='list periods'>
+    <% @periods.each do |period| %>
+      <li>
+        <div class='info'>
+          <%= link_to "#{period.title}", subdivision_dockets_path(@subdivision, :by_period => period.id) %>
+          <% if summary_dockets_links(period).any? %>
+            <div class='links_to_file'>
+              <%= link_to 'Скачать', '#' %>
+              <ul class='links'>
+                <%= summary_dockets_links(period).join("\n").html_safe %>
+              </ul>
+            </div>
+          <% end %>
+          (<%= period.timescale %>)
+        </div>
+        <% if @subdivision.dockets.by_period(period.id).unfilled.any? %>
+          <span class='filled_dockets'>
+            не заполнено
+            <%= I18n.t(:dockets, :count => @subdivision.dockets.by_period(period.id).unfilled.count) %> из
+            <%= @subdivision.dockets.by_period(period.id).count %>
+          </span>
+        <% else %>
+            все ведомости заполнены
         <% end %>
-        (<%= period.timescale %>)
-      </div>
-      <% if @subdivision.dockets.by_period(period.id).unfilled.any? %>
-        <span class='filled_dockets'>
-          не заполнено
-          <%= I18n.t(:dockets, :count => @subdivision.dockets.by_period(period.id).unfilled.count) %> из
-          <%= @subdivision.dockets.by_period(period.id).count %>
-        </span>
-      <% else %>
-          все ведомости заполнены
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+<div class='groups_list'>
+  <% GroupsByCourses.new(@subdivision).group.each do |course, groups| %>
+    <h3><%= course %></h3>
+    <ul class='groups'>
+      <% groups.each do |group| %>
+        <li>
+        <%= link_to group.title, subdivision_period_group_path(@subdivision, Group.newest_period_for(group.title), group.title) %>
+        </li>
       <% end %>
-    </li>
+    </ul>
   <% end %>
-</ul>
+</div>

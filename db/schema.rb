@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131212075017) do
+ActiveRecord::Schema.define(:version => 20140306032004) do
 
   create_table "attendances", :force => true do |t|
     t.string   "kind"
@@ -81,6 +81,8 @@ ActiveRecord::Schema.define(:version => 20131212075017) do
     t.datetime "updated_at", :null => false
     t.integer  "course"
     t.integer  "period_id"
+    t.integer  "faculty_id"
+    t.integer  "chair_id"
   end
 
   add_index "groups", ["period_id"], :name => "index_groups_on_period_id"
@@ -126,6 +128,7 @@ ActiveRecord::Schema.define(:version => 20131212075017) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.string   "folder_name"
+    t.string   "type"
   end
 
   create_table "users", :force => true do |t|

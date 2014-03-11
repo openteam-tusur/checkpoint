@@ -1,38 +1,29 @@
-<div class='breadcrumbs'>
-  <ul>
-    <li>
-      <%= link_to 'Список периодов', periods_path %>
-    </li>
-    <li>
-      <%= link_to @period, period_path(@period) %>
-    </li>
-  </ul>
-</div>
-
-<h1>Список ведомостей гр.<%= @group %> в <%= @period %></h1>
-<%= content_tag :span, 'в группе нет студентов', class: error if @group.students.empty? %>
-<%= content_tag :span, I18n.t(:students, :count => @group.students.count) if @group.students.any? %>
-
-<div class="actions">
-  <%= link_to "Добавить ведомость", new_period_group_docket_path(@period, @group) if can? :create, @docket %>
-</div>
-
-<div class='search'>
-  <div class='search_in_list_wrapper'>
-    <%= simple_form_for :search do |f| %>
-      <%= f.input :query, :label => false, :placeholder => 'Найти по названию предмета, номеру группы, преподавателю', :input_html => { :data => { :list => '.list.dockets' } } %>
+<h2>Группа <%= @group.title %>, <%= @period.title %></h2>
+<%= link_to "предыдущий период", subdivision_period_group_path(@subdivision, @periods.prev) if @periods.prev %>
+<%= link_to "следующий период", subdivision_period_group_path(@subdivision, @periods.next) if @periods.next %>
+<table>
+<thead>
+  <tr>
+    <td>№</td>
+    <td>ФИО Студента</td>
+    <% @consolidated_table.docket_disciplines.each do |d| %>
+      <% if can?(:edit, d) %>
+        <td><%= link_to d.discipline, subdivision_docket_path(d.subdivision, d) %></td>
+      <% else %>
+          <td><%= d.discipline %></td>
+      <% end %>
     <% end %>
-  </div>
-</div>
-
-<ul class='list dockets'>
-  <% @group.dockets.each do |docket| %>
-    <li>
-      <%= link_to [docket.discipline, docket.lecturer, (docket.kind_text.mb_chars.downcase if docket.kind)].compact.join(', '),
-        [@period, @group, docket] %>
-      <div class="errors">
-        <span><%= 'не заполнена ведомость' unless docket.filled? %></span>
-      </div>
-    </li>
+  </tr>
+</thead>
+<tbody>
+  <% @consolidated_table.student_dockets_hash.each_with_index do |student, index| %>
+    <tr>
+      <td><%= index + 1 %></td>
+      <td><%= student[:student].full_name %></td>
+      <% student[:dockets].each do |docket| %>
+        <td><%= docket[:grades][:kt_1].to_s %></td>
+      <% end %>
+    </tr>
   <% end %>
-</ul>
+</tbody>
+</table>
