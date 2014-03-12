@@ -146,11 +146,10 @@ class Import
       ).tap do |d|
         d.save(:validate => false)
       end
-      docket.update_attributes(:providing_subdivision_id => providing_subdivision.id)
+      docket.update_column(:providing_subdivision_id, providing_subdivision.id)
       unless docket.discipline_cycle
-        docket.update_attributes(:discipline_cycle => discipline_hash['discipline_cycle'])
+        docket.update_column(:discipline_cycle, discipline_hash['discipline_cycle'])
       end
-      docket.create_grades
       group.students.each do |student|
         create_attendances(student, docket)
       end

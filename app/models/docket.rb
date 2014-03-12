@@ -26,9 +26,10 @@ class Docket < ActiveRecord::Base
 
   accepts_nested_attributes_for :grades, :reject_if => :all_blank
 
-  after_save :clear_grades
-  after_create :set_subdivisions
   after_create :create_grades
+  after_create :set_subdivisions
+
+  after_save :clear_grades, :if => :unfilled_grades
 
 
   scope :by_period,           ->(period) { where :period_id => period }
@@ -38,6 +39,11 @@ class Docket < ActiveRecord::Base
 
   enumerize :kind, :in => [:qualification, :diff_qualification, :exam, :kt], :predicates => true, :default => :kt
   enumerize :discipline_cycle, :in => [:general, :gpo, :alternative, :elective], :predicates => true
+
+  def unfilled_grades
+    return true if self.grades.inactive.any?
+    false
+  end
 
   def set_subdivisions
     self.update_attributes(:releasing_subdivision_id => get_subdivision(self.group, :sub_faculty).id,
