@@ -35,7 +35,7 @@
   <% @period.groups.order(:title).each do |group| %>
     <li class='info'>
       <div class='info'><%= link_to group, period_group_path(@period, group) %></div>
-      <%= content_tag :span, 'в группе нет студентов', class: error if group.students.empty? %>
+      <%= content_tag :span, 'в группе нет студентов', :class => 'error' if group.students.empty? %>
       <%= content_tag :span, I18n.t(:students, :count => group.students.count) if group.students.any? %>
       <span class='dockets'><%= I18n.t(:dockets, :count => group.dockets.count) %>, </span>
       <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => group.dockets.filled.uniq.count) %></span>
