@@ -119,7 +119,7 @@ class Import
   def create_dockets(dockets_hash, group)
     dockets_hash.each do |discipline_hash|
       subdivision = Subdivision.find_or_initialize_by_abbr(discipline_hash['subdivision_abbr']).tap do |sub|
-        sub.title = subdivision_titles[discipline_hash['subdivision_abbr']]
+        sub.title = subdivision_titles[discipline_hash['subdivision_abbr']] unless sub.title.present?
         sub.save!
       end
 
@@ -127,7 +127,7 @@ class Import
         providing_subdivision = subdivision
       else
         providing_subdivision = Subdivision.find_or_initialize_by_abbr(discipline_hash['providing_subdivision_abbr']).tap do |sub|
-          sub.title = subdivision_titles[discipline_hash['providing_subdivision_abbr']]
+          sub.title = subdivision_titles[discipline_hash['providing_subdivision_abbr']] unless sub.title.present?
           sub.save!
         end
       end
