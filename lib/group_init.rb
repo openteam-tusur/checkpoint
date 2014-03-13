@@ -12,7 +12,7 @@ class GroupInit
   end
 
   def prepare_group
-    contingent_students = ContingentStudents.new(group)
+    contingent_students = ContingentStudents.new(group.contingent_number)
     first_student = contingent_students.get_students.first
 
     group.update_attributes(:course => @course ? @course : first_student['group']['course'].to_i)
