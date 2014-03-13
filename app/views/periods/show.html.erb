@@ -14,6 +14,12 @@
   <%= f.submit 'Загрузить' %>
 <% end %>
 
+<div class='info'>Или добавьте группу вручную</div>
+<%= simple_form_for :add_group, :url => add_group_period_path(@period) do |f| %>
+  <%= f.input_field :group_number, :placeholder => 'Укажите номер группы' %>
+  <%= f.submit 'Добавить группу' %>
+<% end %>
+
 <div class='info'><%= I18n.t(:groups, :count => @period.groups.count) %></div>
 <div class='info'><%= I18n.t(:dockets, :count => @period.dockets.count) %></div>
 <div class='info'><%= I18n.t(:dockets, :count => @period.dockets.filled.count) %> заполнено</div>

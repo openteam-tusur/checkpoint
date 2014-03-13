@@ -97,11 +97,7 @@ class Import
 
     group_items.each do |group_item|
       next if !@period.groups.map(&:title).include?(group_item['group']['number'])
-      group = @period.groups.find_or_initialize_by_title(group_item['group']['number']).tap do |gr|
-        gr.course = group_item['group']['course']
-        gr.save
-      end
-      ContingentStudents.new(group).import_students
+      group = GroupInit.new(@period, group_item['group']['number'], nil).prepare_group
       docket_items = @period.exam_session? ? group_item['exam_dockets'] : group_item['checkpoint_dockets']
       create_dockets(docket_items, group)
     end
@@ -114,11 +110,7 @@ class Import
 
     group_items.each do |group_item|
       next if !group_item['group']['number'].match(@group_pattern)
-      group = @period.groups.find_or_initialize_by_title(group_item['group']['number']).tap do |gr|
-        gr.course = group_item['group']['course']
-        gr.save
-      end
-      ContingentStudents.new(group).import_students
+      group = GroupInit.new(@period, group_item['group']['number'], nil).prepare_group
       docket_items = @period.exam_session? ? group_item['exam_dockets'] : group_item['checkpoint_dockets']
       create_dockets(docket_items, group)
     end
