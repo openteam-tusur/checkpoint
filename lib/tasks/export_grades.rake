@@ -26,35 +26,41 @@ def to_consolidated_xls(period, compress)
 end
 
 def to_csv(period, compress)
-  if period.not_session?
-    puts 'Экспорт CSV'
-    pb = ProgressBar.new(period.dockets.count)
+  puts 'Экспорт CSV'
+  pb = ProgressBar.new(period.dockets.count)
 
-    period.dockets.each do |docket|
-      CsvExport.new(docket).to_csv_file
-      pb.increment!
-    end
-    compress.to_zip('csv')
+  period.dockets.each do |docket|
+    CsvExport.new(docket).to_csv_file
+    pb.increment!
   end
+  compress.to_zip('csv')
 end
 
 def to_pdf(period, compress)
-  unless period.not_session?
-    puts 'Экспорт PDF'
-    pb = ProgressBar.new(period.dockets.count)
+  puts 'Экспорт PDF'
+  pb = ProgressBar.new(period.dockets.count)
 
-    period.dockets.each do |docket|
-      Pdf.new(docket).render_to_file
-      pb.increment!
-    end
-    compress.to_zip('pdf')
+  period.dockets.each do |docket|
+    Pdf.new(docket).render_to_file
+    pb.increment!
   end
+  compress.to_zip('pdf')
 end
 
 def export(format)
   periods = Period.all
   periods.each do |period|
     next unless (period.actual? && period.groups.any?)
+
+    case format
+    when /consolidated\w+/
+      next if period.dockets.filled.empty?
+    when 'pdf'
+      next if period.not_session?
+    when 'csv'
+      next unless period.not_session?
+    end
+
     puts "Экспорт #{period.title}, Period ID: #{period.id}"
     compress = Compress.new(period)
     send("to_#{format}", period, compress)
