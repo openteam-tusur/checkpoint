@@ -1,5 +1,8 @@
 <% @dockets.group_by(&:period).each do |period, dockets| %>
-  <h3><%= period.title %></h2>
+  <h3>
+    <%= link_to "#{period.title}", subdivision_dockets_path(@subdivision, :by_period => period.id) %>
+    (<%= period.timescale %>)
+  </h3>
   <% if summary_dockets_links(period).any? %>
     <div class='links_to_file'>
       <%= link_to 'Скачать', '#' %>
