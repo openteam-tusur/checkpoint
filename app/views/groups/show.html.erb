@@ -1,29 +1,68 @@
-<h2>Группа <%= @group.title %>, <%= @period.title %></h2>
-<%= link_to "предыдущий период", subdivision_period_group_path(@subdivision, @periods.prev) if @periods.prev %>
-<%= link_to "следующий период", subdivision_period_group_path(@subdivision, @periods.next) if @periods.next %>
-<table>
-<thead>
-  <tr>
-    <td>№</td>
-    <td>ФИО Студента</td>
-    <% @consolidated_table.docket_disciplines.each do |d| %>
-      <% if can?(:edit, d) %>
-        <td><%= link_to d.discipline, subdivision_docket_path(d.subdivision, d) %></td>
-      <% else %>
-          <td><%= d.discipline %></td>
-      <% end %>
+<div class='breadcrumbs'>
+  <ul>
+    <% if can? :manage, Subdivision %>
+      <li>
+        <%= link_to 'Список обеспечивающих кафедр', subdivisions_path %>
+      </li>
     <% end %>
-  </tr>
-</thead>
-<tbody>
-  <% @consolidated_table.student_dockets_hash.each_with_index do |student, index| %>
-    <tr>
-      <td><%= index + 1 %></td>
-      <td><%= student[:student].full_name %></td>
-      <% student[:dockets].each do |docket| %>
-        <td><%= docket[:grades][:kt_1].to_s %></td>
+    <li>
+      <span><%= link_to @subdivision, subdivision_path(@subdivision) %></span>
+    </li>
+    <li>
+      <span>Группа <%= @group.title %>, <%= @period.title %></span>
+    </li>
+  </ul>
+</div>
+
+<div class='period_title'>
+  <h2>Группа <%= @group.title %>, <%= @period.title %></h2>
+</div>
+<div class="period_navigation">
+  <%= link_to "предыдущий период", subdivision_period_group_path(@subdivision, @periods.prev) if @periods.prev %>
+  <%= link_to "следующий период", subdivision_period_group_path(@subdivision, @periods.next) if @periods.next %>
+</div>
+
+<div class='tables'>
+  <div class="consolidated_table table_1">
+    <table>
+    <thead>
+      <tr>
+        <td class='number'>№</td>
+        <td>ФИО Студента</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @consolidated_table.student_dockets_hash.each_with_index do |student, index| %>
+        <tr>
+          <td class='number'><%= index + 1 %></td>
+          <td class='name'><%= student[:student].full_name %></td>
+        </tr>
       <% end %>
-    </tr>
-  <% end %>
-</tbody>
-</table>
+    </tbody>
+    </table>
+  </div>
+  <div class='consolidated_table table_2'>
+    <table>
+    <thead>
+      <tr>
+        <% @consolidated_table.docket_disciplines.each do |d| %>
+          <% if can?(:edit, d) %>
+            <td><%= link_to d.discipline, subdivision_docket_path(d.subdivision, d) %></td>
+          <% else %>
+              <td><%= d.discipline %></td>
+          <% end %>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @consolidated_table.student_dockets_hash.each_with_index do |student, index| %>
+        <tr>
+          <% student[:dockets].each do |docket| %>
+            <td class='grade'><%= docket[:grades][:kt_1].to_s %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+    </table>
+  </div>
+</div>

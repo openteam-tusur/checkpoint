@@ -1,0 +1,45 @@
+@import 'compass/reset'
+@import 'compass/utilities'
+
+.tables
+  +clearfix
+
+  .table_1,
+  .table_2
+    +clearfix
+    float: left
+
+  .table_1
+    width: 330px
+
+  .table_2
+    overflow: auto
+    width: 694px
+
+.period_title
+  h2
+    text-align: center
+
+.period_navigation
+  text-align: center
+
+.consolidated_table
+  overflow: scroll
+
+  thead
+    .number
+      min-width: 15px
+      width: 15px
+
+    td
+      text-align: center
+      min-width: 200px
+      height: 100px
+
+  tbody
+    .number,
+    .grade
+      text-align: center
+
+    .name
+      text-align: left
