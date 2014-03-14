@@ -19,7 +19,7 @@ class GroupInit
   end
 
   def init_chair(abbr)
-    Subdivision::Chair.find_by_abbr(sub_abbrs(abbr))
+    Subdivision::Chair.find_by_abbr(sub_abbr(abbr))
   end
 
   def prepare_group

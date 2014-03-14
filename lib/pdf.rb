@@ -1,6 +1,7 @@
 require 'prawn'
 require 'open-uri'
 require 'fileutils'
+require 'contingent_students'
 
 module ::Prawn
   class Table
@@ -55,23 +56,16 @@ class Pdf
     'Томский государственный университет систем управления и радиоэлектроники'
   end
 
-  def get_student_hash(group_number)
-    JSON.parse(open("#{Settings['students.url']}/api/v1/students?group=#{URI.encode(group_number)}").read)
-  end
-
   def get_group_info
-    student_hash = get_student_hash(@docket.group.contingent_number).first
-    faculty = student_hash['education']['params']['faculty']['short_name']
-    sub_faculty = student_hash['education']['params']['sub_faculty']['short_name']
-    course = student_hash['education']['params']['course']
+    student_hash = ContingentStudents.new(@docket.group).get_students.first
     semestr = student_hash['education']['params']['semestre']
     speciality = student_hash['education']['params']['speciality']['speciality_code']
 
-    {:faculty => faculty, :sub_faculty => sub_faculty, :speciality => speciality, :course => course, :semestr => semestr}
+    { :speciality => speciality, :semestr => semestr }
   end
 
   def docket_header1
-    "Факультет #{get_group_info[:faculty]}, курс #{get_group_info[:course]}, семестр #{get_group_info[:semestr]}, группа #{@docket.group.to_s}, специальность #{get_group_info[:speciality]}"
+    "Факультет #{@docket.group.faculty}, курс #{@docket.group.course}, семестр #{get_group_info[:semestr]}, группа #{@docket.group.to_s}, специальность #{get_group_info[:speciality]}"
   end
 
   def lecturer

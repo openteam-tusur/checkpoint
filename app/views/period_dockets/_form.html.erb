@@ -12,12 +12,6 @@
     <%= f.input :providing_subdivision_id, :collection => Subdivision.all %>
   </div>
   <div class='info'>
-    <%= f.input :releasing_subdivision_id, :collection => Subdivision.all %>
-  </div>
-  <div class='info'>
-    <%= f.input :faculty_id, :collection => Subdivision.all %>
-  </div>
-  <div class='info'>
     <% if can?(:change_lecturer, @docket) %>
       <%= f.input :lecturer_id, :collection => @docket.providing_subdivision.lecturers, :label_method => :full_name %>
     <% else %>

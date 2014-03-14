@@ -2,15 +2,12 @@ class Docket < ActiveRecord::Base
   extend Enumerize
 
   attr_accessible :discipline, :group_id, :lecturer_id, :grades_attributes,
-                  :period_id, :kind, :subdivision_id, :releasing_subdivision_id,
-                  :providing_subdivision_id, :faculty_id, :discipline_cycle
+                  :period_id, :kind, :subdivision_id, :providing_subdivision_id, :discipline_cycle
 
-  belongs_to :faculty,                :class_name => Subdivision
   belongs_to :group
   belongs_to :lecturer
   belongs_to :period
   belongs_to :providing_subdivision,  :class_name => Subdivision
-  belongs_to :releasing_subdivision,  :class_name => Subdivision
   belongs_to :subdivision
 
   validates_presence_of :discipline, :kind, :subdivision_id, :providing_subdivision, :discipline_cycle
@@ -26,7 +23,6 @@ class Docket < ActiveRecord::Base
   accepts_nested_attributes_for :grades, :reject_if => :all_blank
 
   after_create :create_grades
-  after_create :set_subdivisions
 
   after_save :clear_grades, :if => :unfilled_grades
 
@@ -45,11 +41,6 @@ class Docket < ActiveRecord::Base
   def unfilled_grades
     return true if self.grades.inactive.any?
     false
-  end
-
-  def set_subdivisions
-    self.update_attributes(:releasing_subdivision_id => DocketSubdivision.new(self.group, 'sub_faculty', nil).get_subdivision.id,
-                           :faculty_id => DocketSubdivision.new(self.group, 'faculty', nil).get_subdivision.id)
   end
 
   def create_grades

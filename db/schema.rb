@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140306032004) do
+ActiveRecord::Schema.define(:version => 20140314030944) do
 
   create_table "attendances", :force => true do |t|
     t.string   "kind"
@@ -52,8 +52,6 @@ ActiveRecord::Schema.define(:version => 20140306032004) do
     t.integer  "period_id"
     t.string   "kind"
     t.integer  "providing_subdivision_id"
-    t.integer  "releasing_subdivision_id"
-    t.integer  "faculty_id"
     t.string   "discipline_cycle"
   end
 
