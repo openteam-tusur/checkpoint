@@ -1,17 +1,13 @@
 require 'contingent_students'
+require 'subdivision_abbrs'
 
 class GroupInit
+  include SubdivisionAbbrs
+
   def initialize(period, group_number, course)
     @period = period
     @group_number = group_number
     @course = course
-  end
-
-  def chair_abbrs
-    @chair_abbrs ||= {
-      'ЭКОНОМ' => 'Экономики',
-      'ЭМиС' => 'ЭМИС'
-    }
   end
 
   def group
@@ -23,7 +19,7 @@ class GroupInit
   end
 
   def init_chair(abbr)
-    Subdivision::Chair.find_by_abbr(chair_abbrs[abbr] || abbr)
+    Subdivision::Chair.find_by_abbr(sub_abbrs(abbr))
   end
 
   def prepare_group
