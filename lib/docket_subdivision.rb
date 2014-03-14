@@ -1,29 +1,33 @@
 require 'open-uri'
 require 'contingent_students'
 
-module DocketSubdivision
+class DocketSubdivision
+
+  def initialize(group, type = '', abbr = '')
+    @group = group
+    @type = type
+    @abbr = abbr
+  end
 
   def sub_abbr(abbr)
-    faculty_abbr = {
+    s_abbr = {
     'ЭМиС' => 'ЭМИС',
-    'ЭКОНОМ' => 'Экономики'
+    'ЭКОНОМ' => 'Экономики',
+    'ФиС' => 'ФС',
+    'ПМиИ' => 'КПМиИ',
+    'МИСА' => 'МиСА',
+    'Физ' => 'Физики',
+    'Матем' => 'Математики'
     }
 
-    faculty_abbr[abbr] || abbr
+    s_abbr[abbr] || abbr
   end
 
-  def group_attributes(group)
-    student_hash = ContingentStudents.new(group).get_students.first
-    faculty = student_hash['education']['params']['faculty']
-    sub_faculty = student_hash['education']['params']['sub_faculty']
-
-    {:faculty => faculty, :sub_faculty => sub_faculty}
-  end
-
-  def get_subdivision(group, type)
+  def subdivision_titles
     subdivision_titles = {
       'АОИ' => 'Кафедра автоматизации обработки информации',
       'АСУ' => 'Кафедра автоматизированных систем управления',
+      'БИС' => 'Кафедра безопасности информационных систем',
       'ГП' => 'Кафедра гражданского права',
       'ИП' => 'Кафедра информационного права',
       'ИСР' => 'Кафедра истории и социальной работы',
@@ -35,8 +39,10 @@ module DocketSubdivision
       'Математики' => 'Кафедра математики',
       'МиГ' => 'Кафедра механики и графики',
       'МОТЦ' => 'Кафедра моделирования и основ теории цепей',
+      'МиСА' => 'Кафедра моделирования и системного анализа',
       'ОКЮ' => 'Отделение кафедры ЮНЕСКО',
       'ПМиИ' => 'Кафедра прикладной математики и информатики',
+      'КПМиИ' => 'Кафедра прикладной математики и информатики',
       'ПрЭ' => 'Кафедра промышленной электроники',
       'РЗИ' => 'Кафедра радиоэлектроники и защиты информации',
       'РТС' => 'Кафедра радиотехнических систем',
@@ -51,6 +57,8 @@ module DocketSubdivision
       'УП' => 'Кафедра уголовного права',
       'ФВиС' => 'Кафедра физвоспитания и спорта',
       'Физ' => 'Кафедра физики',
+      'Физики' => 'Кафедра физики',
+      'ФС' => 'Кафедра философии и социологии',
       'ФиС' => 'Кафедра философии и социологии',
       'ФЭ' => 'Кафедра физической электроники',
       'Экономики' => 'Кафедра экономики',
@@ -68,13 +76,39 @@ module DocketSubdivision
       'ФИТ' => 'Факультет инновационных технологий',
       'ЮФ' => 'Юридический факультет',
       'ФМС' => 'Факультет моделирования систем',
-      'ВФ' => 'Заочный и вечерний факультет'
+      'ВФ' => 'Заочный и вечерний факультет',
+      'ФБ' => 'Факультет безопасности'
     }
+  end
 
-    attributes = group_attributes(group)
-    sub = Subdivision.find_by_title(attributes[type]["#{type.to_s}_name"]) || Subdivision.find_by_abbr(sub_abbr(attributes[type]['short_name']))
+  def group_attributes
+    student_hash = ContingentStudents.new(@group).get_students.first
+    faculty = student_hash['education']['params']['faculty']
+    sub_faculty = student_hash['education']['params']['sub_faculty']
+
+    {'faculty' => faculty, 'sub_faculty' => sub_faculty}
+  end
+
+  def get_subdivision
+    if @abbr.present?
+      get_subdivision_by_abbr
+    else
+      get_subdivision_by_type
+    end
+  end
+
+  def get_subdivision_by_abbr
+    sub = Subdivision.find_by_abbr(sub_abbr(@abbr))
     unless sub
-      sub = Subdivision.create(:abbr => attributes[type]['short_name'], :title => subdivision_titles[attributes[type]['short_name']])
+      sub = Subdivision.create(:abbr => sub_abbr(@abbr), :title => subdivision_titles[sub_abbr(@abbr)])
+    end
+  end
+
+  def get_subdivision_by_type
+    attributes = group_attributes
+    sub = Subdivision.find_by_title(attributes[@type]["#{@type}_name"]) || Subdivision.find_by_abbr(sub_abbr(attributes[@type]['short_name']))
+    unless sub
+      sub = Subdivision.create(:abbr => sub_abbr(attributes[@type]['short_name']), :title => subdivision_titles[sub_abbr(attributes[@type]['short_name'])])
     end
 
     sub

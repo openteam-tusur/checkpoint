@@ -1,5 +1,4 @@
 class Docket < ActiveRecord::Base
-  include DocketSubdivision
   extend Enumerize
 
   attr_accessible :discipline, :group_id, :lecturer_id, :grades_attributes,
@@ -46,8 +45,8 @@ class Docket < ActiveRecord::Base
   end
 
   def set_subdivisions
-    self.update_attributes(:releasing_subdivision_id => get_subdivision(self.group, :sub_faculty).id,
-                           :faculty_id => get_subdivision(self.group, :faculty).id)
+    self.update_attributes(:releasing_subdivision_id => DocketSubdivision.new(self.group, 'sub_faculty', nil).get_subdivision.id,
+                           :faculty_id => DocketSubdivision.new(self.group, 'faculty', nil).get_subdivision.id)
   end
 
   def create_grades
