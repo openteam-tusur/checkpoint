@@ -1,5 +1,6 @@
 @import 'compass/reset'
 @import 'compass/utilities'
+@import 'compass/css3'
 
 .tables
   +clearfix
@@ -20,8 +21,8 @@
   h2
     text-align: center
 
-.period_navigation
-  text-align: center
+  &.with_dockets
+    margin-top: 25px
 
 .consolidated_table
   overflow: scroll
@@ -43,3 +44,46 @@
 
     .name
       text-align: left
+
+.period_navigation
+  text-align: center
+  position: center
+  margin-bottom: 10px
+
+.button
+  +inline-block
+  +background-image(linear-gradient(#FEFEFE, #D1D5D4))
+  +border-radius(5px)
+  border: 1px solid #D1D5D4
+  color: #3B29C8
+  font-size: 14px
+  height: 30px
+  line-height: 26px
+  margin: 0
+  padding: 0px 14px
+  text-decoration: none
+  width: 160px
+
+  &:hover
+    +background-image(linear-gradient(#D1D5D4, #FEFEFE))
+
+  &.disabled
+    color: #9E9E9E
+    &:hover
+      +background-image(linear-gradient(#FEFEFE, #D1D5D4))
+      cursor: default
+
+.groups_list
+
+  .course_title
+    font-size: 16px
+
+  .groups
+    +clearfix
+    margin: 0 0 15px 10px
+
+    li
+      width: 70px
+      float: left
+      font-size: 16px
+      margin: 10px 125px 10px 0

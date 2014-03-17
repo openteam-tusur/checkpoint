@@ -15,9 +15,9 @@
 
 <%= link_to "Список преподавателей", subdivision_lecturers_path(@subdivision) unless @subdivision.title.match(/факультет/i) %>
 
-<% if @subdivision.dockets.editable_unfilled(1).any? %>
-  <h3>Необходимо заполнить <%= link_to I18n.t(:dockets, :count => @subdivision.dockets.editable_unfilled(1).count), subdivision_dockets_path(@subdivision, :editable_unfilled => true) %></h3>
-<% end %>
+<%= render :partial => 'application/warning' %>
+
+<h2>Периоды</h2>
 
 <div class='periods_list'>
   <ul class='list periods'>
@@ -49,10 +49,12 @@
   </ul>
 </div>
 
+<h2>Группы</h2>
+
 <div class='groups_list'>
-  <% GroupsByCourses.new(@subdivision).group.each do |course, groups| %>
-    <h3><%= course %></h3>
-    <ul class='groups'>
+  <% @periods_with_groups.each do |course, groups| %>
+    <span class="course_title"><%= course %> курс</span>
+    <ul class="groups <%= course %>_course">
       <% groups.each do |group| %>
         <li>
         <%= link_to group.title, subdivision_period_group_path(@subdivision, Group.newest_period_for(group.title), group.title) %>

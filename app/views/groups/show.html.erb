@@ -17,9 +17,18 @@
 <div class='period_title'>
   <h2>Группа <%= @group.title %>, <%= @period.title %></h2>
 </div>
+
 <div class="period_navigation">
-  <%= link_to "предыдущий период", subdivision_period_group_path(@subdivision, @periods.prev) if @periods.prev %>
-  <%= link_to "следующий период", subdivision_period_group_path(@subdivision, @periods.next) if @periods.next %>
+  <% if @periods.prev %>
+    <%= link_to "предыдущий период", subdivision_period_group_path(@subdivision, @periods.prev), :class => 'button' %>
+  <% else %>
+    <span class="button disabled">предыдущий период</span>
+  <% end %>
+  <% if @periods.next %>
+    <%= link_to "следующий период", subdivision_period_group_path(@subdivision, @periods.next), :class => 'button' %>
+  <% else %>
+    <span class="button disabled">следующий период</span>
+  <% end %>
 </div>
 
 <div class='tables'>

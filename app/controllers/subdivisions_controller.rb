@@ -12,6 +12,8 @@ class SubdivisionsController < ApplicationController
 
   def show
     show!{
+      @groups = @subdivision.groups
+      @periods_with_groups = GroupsByCourses.new(@subdivision).group
       @periods = Period.all.select {|p| can?(:read, p) && @subdivision.dockets.by_period(p.id).any?}
     }
   end
