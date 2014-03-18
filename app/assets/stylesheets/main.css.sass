@@ -91,28 +91,35 @@ body
   font-size: 18px
   position: relative
   float: right
-  z-index: 1000
 
   span
     font-size: 12px
 
   .links
+    background: #f7fbfe
+    border: 1px solid #ccc
     display: none
+    padding: 5px
     position: absolute
     right: 0
     top: 0
-    padding-top: 25px
+    width: 280px
+    z-index: 1000
 
     li
-      background: #f7fbfe
       padding: 3px 0
       text-align: right
+      font-size: 14px
+
+      &:hover
+        background: none
 
   &:hover
+    .download
+      display: none
+
     .links
       display: block
-      width: 380px
-      z-index: 1000
 
 .message_wrapper
   display: block
@@ -132,9 +139,7 @@ body
     background: #d6f994
 
 .list
-  +clearfix
   margin: 25px 0
-  z-index: 999
   width: 100%
 
   li
@@ -165,7 +170,6 @@ table
 .dockets,
 .periods
   li
-    +clearfix
     margin: 0 0 10px 0
     padding: 5px
 
