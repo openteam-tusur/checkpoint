@@ -10,7 +10,7 @@
   </ul>
 </div>
 <h1><%= @lecturer %></h1>
-<%= simple_form_for [@subdivision, @lecturer, resource] do |f| %>
+<%= simple_form_for [@subdivision, @lecturer, resource], :url => subdivision_lecturer_permissions_path do |f| %>
   <%= f.input :role, :as => :hidden, :input_html => { :value => "lecturer" }  %>
   <%= f.input :email,
               :input_html => { :class => 'need_autocomplete for_emails' },
