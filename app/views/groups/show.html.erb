@@ -20,14 +20,17 @@
 
 <div class="period_navigation">
   <% if @periods.prev %>
-    <%= link_to "предыдущий период", subdivision_period_group_path(@subdivision, @periods.prev), :class => 'button' %>
+    <%= link_to "&larr;".html_safe, subdivision_period_group_path(@subdivision, @periods.prev, @group.title), :class => 'button' %>
   <% else %>
-    <span class="button disabled">предыдущий период</span>
+    <span class="button disabled">&larr;</span>
   <% end %>
+  <span class='go-to-select'>
+    <%= select_tag :period, options_for_select(@periods.titles_with_urls, subdivision_period_group_url(@subdivision, @period, @group.title)), :include_blank => false, :class => 'select' %>
+  </span>
   <% if @periods.next %>
-    <%= link_to "следующий период", subdivision_period_group_path(@subdivision, @periods.next), :class => 'button' %>
+    <%= link_to "&rarr;".html_safe, subdivision_period_group_path(@subdivision, @periods.next, @group.title), :class => 'button' %>
   <% else %>
-    <span class="button disabled">следующий период</span>
+    <span class="button disabled">&rarr;</span>
   <% end %>
 </div>
 
