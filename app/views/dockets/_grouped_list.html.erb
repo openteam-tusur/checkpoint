@@ -1,4 +1,4 @@
-<% @dockets.group_by(&:period).each do |period, dockets| %>
+<% @dockets.order('period_id desc').group_by(&:period).each do |period, dockets| %>
   <div class="with_dockets period_title">
     <h2>
       <%= link_to "#{period.title}", subdivision_dockets_path(@subdivision, :by_period => period.id) %>

@@ -1,5 +1,5 @@
 <% attendances = @docket.attendances.map(&:kind).uniq %>
-<%= simple_form_for [parent, @docket] do |f| %>
+<%= simple_form_for [parent, @docket], :url => subdivision_docket_path do |f| %>
   <h1>Ведомость по предмету &laquo;<%= @docket %>&raquo;</h1>
   <div class='info'> <%= f.input :discipline_cycle, :include_blank => false %> </div>
   <div class='info'>

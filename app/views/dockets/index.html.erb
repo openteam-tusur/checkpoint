@@ -1,17 +1,15 @@
 <div class='breadcrumbs'>
   <ul>
-    <% if can? :manage, Subdivision %>
-      <li>
-        <%= link_to 'Список обеспечивающих кафедр', subdivisions_path %>
-      </li>
-    <% end %>
+    <%= render :partial => 'application/subdivisions_breadcrumbs' %>
     <li>
       <%= link_to @subdivision, subdivision_path(@subdivision) %>
     </li>
     <% if @period.present? %>
       <li>
-        <%= link_to @period.title, subdivision_dockets_path(@subdivision, :by_period => @period.id) %>
+        <%= @period.title %>
       </li>
+    <% else %>
+        <li>Незаполненные ведомости</li>
     <% end %>
   </ul>
 </div>

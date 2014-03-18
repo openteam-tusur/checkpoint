@@ -1,10 +1,6 @@
 <div class='breadcrumbs'>
   <ul>
-    <% if can? :manage, Subdivision %>
-      <li>
-        <%= link_to 'Список обеспечивающих кафедр', subdivisions_path %>
-      </li>
-    <% end %>
+    <%= render :partial => 'application/subdivisions_breadcrumbs' %>
     <li>
       <span><%= @subdivision %></span>
     </li>
@@ -27,7 +23,7 @@
           <%= link_to "#{period.title}", subdivision_dockets_path(@subdivision, :by_period => period.id) %>
           <% if summary_dockets_links(period).any? %>
             <div class='links_to_file'>
-              <%= link_to 'Скачать', '#' %>
+              <%= link_to 'Скачать', '#', :class => 'download' %>
               <ul class='links'>
                 <%= summary_dockets_links(period).join("\n").html_safe %>
               </ul>
@@ -49,7 +45,9 @@
   </ul>
 </div>
 
-<h2>Группы</h2>
+<% if @periods_with_groups.any? %>
+  <h2>Группы</h2>
+<% end %>
 
 <div class='groups_list'>
   <% @periods_with_groups.each do |course, groups| %>
