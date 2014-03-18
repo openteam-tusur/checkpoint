@@ -13,10 +13,10 @@ module ApplicationHelper
 
   def summary_dockets_links(period)
     [].tap do |arr|
-      arr << summary_dockets_link(period, @subdivision, 'pdf') unless @period.not_session?
+      arr << summary_dockets_link(period, @subdivision, 'pdf') unless period.not_session?
       arr << summary_dockets_link(period, @subdivision, 'consolidated_pdf')
       arr << summary_dockets_link(period, @subdivision, 'consolidated_xls')
-      arr << summary_dockets_link(period, @subdivision, 'csv') if (@period.not_session? && @period.editable?)
+      arr << summary_dockets_link(period, @subdivision, 'csv') if (period.not_session? && period.editable?)
     end
   end
 end
