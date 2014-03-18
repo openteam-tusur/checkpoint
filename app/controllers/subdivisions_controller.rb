@@ -4,12 +4,6 @@ class SubdivisionsController < ApplicationController
   actions :index, :show
   has_scope :by_title, :default => 1
 
-  def index
-    index! {
-      authorize! :manage, Subdivision
-    }
-  end
-
   def show
     show!{
       @groups = @subdivision.groups

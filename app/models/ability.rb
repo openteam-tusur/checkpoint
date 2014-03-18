@@ -8,20 +8,24 @@ class Ability
     can :manage, :all if user.administrator?
 
     if user.manager?
-      can :read, Subdivision do |subdivision|
-        user.manager_of?(subdivision)
+      can :show, Subdivision do |subdivision|
+        user.subdivisions.include?(subdivision)
       end
 
       can :read, Period
 
       can :read, Lecturer
 
+      can :read, Group do |group|
+        can?(:show, group.chair) || can?(:show, group.faculty)
+      end
+
       can :read, Docket do |docket|
-        can?(:read, docket.subdivision)
+        can?(:show, docket.subdivision)
       end
 
       can [:edit, :update], Docket do |docket|
-        can?(:read, docket.subdivision) && docket.period.editable?
+        can?(:show, docket.subdivision) && docket.period.editable?
       end
 
       can :change_lecturer, Docket do |docket|

@@ -6,7 +6,7 @@ class LecturersController < ApplicationController
 
   def index
     index! {
-      authorize! :read, @subdivision
+      authorize! :show, @subdivision
     }
   end
 
