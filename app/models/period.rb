@@ -9,6 +9,8 @@ class Period < ActiveRecord::Base
   default_scope order('id DESC')
   scope :semester,        -> { where('kind = :kind1 OR kind = :kind2', :kind1 => :kt_1, :kind2 => :kt_2)}
   scope :closed_sessions, -> { where('kind = :kind and ends_at < :date', :kind => :exam_session, :date => Time.zone.today) }
+  scope :actual,          -> { where('ends_at >= ?', Time.zone.today + 1) }
+  scope :closed,          -> { where('ends_at < ?', Time.zone.today + 1) }
 
   enumerize :kind, :in => [:kt_1, :kt_2, :exam_session], :predicates => true
   enumerize :season_type, :in => [:spring, :autumn], :predicates => true

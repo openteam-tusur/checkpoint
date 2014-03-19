@@ -293,3 +293,15 @@ form
 
 .unfilled_warning
   text-align: center
+
+.periods_list
+  a.archive
+    &.toggle_down:after
+      content: '\25BE'
+
+    &.toggle_up:after
+      content: '\25B4'
+
+  .periods
+    &.closed
+      display: none

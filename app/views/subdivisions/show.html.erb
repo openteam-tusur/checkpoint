@@ -16,31 +16,15 @@
 <h2>Периоды</h2>
 
 <div class='periods_list'>
-  <ul class='list periods'>
-    <% @periods.each do |period| %>
-      <li>
-        <div class='info'>
-          <%= link_to "#{period.title}", subdivision_dockets_path(@subdivision, :by_period => period.id) %>
-          <% if summary_dockets_links(period).any? %>
-            <div class='links_to_file'>
-              <%= link_to 'Скачать', '#', :class => 'download' %>
-              <ul class='links'>
-                <%= summary_dockets_links(period).join("\n").html_safe %>
-              </ul>
-            </div>
-          <% end %>
-          (<%= period.timescale %>)
-        </div>
-        <% if @subdivision.dockets.by_period(period.id).unfilled.any? %>
-          <span class='filled_dockets'>
-            не заполнено
-            <%= I18n.t(:dockets, :count => @subdivision.dockets.by_period(period.id).unfilled.count) %> из
-            <%= @subdivision.dockets.by_period(period.id).count %>
-          </span>
-        <% else %>
-            все ведомости заполнены
-        <% end %>
-      </li>
+  <ul class='list periods actual'>
+    <% @periods.actual.each do |period| %>
+      <%= render :partial => 'item', :locals => { :period => period } %>
+    <% end %>
+  </ul>
+  <%= link_to_if @periods.closed.any?, "Архив", '#', :class => 'archive toggle_down' %>
+  <ul class="list periods closed">
+    <% @periods.closed.each do |period| %>
+      <%= render :partial => 'item', :locals => { :period => period } %>
     <% end %>
   </ul>
 </div>
