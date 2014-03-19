@@ -8,7 +8,7 @@ class SubdivisionsController < ApplicationController
     show!{
       @groups = @subdivision.groups
       @periods_with_groups = GroupsByCourses.new(@subdivision).group
-      @periods = Period.joins(:dockets).where('dockets.subdivision_id = ?', @subdivision.id).uniq
+      @periods = Period.for_subdivision(@subdivision)
     }
   end
 end
