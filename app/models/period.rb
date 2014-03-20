@@ -12,6 +12,7 @@ class Period < ActiveRecord::Base
   scope :actual,          ->                 { where('ends_at >= ?', Time.zone.today + 1) }
   scope :closed,          ->                 { where('ends_at < ?', Time.zone.today + 1) }
   scope :for_subdivision, ->(subdivision)    { joins(:dockets).where('dockets.subdivision_id = ?', subdivision.id).uniq }
+  scope :for_lecturer,    ->(lecturer)       { joins(:dockets).where('dockets.lecturer_id = ?', lecturer.id).uniq }
 
   enumerize :kind, :in => [:kt_1, :kt_2, :exam_session], :predicates => true
   enumerize :season_type, :in => [:spring, :autumn], :predicates => true

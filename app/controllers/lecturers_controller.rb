@@ -12,7 +12,7 @@ class LecturersController < ApplicationController
 
   def show
     show!{
-      @periods = Period.all.select {|p| can?(:show, p) && @lecturer.dockets.by_period(p.id).any?}
+      @periods = Period.for_lecturer(@lecturer)
     }
   end
 end
