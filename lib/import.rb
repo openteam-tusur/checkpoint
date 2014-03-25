@@ -59,13 +59,14 @@ class Import
 
   def create_dockets(dockets_hash, group)
     dockets_hash.each do |discipline_hash|
-      subdivision = DocketSubdivision.new(group, @period.not_session? ? 'sub_faculty' : 'faculty', nil).get_subdivision
-
       if @period.not_session?
+        subdivision = DocketSubdivision.new(group,  nil, discipline_hash['subdivision_abbr']).get_subdivision
         providing_subdivision = subdivision
       else
+        subdivision = DocketSubdivision.new(group, 'faculty', nil).get_subdivision
         providing_subdivision = DocketSubdivision.new(group, nil, discipline_hash['providing_subdivision_abbr']).get_subdivision
       end
+
       lecturer = import_lecturer(discipline_hash['lecturer'])
 
       docket = subdivision.dockets.find_or_initialize_by_discipline_and_group_id_and_lecturer_id_and_period_id_and_kind(

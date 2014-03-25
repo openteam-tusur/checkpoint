@@ -28,7 +28,7 @@ class DocketSubdivision
   end
 
   def get_subdivision_by_abbr
-    sub = Subdivision.find_by_abbr(sub_abbr(@abbr))
+    sub = Subdivision.find_by_title(subdivision_titles[sub_abbr(@abbr)]) || Subdivision.find_by_abbr(sub_abbr(@abbr))
     unless sub
       sub = Subdivision.create(:abbr => sub_abbr(@abbr), :title => subdivision_titles[sub_abbr(@abbr)])
     end
