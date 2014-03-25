@@ -34,7 +34,7 @@ class Group < ActiveRecord::Base
   end
 
   def translited_title
-    Russian.translit(self.title)
+    Russian.translit(self.title).gsub(/\//, '')
   end
 
   def self.newest_period_for(title)
