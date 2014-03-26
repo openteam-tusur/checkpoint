@@ -107,7 +107,7 @@ class XlsExport
         :alignment => left_align
 
       page_setup = {:fit_to_width => 1, :orientation => :landscape}
-      wb.add_worksheet(:name => @group.title, :page_setup => page_setup) do |sheet|
+      wb.add_worksheet(:name => @group.title.gsub(/\//, ''), :page_setup => page_setup) do |sheet|
         info = []
         info << "МИНОБР РОССИИ\nТУСУР" << ''
         info << "Успеваемость студентов по результатам #{I18n.t("period.results.kind.#{@period.kind}")} #{I18n.t("period.results.season_type.#{@period.season_type}")}\nпо состоянию на #{Time.now.strftime('%d.%m.%Y')}\nФакультет: #{@group.faculty} Курс: #{@group.course} Группа: #{@group}".mb_chars.upcase
