@@ -7,12 +7,14 @@ class Period < ActiveRecord::Base
   has_many :students, :through => :groups
 
   default_scope order('id DESC')
-  scope :semester,        ->                 { where('kind = :kind1 OR kind = :kind2', :kind1 => :kt_1, :kind2 => :kt_2)}
-  scope :closed_sessions, ->                 { where('kind = :kind and ends_at < :date', :kind => :exam_session, :date => Time.zone.today) }
-  scope :actual,          ->                 { where('ends_at >= ?', Time.zone.today + 1) }
-  scope :closed,          ->                 { where('ends_at < ?', Time.zone.today + 1) }
-  scope :for_subdivision, ->(subdivision)    { joins(:dockets).where('dockets.subdivision_id = ?', subdivision.id).uniq }
-  scope :for_lecturer,    ->(lecturer)       { joins(:dockets).where('dockets.lecturer_id = ?', lecturer.id).uniq }
+  scope :semester,        ->                       { where('kind = :kind1 OR kind = :kind2', :kind1 => :kt_1, :kind2 => :kt_2)}
+  scope :closed_sessions, ->                       { where('kind = :kind and ends_at < :date', :kind => :exam_session, :date => Time.zone.today) }
+  scope :actual,          ->                       { where('ends_at >= ?', Time.zone.today + 1) }
+  scope :closed,          ->                       { where('ends_at < ?', Time.zone.today + 1) }
+  scope :for_subdivision, ->(subdivision)          { joins(:dockets).where('dockets.subdivision_id = ?', subdivision.id).uniq }
+  scope :for_lecturer,    ->(lecturer)             { joins(:dockets).where('dockets.lecturer_id = ?', lecturer.id).uniq }
+  scope :by_kind,         ->(kind ,season, year)   { where('kind = :kind and season_type = :season_type and starts_at between :start_of_year and :end_of_year',
+                                                     :kind => kind, :season_type => season, :start_of_year => "#{year}-01-01".to_date, :end_of_year => "#{year}-12-31".to_date) }
 
   enumerize :kind, :in => [:kt_1, :kt_2, :exam_session], :predicates => true
   enumerize :season_type, :in => [:spring, :autumn], :predicates => true

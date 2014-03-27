@@ -3,6 +3,7 @@ require 'open-uri'
 require 'fileutils'
 require 'contingent_students'
 require 'dockets_grades'
+require 'export'
 
 module ::Prawn
   class Table
@@ -14,50 +15,11 @@ end
 
 class ConsolidatedExport
   include DocketsGrades
-  attr_reader :period, :previous_period
+  include Export
 
   def initialize(period, group)
     @group = group
     @period = period
-  end
-
-  def previous_period
-    @previous_period ||= if @period.kt_2?
-                           Period.where(:kind => :kt_1, :season_type => @period.season_type).where('id < ?', @period.id).order('id DESC').select {|p| p.starts_at.strftime('%Y') == @period.starts_at.strftime('%Y')}.first
-                         end
-  end
-
-  def previous_group
-    @pervious_group ||= previous_period.groups.find_by_title(@group.title) if previous_period
-  end
-
-  def subdivision
-    @subdivision ||= if @period.not_session?
-                       @group.chair
-                     else
-                       @group.faculty
-                     end
-  end
-
-  def average_mark(grades)
-    count = 0
-    total = 0
-    grades.each do |grade|
-      if grade.mark
-        total += grade.mark.to_i
-        count += 1
-      end
-    end
-
-    return '-' if count == 0
-    (total / count.to_f).round(2)
-  end
-
-  def average_grades(student)
-    kt1 = student[:dockets].map {|d| d[:grades]}.map {|d| d[:kt_1]}.compact
-    kt2 = student[:dockets].map {|d| d[:grades]}.map {|d| d[:kt_2]}.compact
-
-    {:kt_1 => average_mark(kt1), :kt_2 => (@period.kt_1? ? '' : average_mark(kt2))}
   end
 
   def title
