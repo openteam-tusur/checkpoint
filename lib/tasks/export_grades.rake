@@ -71,7 +71,7 @@ namespace :export do
   desc 'export pdf consolidated dockets'
   task :consolidated_pdf => :environment do
     export('consolidated_pdf')
-    message = I18n.localize(Time.now, :format => :short) + "Экспорт сводных ведомостейш в PDF выполнен"
+    message = I18n.localize(Time.now, :format => :short) + "Экспорт сводных ведомостей в PDF выполнен"
     Airbrake.notify(:error_class => "rake export:consolidated_pdf", :error_message => message)
   end
 
