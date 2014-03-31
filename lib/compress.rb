@@ -1,27 +1,25 @@
 class Compress
-  def initialize(period)
+  def initialize(period, format)
     @period = period
+    @format = format
   end
 
-  def to_zip(format)
-    directories = Dir.glob("#{@period.docket_path}/*").select {|f| File.directory? f}
+  def directories
+    @directories ||= Dir.glob("#{@period.docket_path}/*").select {|f| File.directory? f}
+  end
+
+  def to_zip
     pb = ProgressBar.new(directories.count)
+
     directories.each do |dir|
-      sub_abbr = Subdivision.find_by_folder_name(dir.gsub(/#{@period.docket_path}\//,'')).abbr_translit
-      puts "Архивирование #{sub_abbr}"
-      case format
-      when 'consolidated_pdf'
-        file_paths = Dir.glob("#{dir}/consolidated/*.pdf")
-      when 'consolidated_xls'
-        file_paths = Dir.glob("#{dir}/consolidated/*.xlsx")
-      else
-        file_paths = Dir.glob("#{dir}/*.#{format}")
-      end
-      next if file_paths.empty?
-      zip_file = "#{dir}/#{sub_abbr}_#{format}.zip"
+      next if file_paths(dir).empty?
+
+      abbr = sub_abbr(dir)
+      puts "Архивирование #{abbr}"
+      zip_file = zip_file_name(dir, abbr)
 
       Zip::File.open(zip_file, Zip::File::CREATE) do |zipfile|
-        file_paths.each do |file_path|
+        file_paths(dir).each do |file_path|
           file_name = file_path.split('/').last
           if zipfile.find_entry(file_name)
             zipfile.replace(file_name, file_path)
@@ -32,6 +30,31 @@ class Compress
       end
       File.chmod(0644, zip_file)
       pb.increment!
+    end
+  end
+
+  private
+
+  def sub_abbr(dir)
+    Subdivision.find_by_folder_name(folder_name(dir)).abbr_translit
+  end
+
+  def zip_file_name(dir, abbr)
+    "#{dir}/#{abbr}_#{@format}.zip"
+  end
+
+  def folder_name(dir)
+    dir.gsub(/#{@period.docket_path}\//,'')
+  end
+
+  def file_paths(dir)
+    case @format
+    when 'consolidated_pdf'
+      Dir.glob("#{dir}/consolidated/*.pdf")
+    when 'consolidated_xls'
+      Dir.glob("#{dir}/consolidated/*.xlsx")
+    else
+      Dir.glob("#{dir}/*.#{@format}")
     end
   end
 end

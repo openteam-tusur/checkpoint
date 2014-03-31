@@ -11,7 +11,7 @@ def to_consolidated_pdf(period, compress)
     ConsolidatedExport.new(period, group).render_to_file
     pb.increment!
   end
-  compress.to_zip('consolidated_pdf')
+  compress.to_zip
 end
 
 def to_consolidated_xls(period, compress)
@@ -22,7 +22,7 @@ def to_consolidated_xls(period, compress)
     XlsExport.new(period, group).to_xls
     pb.increment!
   end
-  compress.to_zip('consolidated_xls')
+  compress.to_zip
 end
 
 def to_csv(period, compress)
@@ -33,7 +33,7 @@ def to_csv(period, compress)
     CsvExport.new(docket).to_csv_file
     pb.increment!
   end
-  compress.to_zip('csv')
+  compress.to_zip
 end
 
 def to_pdf(period, compress)
@@ -44,7 +44,7 @@ def to_pdf(period, compress)
     Pdf.new(docket).render_to_file
     pb.increment!
   end
-  compress.to_zip('pdf')
+  compress.to_zip
 end
 
 def export(format)
@@ -62,7 +62,7 @@ def export(format)
     end
 
     puts "Экспорт #{period.title}, Period ID: #{period.id}"
-    compress = Compress.new(period)
+    compress = Compress.new(period, format)
     send("to_#{format}", period, compress)
   end
 end
