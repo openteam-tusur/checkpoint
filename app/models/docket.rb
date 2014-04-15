@@ -10,7 +10,7 @@ class Docket < ActiveRecord::Base
   belongs_to :providing_subdivision,  :class_name => Subdivision
   belongs_to :subdivision
 
-  validates_presence_of :discipline, :kind, :subdivision_id, :providing_subdivision, :discipline_cycle
+  validates_presence_of :discipline, :kind, :subdivision_id, :providing_subdivision_id, :discipline_cycle
 
   has_many :grades
   has_many :conventional_grades, :dependent => :destroy
