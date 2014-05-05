@@ -32,6 +32,8 @@ class DocketSubdivision
     unless sub
       sub = Subdivision.create(:abbr => sub_abbr(@abbr), :title => subdivision_titles[sub_abbr(@abbr)])
     end
+
+    sub
   end
 
   def get_subdivision_by_type
