@@ -76,7 +76,14 @@ class Permission < ActiveRecord::Base
   end
 
   def context_url
-    "/#{context_type.underscore.pluralize}/#{context.id}"
+    "".tap do |str|
+      if role.lecturer?
+        str << "/lecturers/"
+      else
+        str << "/#{context_type.underscore.pluralize}/"
+      end
+      str << context.id.to_s
+    end
   end
 
 private
