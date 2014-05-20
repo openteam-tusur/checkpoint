@@ -12,6 +12,14 @@ class Person < ActiveRecord::Base
     end.compact.join(' ')
   end
 
+  def abbreviated_name
+    [].tap do |s|
+      s << surname
+      s << name
+      s << patronymic.split(//).first.concat('.') if patronymic.present?
+    end.compact.join(' ')
+  end
+
   def short_name
     [].tap do |s|
       s << surname

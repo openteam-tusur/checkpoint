@@ -43,7 +43,7 @@
       <% @consolidated_table.student_dockets_hash.each_with_index do |student, index| %>
         <tr>
           <td class='number'><%= index + 1 %></td>
-          <td class='name'><%= student[:student].full_name %></td>
+          <td class='name'><%= student[:student].abbreviated_name %></td>
         </tr>
       <% end %>
     </tbody>
