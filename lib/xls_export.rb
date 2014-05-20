@@ -13,15 +13,20 @@ class XlsExport
   def initialize(period, group)
     @group = group
     @period = period
+    @package = Axlsx::Package.new
   end
 
   def get_directory(dir)
     FileUtils.mkdir_p(dir)
   end
 
-  def filename
+  def file_path
     dir = get_directory("#{@period.docket_path}/#{subdivision.folder_name}/consolidated/")
-    "#{dir.first}#{@group.translited_title}.xlsx"
+    "#{dir.first}"+filename
+  end
+
+  def filename
+    "#{@group.translited_title}.xlsx"
   end
 
   def empty_cells_count(dockets_count)
@@ -29,12 +34,18 @@ class XlsExport
     dockets_count - 1
   end
 
-  def to_xls
-    folder_name = subdivision.folder_name
-    dir = "#{@period.docket_path}/#{folder_name}/"
+  def render_to_file
+    to_xls
+    @package.serialize(file_path)
+  end
 
-    package = Axlsx::Package.new
-    wb = package.workbook
+  def render
+    to_xls
+    @package.to_stream
+  end
+
+  def to_xls
+    wb = @package.workbook
     wb.styles do |s|
       center_align = { :horizontal => :center,
                     :vertical => :center,
@@ -145,6 +156,5 @@ class XlsExport
         sheet.sheet_view.show_grid_lines = false
       end
     end
-    package.serialize(filename)
   end
 end

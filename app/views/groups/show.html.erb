@@ -28,6 +28,10 @@
   <% else %>
     <span class="button disabled">&rarr;</span>
   <% end %>
+  <div class="download_link">
+    <%= link_to "Скачать PDF", subdivision_period_group_path(@subdivision, @period, @group.title, :format => :pdf) %>
+    <%= link_to "Скачать XLSX", subdivision_period_group_path(@subdivision, @period, @group.title, :format => :xlsx) %>
+  </div>
 </div>
 
 <div class='tables'>

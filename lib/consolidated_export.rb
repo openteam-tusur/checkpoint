@@ -105,14 +105,23 @@ class ConsolidatedExport
     FileUtils.mkdir_p(dir)
   end
 
-  def filename
+  def file_path
     dir = get_directory("#{@period.docket_path}/#{subdivision.folder_name}/consolidated/")
-    "#{dir.first}#{@group.translited_title}.pdf"
+    "#{dir.first}"+filename
+  end
+
+  def filename
+    "#{@group.translited_title}.pdf"
   end
 
   def render_to_file
     generate
-    pdf.render_file(filename)
+    pdf.render_file(file_path)
+  end
+
+  def render
+    generate
+    pdf.render
   end
 
   def generate
