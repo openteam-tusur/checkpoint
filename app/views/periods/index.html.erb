@@ -6,7 +6,7 @@
       <div>
         <span class='groups'><%= I18n.t(:groups, :count => period.groups.count) %>, </span>
         <span class='dockets'><%= I18n.t(:dockets, :count => period.dockets.count) %>, </span>
-        <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => period.dockets.filled.uniq.count) %></span>
+        <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => (period.dockets.count - period.dockets.unfilled.count)) %></span>
       </div>
     </li>
   <% end %>
