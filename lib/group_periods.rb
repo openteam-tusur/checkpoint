@@ -1,17 +1,14 @@
 class GroupPeriods
   include Rails.application.routes.url_helpers
 
-  def initialize(group, period)
+  def initialize(group, period, subdivision)
     @group = group
     @period = period
+    @subdivision = subdivision
   end
 
   def current
     @period
-  end
-
-  def subdivision
-    @subdivision ||= @period.not_session? ? @group.chair : @group.faculty
   end
 
   def next
@@ -24,7 +21,7 @@ class GroupPeriods
 
   def titles_with_urls
     available_periods.inject([]) do |array, period|
-      array << [period.to_s, subdivision_period_group_url(subdivision, period, @group.title, :host => Settings['app.host'])]
+      array << [period.to_s, subdivision_period_group_url(@subdivision, period, @group.title, :host => Settings['app.host'])]
     end
   end
 
