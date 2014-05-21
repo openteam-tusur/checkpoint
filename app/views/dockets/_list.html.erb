@@ -1,3 +1,12 @@
+<% if summary_dockets_links(@period).any? %>
+  <div class='links_to_file'>
+    <%= link_to 'Скачать', '#' %>
+    <ul class='links'>
+      <%= summary_dockets_links(@period).join("\n").html_safe %>
+    </ul>
+  </div>
+<% end %>
+
 <ul class='list dockets'>
   <% @dockets.each do |docket| %>
     <li>
