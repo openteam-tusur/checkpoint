@@ -1,4 +1,4 @@
-require 'json_export'
+require 'exporters/json_export'
 
 desc 'Generate JSON'
 task :generate_json => :environment do

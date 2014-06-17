@@ -3,7 +3,7 @@ require 'open-uri'
 require 'fileutils'
 require 'contingent_students'
 require 'dockets_grades'
-require 'export'
+require 'exporters/export'
 
 module ::Prawn
   class Table

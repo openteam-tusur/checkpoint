@@ -1,5 +1,5 @@
-require 'consolidated_export'
-require 'csv_export'
+require 'exporters/consolidated_export'
+require 'exporters/csv_export'
 require 'compress'
 require 'progress_bar'
 

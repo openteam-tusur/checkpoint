@@ -3,7 +3,7 @@ require 'axlsx'
 require 'fileutils'
 require 'contingent_students'
 require 'dockets_grades'
-require 'export'
+require 'exporters/export'
 require 'progress_bar'
 
 class XlsExport
