@@ -1,5 +1,7 @@
 require 'exporters/consolidated_export'
 require 'exporters/csv_export'
+require 'exporters/xls_export'
+require 'exporters/pdf'
 require 'compress'
 require 'progress_bar'
 
@@ -41,8 +43,12 @@ def to_pdf(period, compress)
   pb = ProgressBar.new(period.dockets.count)
 
   period.dockets.each do |docket|
-    Pdf.new(docket).render_to_file
     pb.increment!
+    begin
+      Pdf.new(docket).render_to_file
+    rescue GroupAbsenceError => e
+      Airbrake.notify(:error_class => 'rake export:pdf', :error_message => "При экспорте экзаменационных ведомостей возникла ошибка: #{e.message}")
+    end
   end
   compress.to_zip
 end

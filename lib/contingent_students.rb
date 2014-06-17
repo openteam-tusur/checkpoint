@@ -6,7 +6,10 @@ class ContingentStudents
   end
 
   def get_students
-    JSON.parse(open("#{Settings['students.url']}/api/v1/students?group=#{URI.encode(@group.contingent_number)}").read)
+    group_hash = JSON.parse(open("#{Settings['students.url']}/api/v1/students?group=#{URI.encode(@group.contingent_number)}").read)
+    raise GroupAbsenceError, @group.contingent_number if group_hash.empty?
+
+    group_hash
   end
 
   def import_students

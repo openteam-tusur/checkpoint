@@ -43,9 +43,13 @@ task :sync_students => :environment do
       puts "Импорт студентов для #{I18n.t("period.results.kind.#{period.kind}")}, #{I18n.t("period.results.season_type.#{period.season_type}")}, #{period.starts_at.strftime('%Y')}"
       pb = ProgressBar.new(period.groups.count)
       period.groups.each do |group|
-        ContingentStudents.new(group).import_students
-        group.dockets.map(&:create_grades)
         pb.increment!
+        begin
+          ContingentStudents.new(group).import_students
+          group.dockets.map(&:create_grades)
+        rescue GroupAbsenceError => e
+          Airbrake.notify(:error_class => 'rake export:pdf', :error_message => "При синхронизации студентов возникла ошибка: #{e.message}")
+        end
       end
     end
   end
