@@ -64,7 +64,7 @@ class Period < ActiveRecord::Base
 
   def title
     "".tap do |s|
-      s << "#{self.season_type_text} #{year}, #{self.kind_text.mb_chars.downcase}"
+      s << "#{self.season_type_text} #{year}, #{self.kind_text.try(:mb_chars).try(:downcase)}"
       s << ', 5 курс' if self.graduate
     end
   end

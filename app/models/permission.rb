@@ -1,10 +1,11 @@
 class Permission < ActiveRecord::Base
-  attr_accessible :role, :context_id, :user_id, :email
-
   extend Enumerize
 
-  belongs_to :user
-  belongs_to :context, :polymorphic => true
+  include AuthClient::Permission
+
+  acts_as_auth_client_permission roles: %W(administrator manager lecturer)
+
+  attr_accessible :role, :context_id, :user_id, :email
 
   validates_presence_of :email, :role
   validates_presence_of :context_id, :context_type, :if => :role_manager?
@@ -45,8 +46,6 @@ class Permission < ActiveRecord::Base
     :default => :manager,
     :predicates => { :prefix => true },
     :scope => true
-
-  sso_auth_permission :roles => %w[administrator manager lecturer]
 
   def self.activate_for_user(user)
     where(:email => user.email).update_all :user_id => user.id
