@@ -5,9 +5,9 @@ class Ability
   def initialize(user)
     return nil unless user
 
-    can :manage, :all if user.administrator?
+    can :manage, :all if user.has_permission?(role: :administrator)
 
-    if user.manager?
+    if user.has_permission?(role: :manager)
       can :show, Subdivision do |subdivision|
         user.subdivisions.include?(subdivision)
       end
@@ -37,7 +37,7 @@ class Ability
       end
     end
 
-    if user.lecturer?
+    if user.has_permission?(role: :lecturer)
       can :read, Lecturer do |lecturer|
         user.permissions.map(&:context).include?(lecturer)
       end

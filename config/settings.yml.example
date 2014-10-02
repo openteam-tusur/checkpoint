@@ -1,18 +1,38 @@
 app:
-  secret:     SECRET
-  host:       HOST:PORT
+  domain:                 DOMAIN
+  host:                   HOST
+  secret:                 SECRET
+  url:                    URL
 
 contingent:
-  wsdl:       url
+  wsdl:                   url
   auth:
-    login:    user
-    password: pass
+    login:                user
+    password:             pass
 
 errors:
-  key:        SECRET
-  host:       errors.openteam.ru
+  key:                    SECRET
+  host:                   errors.openteam.ru
 
-sso:
-  key:        KEY
-  secret:     SECRET
-  url:        URL
+session_store:
+  db:                     7
+  key_prefix:             'session:'
+  host:                   localhost
+  port:                   6379
+
+redis_user_connector:
+  url:                    redis://HOST:6379/4
+
+subdivisions:
+  url:                    URL
+
+students:
+  url:                    URL
+
+attendance:
+  url:                    URL
+
+auth_server:
+  sign_in_url:            http://PATH/users/sign_in
+  sign_out_url:           http://PATH/users/sign_out
+  users_url:              http://PATH/users/search
