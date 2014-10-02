@@ -36,7 +36,7 @@ end
 
 group :development do
   gem 'hirb'
-  gem 'openteam-capistrano'
+  gem 'openteam-capistrano',           '~> 1.0.11'
   gem 'sqlite3'
   gem 'rails-erd'
 end

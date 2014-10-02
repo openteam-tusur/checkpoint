@@ -1,5 +1,3 @@
-require 'openteam/capistrano/recipes'
-require 'whenever/capistrano'
+require 'openteam/capistrano/deploy'
 
-set :shared_children, fetch(:shared_children) + %w[public/files public/grades]
-set :default_stage, :tusur
+set :linked_dirs, fetch(:linked_dirs) + %w{ public/files public/grades }
