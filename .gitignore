@@ -2,7 +2,6 @@
 .DS_Store
 /.bundle
 /.sass-cache
-/bin
 /config/database.yml
 /config/deploy.yml
 /config/settings.yml
