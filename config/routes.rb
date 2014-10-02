@@ -1,4 +1,6 @@
 Checkpoint::Application.routes.draw do
+  devise_for :users, :controllers => { :omniauth_callbacks => "sso_auth/omniauth_callbacks"  }
+
   namespace :api do
     resources :periods, :only => :index
   end
