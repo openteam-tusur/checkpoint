@@ -24,7 +24,7 @@
       <tr>
         <td><%= grade.student %></td>
 
-        <% student_attendances = grade.student.attendances.where(:docket_id => @docket.id).order(&:kind) %>
+        <% student_attendances = grade.student.attendances.where(:docket_id => @docket.id).order(:kind) %>
 
         <% student_attendances.each do |attendance| %>
           <td class='center'>
