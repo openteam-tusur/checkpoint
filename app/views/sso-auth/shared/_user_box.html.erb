@@ -1,6 +1,6 @@
 <% if current_user %>
   <span class='current_user'><%= current_user.sso_auth_name %></span>
-  <%= link_to 'Выход', destroy_user_session_path %>
+  <%= link_to 'Выход', '#' %>
   <% if current_user.permissions.many? %>
     <div class='select_context'>
       <%= form_tag root_path, :method => "get", :class => 'go-to-select' do %>
