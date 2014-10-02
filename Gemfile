@@ -17,21 +17,21 @@ group :default do
   gem 'configliere'
   gem 'daemons'
   gem 'delayed_job_active_record'
-  gem 'devise', '2.2.4'
+  gem 'devise',                        '2.2.4'
   gem 'enumerize'
   gem 'grape'
   gem 'has_scope'
   gem 'inherited_resources'
   gem 'pg'
-  gem 'prawn', '~> 1.0.0.rc2'
+  gem 'prawn',                         '~> 1.0.0.rc2'
   gem 'progress_bar'
-  gem 'rails', '~> 3.2'
+  gem 'rails',                         '~> 3.2'
   gem 'rubyzip'
   gem 'russian'
   gem 'simple_form'
   gem 'sso-auth'
   gem 'validates_email_format_of'
-  gem 'whenever',           :require => false
+  gem 'whenever',                      :require => false
 end
 
 group :development do
