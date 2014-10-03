@@ -7,7 +7,9 @@ class PeriodsController < ApplicationController
   def import
     import!{
       flash[:notice] = 'Генерация ведомостей запущена в фоновом режиме'
-      Import.new(@period, params['import']['group_pattern']).delay.import
+
+      ImportWorker.perform_async(@period.id, params['import']['group_pattern'])
+
       redirect_to @period and return
     }
   end
