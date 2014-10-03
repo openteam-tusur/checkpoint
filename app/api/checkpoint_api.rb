@@ -1,4 +1,4 @@
-class API < Grape::API
+class CheckpointAPI < Grape::API
   prefix :api
   format :json
 
