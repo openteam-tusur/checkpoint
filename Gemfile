@@ -36,6 +36,7 @@ group :default do
 end
 
 group :development do
+  gem 'capistrano-auth-subscriber'
   gem 'hirb'
   gem 'openteam-capistrano',           '~> 1.0.11'
   gem 'sqlite3'

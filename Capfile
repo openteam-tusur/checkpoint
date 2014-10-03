@@ -10,5 +10,6 @@ require 'capistrano/rails/assets'
 require 'capistrano/rails/migrations'
 require 'capistrano/sidekiq'
 require 'whenever/capistrano'
+require 'capistrano/auth-subscriber'
 
 require 'openteam/capistrano/tasks'
