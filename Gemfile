@@ -11,7 +11,6 @@ group :default do
   gem 'compass-rails'
   gem 'configliere'
   gem 'daemons'
-  gem 'delayed_job_active_record'
   gem 'enumerize'
   gem 'execjs'
   gem 'grape'
@@ -28,7 +27,9 @@ group :default do
   gem 'rubyzip',                       '~> 1.0.0'
   gem 'russian'
   gem 'sass-rails',                    '~> 4.0.3'
+  gem 'sidekiq'
   gem 'simple_form'
+  gem 'sinatra',                       '>= 1.3.0', :require => nil
   gem 'uglifier'
   gem 'validates_email_format_of'
   gem 'whenever',                      :require => false
