@@ -32,7 +32,7 @@ Checkpoint::Application.routes.draw do
     resources :dockets, :except => [:destroy, :new, :create], :controller => :lecturer_dockets
   end
 
-  mount API => '/'
+  mount CheckpointAPI => '/'
 
   root :to => 'application#index'
 end
