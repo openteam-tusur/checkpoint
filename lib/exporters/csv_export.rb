@@ -27,7 +27,7 @@ class CsvExport
       @docket.grades.sort_by{ |g| g.student }.each do |grade|
         info = []
         info << grade.student.to_s
-        grade.student.attendances.where(:docket_id => @docket.id).order(&:kind).each do |attendance|
+        grade.student.attendances.where(:docket_id => @docket.id).order(:kind).each do |attendance|
           info << attendance.to_s
         end
         info << grade.mark

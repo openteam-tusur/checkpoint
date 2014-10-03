@@ -1,9 +1,9 @@
 class Subdivision < ActiveRecord::Base
   attr_accessible :abbr, :title, :folder_name
 
-  has_many :dockets, :dependent => :destroy, :order => 'discipline ASC'
+  has_many :dockets, :dependent => :destroy
   has_many :permissions, :as => :context
-  has_many :lecturers, :through => :dockets, :uniq => true, :order => 'surname ASC'
+  has_many :lecturers, :through => :dockets, :uniq => true
 
   scope :by_abbr, ->(_) { order(:abbr) }
   scope :by_title, ->(_) { order(:title) }
