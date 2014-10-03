@@ -1,6 +1,6 @@
 <% if current_user %>
   <span class='current_user'><%= current_user %></span>
-  <%= link_to 'Выход', '#' %>
+  <%= link_to 'Выход', sign_out_url, :method => :delete %>
   <% if current_user.permissions.many? %>
     <div class='select_context'>
       <%= form_tag root_path, :method => "get", :class => 'go-to-select' do %>
