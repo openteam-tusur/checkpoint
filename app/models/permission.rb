@@ -6,12 +6,15 @@ class Permission < ActiveRecord::Base
   acts_as_auth_client_permission roles: %W(administrator manager lecturer)
 
   attr_accessible :role, :context_id, :user_id, :email
+  attr_accessor :name
 
-  validates_presence_of :email, :role
+  validates_presence_of :user_id, :if => 'email.nil?'
+  validates_presence_of :email,   :if => 'user_id.nil?'
+  validates_presence_of :role
   validates_presence_of :context_id, :context_type, :if => :role_manager?
 
   validates_uniqueness_of :context_id, :scope => :email
-  validates_email_format_of :email, :message => 'Неверный формат электронной почты'
+  validates_email_format_of :email, :message => 'Неверный формат электронной почты', :if => 'user_id.nil?'
 
   def self.validates_presence_of(*attr_names)
     new_attrs = []
@@ -70,16 +73,19 @@ class Permission < ActiveRecord::Base
   def label
     return context.abbr if context.is_a?(Subdivision)
     return context.short_name if context.is_a?(Person)
+    return 'Админ' if context.nil?
   end
 
   def context_url
     "".tap do |str|
       if role.lecturer?
         str << "/lecturers/"
-      else
+      elsif context
         str << "/#{context_type.underscore.pluralize}/"
+      elsif role.administrator?
+        str << '/periods'
       end
-      str << context.id.to_s
+      str << context.id.to_s if context
     end
   end
 

@@ -305,3 +305,33 @@ form
   .periods
     &.closed
       display: none
+
+.separator
+  color: #555
+  display: block
+  font-size: 14px
+  line-height: 14px
+  margin: 5px 0
+  position: relative
+  text-align: center
+  width: 300px
+
+  &:before, &:after
+    display: block
+    content: ''
+    background-color: #ccc
+    height: 1px
+    position: absolute
+    top: 8px
+
+  &:before
+    left: 15px
+    width: 100px
+
+  &:after
+    right: 15px
+    width: 100px
+
+.new_permission
+  input.string
+    width: 290px

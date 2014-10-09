@@ -20,7 +20,10 @@ Checkpoint::Application.routes.draw do
     end
   end
 
-  resources :users,         :only   => [:index]
+  resources :users,         :only   => [:index] do
+    get :search, :on => :collection
+  end
+
   resources :periods do
     post :import, :on => :member
     post :add_group, :on => :member

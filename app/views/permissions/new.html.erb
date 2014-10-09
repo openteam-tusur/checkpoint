@@ -1,12 +1,17 @@
 <%= simple_form_for resource do |f| %>
-  <%= f.input :role, :include_blank => false %>
-  <%= f.input :email,
-              :input_html => { :class => 'need_autocomplete for_emails' },
-              :label => 'Пользователь',
-              :placeholder => 'Начните электронную почту' %>
+  <%= f.input :role, :include_blank => false, :label => false %>
+  <%= text_field_tag :name, '',
+               :class => 'need_autocomplete for_emails string' ,
+               :placeholder => 'ФИО сотрудника' %>
 
+  <div class="form-group">
+    <span class="separator">или</span>
+  </div>
+
+  <%= f.input :email, :label => false, :placeholder => 'Email сотрудника' %>
   <%= f.input :user_id, :as => :hidden %>
-  <%= f.input :context_id, :collection => Subdivision.all, :include_blank => true, :label_method => :abbr %>
+  <%= f.input :context_id, :collection => Subdivision.all, :include_blank => true, :label_method => :abbr, :label => false %>
+  <%= content_tag :div, f.error(:role), :class => :error %>
 
   <div class="buttons">
     <%= f.submit 'Сохранить' %>
