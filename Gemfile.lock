@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/openteam-tusur/auth_client.git
-  revision: f0301ced0e18688a415002a9ae03507ca59ac6e2
+  revision: a5076d03b9155a51437d77ef70752852c465cf28
   specs:
     auth_client (0.0.2)
       activesupport
@@ -148,7 +148,7 @@ GEM
     kgio (2.9.2)
     mail (2.6.1)
       mime-types (>= 1.16, < 3)
-    mime-types (2.3)
+    mime-types (2.4.1)
     mini_portile (0.6.0)
     minitest (4.7.5)
     multi_json (1.10.1)
