@@ -16,4 +16,10 @@ class User
   def lecturers
     Lecturer.joins(:permissions).where('permissions.user_id' => id).uniq
   end
+
+  def after_signed_in
+    Permission.where(:user_id => nil, :email => self.email).update_attribute(:user_id, self.id)
+
+    super
+  end
 end
