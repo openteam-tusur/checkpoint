@@ -18,7 +18,7 @@ class User
   end
 
   def after_signed_in
-    Permission.where(:user_id => nil, :email => self.email).update_attribute(:user_id, self.id)
+    Permission.where(:user_id => "", :email => self.email).update_all(:user_id => self.id)
 
     super
   end
