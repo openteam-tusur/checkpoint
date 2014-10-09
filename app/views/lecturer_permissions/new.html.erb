@@ -10,12 +10,18 @@
   </ul>
 </div>
 <h1><%= @lecturer %></h1>
+
 <%= simple_form_for [@subdivision, @lecturer, resource], :url => subdivision_lecturer_permissions_path do |f| %>
   <%= f.input :role, :as => :hidden, :input_html => { :value => "lecturer" }  %>
-  <%= f.input :email,
-              :input_html => { :class => 'need_autocomplete for_emails' },
-              :label => 'Пользователь',
-              :placeholder => 'Начните электронную почту' %>
+  <%= text_field_tag :name, '',
+               :class => 'need_autocomplete for_emails string' ,
+              :placeholder => 'ФИО сотрудника' %>
+
+  <div class="form-group">
+    <span class="separator">или</span>
+  </div>
+
+  <%= f.input :email, :placeholder => 'Введите адрес электронной почты', label: false %>
   <%= f.input :user_id, :as => :hidden %>
 
   <div class="buttons">

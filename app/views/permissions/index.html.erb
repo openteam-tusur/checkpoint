@@ -23,7 +23,7 @@
   <tbody>
     <% @permissions.each do |permission| %>
       <tr>
-        <td class='center'><%= permission.email %></td>
+        <td class='center'><%= permission.user ? permission.user.email : permission.email %></td>
         <td class='center'><%= permission.user || 'не активирована роль' %></td>
         <td class='center'><%= permission.role_text %></td>
         <td class='center'><%= permission.context.abbr if permission.context %></td>

@@ -26,14 +26,14 @@
           <td><%= lecturer %></td>
           <td class='center'>
             <% if permission %>
-              <%= permission.email %>
+              <%= permission.user ? permission.user.email : permission.email %>
               <%= link_to "удалить", subdivision_lecturer_permission_path(@subdivision, lecturer, permission), :method => :delete, :confirm => 'Вы уверены?'  %>
             <% else %>
               <%= link_to "предоставить доступ", new_subdivision_lecturer_permission_path(@subdivision, lecturer) %>
             <% end %>
           </td>
           <td class='center'>
-            <%= permission.try(&:user) ? l(permission.user.current_sign_in_at, :format => :short) : 'роль не активирована' %>
+            <%= permission.try(&:user) ? l(permission.user.last_activity_at, :format => :short) : 'роль не активирована' %>
           </td>
         </tr>
       <% end %>
