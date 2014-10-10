@@ -1,3 +1,22 @@
+GIT
+  remote: https://github.com/openteam-tusur/auth_client
+  revision: 3bf3d246bd2c72474be5984ed585edb699962f53
+  specs:
+    auth_client (0.0.3)
+      activesupport
+      auth_redis_user_connector
+      configliere
+      daemons
+      rails
+
+GIT
+  remote: https://github.com/openteam-tusur/auth_redis_user_connector
+  revision: 08e22a9664d4f1be9209041176c39b3e0969ea5f
+  specs:
+    auth_redis_user_connector (0.0.8)
+      hiredis
+      redis
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -30,15 +49,6 @@ GEM
       multi_json
     arel (4.0.2)
     attribute_normalizer (1.2.0)
-    auth_client (0.0.3)
-      activesupport
-      auth_redis_user_connector
-      configliere
-      daemons
-      rails
-    auth_redis_user_connector (0.0.8)
-      hiredis
-      redis
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -271,8 +281,8 @@ PLATFORMS
 DEPENDENCIES
   airbrake
   attribute_normalizer
-  auth_client
-  auth_redis_user_connector
+  auth_client!
+  auth_redis_user_connector!
   axlsx (= 2.0.1)
   cancan
   capistrano-auth-subscriber
