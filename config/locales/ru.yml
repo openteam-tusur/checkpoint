@@ -1,4 +1,7 @@
 ru:
+  app:
+    title: Ввод успеваемости
+
   activerecord:
     attributes:
       permission:
