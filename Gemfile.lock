@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/openteam-tusur/auth_client
-  revision: 3bf3d246bd2c72474be5984ed585edb699962f53
+  revision: cd42a153830d0fe7b165583cb51e47eb4197eee9
   specs:
     auth_client (0.0.3)
       activesupport
@@ -242,10 +242,10 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sprockets-rails (2.1.4)
+    sprockets-rails (2.2.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
-      sprockets (~> 2.8)
+      sprockets (>= 2.8, < 4.0)
     sqlite3 (1.3.9)
     sshkit (1.5.1)
       colorize
