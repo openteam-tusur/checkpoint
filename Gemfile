@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 group :default do
   gem 'airbrake'
   gem 'attribute_normalizer'
-  gem 'auth_client', :git => 'https://github.com/openteam-tusur/auth_client'
+  gem 'auth_client',               :git => 'https://github.com/openteam-tusur/auth_client'
   gem 'auth_redis_user_connector', :git => 'https://github.com/openteam-tusur/auth_redis_user_connector'
   gem 'axlsx',                         '2.0.1'
   gem 'cancan'
