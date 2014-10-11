@@ -13,7 +13,7 @@ class UsersController < ApplicationController
   end
 
   def search
-    url = Settings['profile.users_url'] + "?term=#{params[:term]}"
+    url = "#{Settings['profile.url']}/users/search?term=#{params[:term]}"
 
     result = open(URI.encode(url)).read
 
