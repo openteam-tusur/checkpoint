@@ -43,7 +43,7 @@ class Ability
       end
 
       can :read, Period do |period|
-        user.lecturer? && !period.exam_session?
+        user.has_permission?(:role => :lecturer) && !period.exam_session?
       end
 
       can :read, Docket do |docket|
