@@ -5,7 +5,7 @@ class Permission < ActiveRecord::Base
 
   acts_as_auth_client_permission roles: %W(administrator manager lecturer)
 
-  attr_accessible :role, :context_id, :user_id, :email
+  attr_accessible :role, :context_id, :user_id, :email, :context_type
   attr_accessor :name
 
   validates_presence_of :user_id, :if => 'email.nil?'
