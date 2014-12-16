@@ -23,7 +23,7 @@ class ConsolidatedExport
   end
 
   def title
-    "МИНОБР РОСИИИ\nТУСУР"
+    "МИНОБР РОССИИ\nТУСУР"
   end
 
   def docket_title
