@@ -21,7 +21,7 @@ class GroupPeriods
 
   def titles_with_urls
     available_periods.inject([]) do |array, period|
-      array << [period.to_s, subdivision_period_group_url(@subdivision, period, @group.title, :host => Settings['app.host'])]
+      array << [period.to_s, subdivision_period_group_url(@subdivision, period, @group.title, :host => Settings['app.host'], :protocol => 'https')]
     end
   end
 
