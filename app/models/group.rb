@@ -7,6 +7,7 @@ class Group < ActiveRecord::Base
   belongs_to :chair,   :class_name => 'Subdivision::Chair'
   belongs_to :faculty, :class_name => 'Subdivision::Faculty'
   belongs_to :period
+  delegate :kind_order, :to => :period
 
   alias_attribute :to_s, :title
   alias_attribute :contingent_number, :title
@@ -43,6 +44,7 @@ class Group < ActiveRecord::Base
   end
 
   def self.newest_period_for(title)
-    where(:title => title).by_period_desc.first.period
+    #where(:title => title).by_period_desc.first.period
+    where(:title => title).sort_by(&:kind_order).last.period
   end
 end

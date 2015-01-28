@@ -68,4 +68,10 @@ class Period < ActiveRecord::Base
       s << ', 5 курс' if self.graduate
     end
   end
+
+  def kind_order
+    return 1 if kind == 'kt_1'
+    return 2 if kind == 'kt_2'
+    return 3 if kind == 'exam_session'
+  end
 end

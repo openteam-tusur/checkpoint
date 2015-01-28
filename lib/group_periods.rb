@@ -27,7 +27,7 @@ class GroupPeriods
 
   private
   def available_periods
-    @available_periods ||= Group.where(:title => @group.title).by_period_asc.map(&:period)
+    @available_periods ||= Group.where(:title => @group.title).sort_by(&:kind_order).map(&:period)
   end
 
   def index_of(elem)
