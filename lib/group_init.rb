@@ -19,7 +19,12 @@ class GroupInit
   end
 
   def init_chair(abbr)
-    Subdivision::Chair.find_by_abbr(sub_abbr(abbr))
+    chair = Subdivision::Chair.find_or_initialize_by_abbr(sub_abbr(abbr))
+    if chair.new_record?
+      chair.title = subdivision_titles[chair.abbr]
+      chair.save
+    end
+    chair
   end
 
   def prepare_group
