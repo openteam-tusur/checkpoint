@@ -22,7 +22,7 @@
 
 <div class='info'><%= I18n.t(:groups, :count => @period.groups.count) %></div>
 <div class='info'><%= I18n.t(:dockets, :count => @period.dockets.count) %></div>
-<div class='info'><%= I18n.t(:dockets, :count => @period.dockets.filled.count) %> заполнено</div>
+<div class='info'><%= I18n.t(:dockets, :count => @period.dockets.count - @period.dockets.unfilled.count) %> заполнено</div>
 
 
 <div class="actions">
@@ -44,7 +44,7 @@
       <%= content_tag :span, 'в группе нет студентов', :class => 'error' if group.students.empty? %>
       <%= content_tag :span, I18n.t(:students, :count => group.students.count) if group.students.any? %>
       <span class='dockets'><%= I18n.t(:dockets, :count => group.dockets.count) %>, </span>
-      <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => group.dockets.filled.uniq.count) %></span>
+      <span class='filled_dockets'>заполнено <%= I18n.t(:dockets, :count => group.dockets.count - group.dockets.unfilled.uniq.count) %></span>
       <div class="actions">
         <%= link_to "Удалить", period_group_path(@period, group), :method => :delete, :confirm => 'Вы уверены?' %>
       </div>
