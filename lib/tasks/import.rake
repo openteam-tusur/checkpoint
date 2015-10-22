@@ -46,10 +46,11 @@ task :sync_students => :environment do
       period.groups.each do |group|
         pb.increment!
         begin
-          ContingentStudents.new(group).import_students
+          GroupInit.new(period, group.title, nil).prepare_group
+          #ContingentStudents.new(group).import_students
           group.dockets.map(&:create_grades)
         rescue GroupAbsenceError => e
-          Airbrake.notify(:error_class => 'rake export:pdf', :error_message => "При синхронизации студентов возникла ошибка: #{e.message}")
+          Airbrake.notify(:error_class => 'rake sync_students', :error_message => "При синхронизации студентов возникла ошибка: #{e.message}")
         end
       end
     end

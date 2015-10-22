@@ -36,7 +36,7 @@ class GroupInit
     group.update_attributes(:course => @course ? @course : first_student['group']['course'].to_i,
                             :faculty_id => faculty.id,
                             :chair_id => chair.id)
-    contingent_students.import_students unless group.students.any?
+    contingent_students.import_students
 
     group
   end
