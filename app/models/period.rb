@@ -5,6 +5,7 @@ class Period < ActiveRecord::Base
   has_many :dockets, :dependent => :destroy
   has_many :groups, :dependent => :destroy
   has_many :students, :through => :groups
+  has_many :lecturers, ->{ uniq  } ,  :through => :dockets
 
   default_scope order('id DESC')
   scope :semester,        ->                       { where('kind = :kind1 OR kind = :kind2', :kind1 => :kt_1, :kind2 => :kt_2)}
