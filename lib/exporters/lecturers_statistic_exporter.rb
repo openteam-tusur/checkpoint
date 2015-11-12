@@ -1,7 +1,8 @@
 require 'axlsx'
 require 'fileutils'
+require 'progress_bar'
 
-class StatisticExporter
+class LecturersStatisticExporter
 
   def initialize(hash, filename)
     @hash = hash
@@ -14,6 +15,7 @@ class StatisticExporter
   end
 
   def export_to_xlsx
+    pb = ProgressBar.new(@hash.size)
     @package.workbook do |wb|
 
       wb.styles do |s|
@@ -68,21 +70,23 @@ class StatisticExporter
           ws.add_row mark_kinds_list
           ws.add_row marks_list
 
-          index = 2
-          years_merges.each do |year_merge|
-            ws.merge_cells ws.rows[-5].cells[(index..(index-1+year_merge))]
-            index += year_merge
-          end
-          index = 2
-          periods_merges.each do |merge|
-            ws.merge_cells ws.rows[-3].cells[(index..(index-1+merge))]
-            index += merge
-          end
-          index = 2
-          semesters_merges.each do |merge|
-            ws.merge_cells ws.rows[-4].cells[(index..(index-1+merge))]
-            index += merge
-          end
+          pb.increment!
+
+          #index = 2
+          #years_merges.each do |year_merge|
+            #ws.merge_cells ws.rows[-5].cells[(index..(index-1+year_merge))]
+            #index += year_merge
+          #end
+          #index = 2
+          #periods_merges.each do |merge|
+            #ws.merge_cells ws.rows[-3].cells[(index..(index-1+merge))]
+            #index += merge
+          #end
+          #index = 2
+          #semesters_merges.each do |merge|
+            #ws.merge_cells ws.rows[-4].cells[(index..(index-1+merge))]
+            #index += merge
+          #end
 
 
           ws.merge_cells "A#{lecturer_index}:A#{lecturer_index+4}"
