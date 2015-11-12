@@ -13,6 +13,7 @@ class Docket < ActiveRecord::Base
   validates_presence_of :discipline, :kind, :subdivision_id, :providing_subdivision_id, :discipline_cycle
 
   has_many :grades
+  has_many :active_grades, -> { where(active: true)  }, :class_name => 'Grade'
   has_many :conventional_grades, :dependent => :destroy
   has_many :qualification_grades, :dependent => :destroy
   has_many :attendances, :dependent => :destroy, :order => :kind

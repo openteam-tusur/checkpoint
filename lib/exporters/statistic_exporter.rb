@@ -15,7 +15,10 @@ class StatisticExporter
 
   def export_to_xlsx
     @package.workbook do |wb|
-      styles = wb.styles
+
+      wb.styles do |s|
+
+      end
 
       wb.add_worksheet do  |ws|
 
@@ -40,6 +43,7 @@ class StatisticExporter
               semesters_list << semester
               semester_merges = 0
               kinds.each do |kind, marks|
+                marks.delete_if{ |k,v| ["Зачтено", "Не зачтено"].include? k} if ["kt_1", "kt_2"].include? kind
                 kinds_list << kind
                 kinds_list += (2..marks.size).map {|k| nil}
 
