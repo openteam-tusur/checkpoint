@@ -15,6 +15,18 @@ task :export_lecturers_statistic => :environment do
     sum
   end
 
+  periods_list = {}
+  dockets.each do |year, semesters|
+    periods_list[year] ||= {}
+    semesters.each do |semester, kinds|
+        periods_list[year][semester] ||= {}
+      kinds.each do |kind, dockets_ary|
+        periods_list[year][semester][kind] ||= kind
+      end
+    end
+  end
+
+
   puts "Подготовка статистики по преподавателям"
   pb = ProgressBar.new(Lecturer.count)
   result = {}
@@ -33,7 +45,7 @@ task :export_lecturers_statistic => :environment do
     pb.increment!
   end
   puts "Экспорт данных в xls"
-  LecturersStatisticExporter.new(result, "export_statistic_lecturers.xlsx").export_to_xlsx
+  LecturersStatisticExporter.new(result, periods_list, "export_statistic_lecturers.xlsx").export_to_xlsx
   puts "Экспорт данных выполнен!"
 
 end

@@ -4,8 +4,9 @@ require 'progress_bar'
 
 class LecturersStatisticExporter
 
-  def initialize(hash, filename)
+  def initialize(hash, periods_list, filename)
     @hash = hash
+    @periods_list = periods_list
     @filename = filename
     @package = Axlsx::Package.new
   end
@@ -19,83 +20,145 @@ class LecturersStatisticExporter
     @package.workbook do |wb|
 
       wb.styles do |s|
+        blue_cell = s.add_style :bg_color => "B7DEE8", :fg_color => "00", :sz => 12, :alignment => { :horizontal=> :center  }
+        title_cell = s.add_style :bg_color => "FFF", :fg_color => "00", :sz => 14, :alignment => { :horizontal => :center, :vertical => :center  },
+          :border => {:style => :thin, :color => "00"}
 
-      end
 
-      wb.add_worksheet do  |ws|
+      # Формируем шапку
+      header = ['Преподаватель', 'Кафедра', 'Сумма', nil, nil, nil, nil, nil, nil, nil, nil, 'Абс.успеваемость', 'Качественная успеваемость', nil, nil]
+      header_length = header.length
+      header_semesters = []
+      header_semesters += (1..15).map {|k| nil}
+      header_kinds = []
+      header_kinds += (1..15).map {|k| nil}
+      grades_list = ['-', '2', '3', '4', '5', 'Зачтено', 'Не зачтено', 'н/а']
+      header_data = [nil, nil, 'Всего', '-', '2', '3', '4', '5', 'Зачтено', 'Не зачтено', 'н/а', 'Абс.усп.', 'Качество', 'Тройки', 'Провалы']
 
-        lecturer_index = 1
-        @hash.each do |lecturer, years|
-          lecturer_and_years = []
-          semesters_list = [nil, nil]
-          kinds_list = [nil, nil]
-          mark_kinds_list = [nil, nil]
-          marks_list = [nil, nil]
-          lecturer_and_years << lecturer
-          lecturer_and_years << lecturer.dockets.where(kind: 'kt').first.try(:subdivision).try(:abbr)
-
-          years_merges = []
-          semesters_merges = []
-          periods_merges = []
-          years.each do |year, semesters|
-            lecturer_and_years << year
-
-            year_merges = 0
-            semesters.each do |semester, kinds|
-              semesters_list << semester
-              semester_merges = 0
-              kinds.each do |kind, marks|
-                marks.delete_if{ |k,v| ["Зачтено", "Не зачтено"].include? k} if ["kt_1", "kt_2"].include? kind
-                kinds_list << kind
-                kinds_list += (2..marks.size).map {|k| nil}
-
-                periods_merges << marks.size
-                semester_merges += marks.size
-                year_merges += marks.size
-
-                marks.keys.sort.each do |mark_kind|
-                  mark_kinds_list << mark_kind
-                  marks_list << marks[mark_kind]
-                end
-              end
-              semesters_list += (2..semester_merges).map {|k| nil}
-              semesters_merges << semester_merges
+      @periods_list.each do |year, semesters|
+        semesters.each do |semester, kinds|
+          kinds.each do |kind|
+            if kind.last == "Экзаменационная сессия"
+              header << year
+              header += (1..7).map {|k| nil}
+              header_semesters << semester
+              header_semesters += (1..7).map {|k| nil}
+              header_kinds << kind.last
+              header_kinds += (1..7).map {|k| nil}
+              header_data += grades_list
             end
-            lecturer_and_years += (2..year_merges).map {|s| nil}
-            years_merges << year_merges
           end
-          ws.add_row lecturer_and_years
-          ws.add_row semesters_list
-          ws.add_row kinds_list
-          ws.add_row mark_kinds_list
-          ws.add_row marks_list
-
-          pb.increment!
-
-          #index = 2
-          #years_merges.each do |year_merge|
-            #ws.merge_cells ws.rows[-5].cells[(index..(index-1+year_merge))]
-            #index += year_merge
-          #end
-          #index = 2
-          #periods_merges.each do |merge|
-            #ws.merge_cells ws.rows[-3].cells[(index..(index-1+merge))]
-            #index += merge
-          #end
-          #index = 2
-          #semesters_merges.each do |merge|
-            #ws.merge_cells ws.rows[-4].cells[(index..(index-1+merge))]
-            #index += merge
-          #end
-
-
-          ws.merge_cells "A#{lecturer_index}:A#{lecturer_index+4}"
-          ws.merge_cells "B#{lecturer_index}:B#{lecturer_index+4}"
-          lecturer_index += 5
         end
 
       end
+      # end шапка
+
+      wb.add_worksheet do |ws|
+        ws.add_row header, :style => Array.new(header_length, title_cell)
+        ws.add_row header_semesters
+        ws.add_row header_kinds
+        ws.add_row header_data, :style => blue_cell
+
+        ws.col_style 2, blue_cell, :row_offset => 3
+
+        ws.merge_cells "A1:A3"
+        ws.merge_cells "B1:B3"
+        ws.merge_cells "L1:L3"
+        ws.merge_cells "B1:B3"
+        ws.merge_cells "M1:M3"
+        ws.merge_cells "N1:N3"
+        ws.merge_cells "O1:O3"
+        ws.merge_cells "C1:K3"
+
+
+
+      # Отрисовка данных по сотрудникам
+
+        @hash.each do |lecturer, years|
+        lecturer_data = []
+        grades_summary = {}
+        kinds_grades = []
+          lecturer_data << lecturer
+          lecturer_data << lecturer.dockets.where(kind: 'kt').first.try(:subdivision).try(:abbr)
+
+
+          years.each do |year, semesters|
+            semesters.each do |semester, kinds|
+              kinds.each do |kind, marks|
+                if kind == "Экзаменационная сессия"
+                  kinds_grades << marks
+                  grades_summary = marks.merge(grades_summary) {|key, val1, val2| val1+val2}
+                end
+              end
+            end
+          end
+
+          sum = 0
+          grades_summary.values.to_a.each do |m|
+            sum += m
+          end
+
+          lecturer_data << sum
+
+          grades_summary = Hash[grades_summary.sort]
+          grades_summary.values.to_a.each do |marks_count|
+            lecturer_data << marks_count
+          end
+
+          #Расчет Абсолютной успеваемости
+          calc_grades = 0
+          ['3', '4', '5', 'Зачтено'].each do |grade|
+            calc_grades += grades_summary[grade]
+          end
+
+          abs_usp = (calc_grades.to_f / sum) * 100
+          sum != 0 ? lecturer_data << "#{abs_usp.to_i}%" : lecturer_data << "-"
+          # end
+
+          #Расчет качества
+          calc_grades =0
+          ['4', '5', 'Зачтено'].each do |grade|
+            calc_grades += grades_summary[grade]
+          end
+
+          quality = (calc_grades.to_f / sum) * 100
+          sum != 0 ? lecturer_data << "#{quality.to_i}%" : lecturer_data << "-"
+          # end
+
+          #Расчет троек
+          calc_grades =0
+          ['3'].each do |grade|
+            calc_grades += grades_summary[grade]
+          end
+
+          third = (calc_grades.to_f / sum) * 100
+          sum != 0 ? lecturer_data << "#{third.to_i}%" : lecturer_data << "-"
+          #end
+
+          #Расчет провалов
+          calc_grades =0
+          ['-', '2', 'Не зачтено', 'н/а'].each do |grade|
+            calc_grades += grades_summary[grade]
+          end
+
+          fails = (calc_grades.to_f / sum) * 100
+          sum != 0 ? lecturer_data << "#{fails.to_i}%" : lecturer_data << "-"
+          #end
+
+          kinds_grades.each do |kind|
+            kind = Hash[kind.sort]
+            kind.values.each do |mark|
+              lecturer_data << mark
+            end
+
+          end
+
+
+          ws.add_row lecturer_data
+        end
+      end
     end
+  end
     @package.serialize @filename
   end
 end
