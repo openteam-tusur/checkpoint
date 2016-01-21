@@ -22,7 +22,10 @@
   <%= link_to "Скачать PDF", subdivision_docket_path(@subdivision, @docket, format: :pdf) if @docket.examination? %>
 </div>
 
-<div class='info'>Преподаватель: <%= @docket.lecturer || 'Не указано' %></div>
+<div class='info'>
+  Преподаватель: <%= @docket.lecturer || 'Не указано' %>
+  <%= @docket.lecturer.permissions.pluck(:email).map {|email| mail_to email}.join(', ').html_safe if @docket.lecturer.try(:permissions) %>
+</div>
 <div class='info'>Цикл дисциплины: <%= @docket.discipline_cycle_text %></div>
 <div class='info'>Группа: <%= @docket.group %></div>
 
