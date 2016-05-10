@@ -8,6 +8,11 @@ class Grade < ActiveRecord::Base
   scope :actived, -> { where(:active => true) }
   scope :inactive, -> { where(:active => false) }
 
+  scope :filled,   -> { where("mark is not null AND active = :true OR mark is null AND active != :true", :true => true) }
+  scope :unfilled, -> { where("mark is null AND active = :true", :true => true) }
+  scope :progressive, -> { where("mark in (:marks) or mark is null", :marks => [3,4,5]) }
+  scope :unprogressive,   -> { where("mark in (:marks) OR mark is null AND active != :true", :true => true, :marks => [0,1,2]) }
+
   def to_s
     return '-' unless mark.present?
     return 'н/а' if mark.to_i.zero?
