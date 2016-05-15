@@ -36,7 +36,7 @@ task :export_kt_statistic => :environment do
       [1,2,3,4,5,6].each do |course|
         groups_at_course = groups.select {|g| g.course == course}
         students = groups_at_course.flat_map(&:students)
-        progressive_students = students.select { |s| s.grades.count == s.grades.progressive.count }
+        progressive_students = students.select { |s| s.progressive?  }
         progress_stat << (students.count > 0 ? (progressive_students.count.to_f/students.count)*100 : 0)
       end
       csv << progress_stat
@@ -49,10 +49,28 @@ task :export_kt_statistic => :environment do
       [1,2,3,4,5,6].each do |course|
         groups_at_course = groups.select {|g| g.course == course}
         students = groups_at_course.flat_map(&:students)
-        unprogressive_students = students.select { |s| s.grades.count < s.grades.unprogressive.count*2 }
+        unprogressive_students = students.select { |s| s.unprogressive? }
         progress_stat << (students.count > 0 ? (unprogressive_students.count.to_f/students.count)*100 : 0)
       end
       csv << progress_stat
+    end
+
+    csv << ['Список неуспевающих студентов']
+    period.groups.group_by(&:faculty).each do |faculty, groups|
+      csv << ["#{faculty.title} (#{faculty.abbr})"]
+      [1,2,3,4,5,6].each do |course|
+        csv << [course]
+        groups_at_course = groups.select {|g| g.course == course}
+        students = groups_at_course.flat_map(&:students)
+        students.select { |s| s.unprogressive? }.each do |student|
+          csv << [
+            "#{student.surname} #{student.name}",
+            student.group.title,
+            student.grades.unprogressive.count,
+            student.grades.count
+          ]
+        end
+      end
     end
   end
 end

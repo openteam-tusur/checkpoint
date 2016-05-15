@@ -11,4 +11,20 @@ class Student < Person
   def with_active_grades?
     grades.actived.any?
   end
+
+  def progressive?
+    alternative = grades.joins(:docket).where("dockets.discipline ilike '%гпо%' or dockets.discipline ilike '%*%'")
+    normal = grades.where.not(:id => alternative.pluck(:id))
+    return normal.unprogressive.count == 0 if alternative.empty?
+    alternative.unprogressive.count < alternative.count && normal.unprogressive.count == 0
+  end
+
+  def unprogressive?
+    return false if grades.empty?
+    line = 0.5
+    alternative = grades.joins(:docket).where("dockets.discipline ilike '%гпо%' or dockets.discipline ilike '%*%'")
+    normal = grades.where.not(:id => alternative.pluck(:id))
+    return normal.unprogressive.count >= grades.count*line if alternative.empty?
+    alternative.unprogressive.count >= alternative.count*line && normal.unprogressive.count >= normal.count*line
+  end
 end
