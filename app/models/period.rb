@@ -10,6 +10,7 @@ class Period < ActiveRecord::Base
   default_scope order('id DESC')
   scope :semester,        ->                       { where('kind = :kind1 OR kind = :kind2', :kind1 => :kt_1, :kind2 => :kt_2)}
   scope :closed_sessions, ->                       { where('kind = :kind and ends_at < :date', :kind => :exam_session, :date => Time.zone.today) }
+  scope :closed_kts,      ->                       { where('kind in (:kind) and ends_at < :date', :kind => [:kt_1, :kt_2], :date => Time.zone.today) }
   scope :actual,          ->                       { where('ends_at >= ?', Time.zone.today + 1) }
   scope :closed,          ->                       { where('ends_at < ?', Time.zone.today + 1) }
   scope :for_subdivision, ->(subdivision)          { joins(:dockets).where('dockets.subdivision_id = ?', subdivision.id).uniq }

@@ -4,6 +4,7 @@ Checkpoint::Application.routes.draw do
 
   namespace :api do
     resources :periods, :only => :index
+    get :all_periods, :controller => :periods, :action => :all_periods
   end
 
   resources :permissions,   :except => [:show, :edit, :update]

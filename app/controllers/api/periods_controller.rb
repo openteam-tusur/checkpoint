@@ -7,4 +7,11 @@ class Api::PeriodsController < ApplicationController
       format.json { render :json => @periods.to_json(:only => [:id], :methods => [:json_url]) }
     end
   end
+
+  def all_periods
+    @periods = Period.closed
+    respond_with(@periods) do |format|
+      format.json { render :json => @periods.to_json(:only => [:id], :methods => [:json_url]) }
+    end
+  end
 end
