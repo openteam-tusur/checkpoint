@@ -144,7 +144,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.0)
       railties (>= 3.2.16)
-    json (1.8.1)
+    json (2.0.2)
     kgio (2.9.2)
     mail (2.6.1)
       mime-types (>= 1.16, < 3)
@@ -317,3 +317,6 @@ DEPENDENCIES
   unicorn
   validates_email_format_of
   whenever
+
+BUNDLED WITH
+   1.13.1
