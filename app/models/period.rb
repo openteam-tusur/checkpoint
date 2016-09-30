@@ -17,6 +17,8 @@ class Period < ActiveRecord::Base
   scope :for_lecturer,    ->(lecturer)             { joins(:dockets).where('dockets.lecturer_id = ?', lecturer.id).uniq }
   scope :by_kind,         ->(kind ,season, year)   { where('kind = :kind and season_type = :season_type and starts_at between :start_of_year and :end_of_year',
                                                      :kind => kind, :season_type => season, :start_of_year => "#{year}-01-01".to_date, :end_of_year => "#{year}-12-31".to_date) }
+  scope :by_year,         ->(year)                 { where('starts_at between :start_of_year and :end_of_year',
+                                                     :start_of_year => "#{year}-01-01".to_date, :end_of_year => "#{year}-12-31".to_date) }
 
   enumerize :kind, :in => [:kt_1, :kt_2, :exam_session], :predicates => true
   enumerize :season_type, :in => [:spring, :autumn], :predicates => true
