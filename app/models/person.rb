@@ -23,8 +23,8 @@ class Person < ActiveRecord::Base
   def short_name
     [].tap do |s|
       s << surname
-      s << name.split(//).first
-      s << patronymic.split(//).first
+      s << name.to_s.split(//).first
+      s << patronymic.to_s.split(//).first
     end.compact.join(' ')
   end
 end
