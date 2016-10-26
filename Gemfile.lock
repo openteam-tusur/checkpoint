@@ -49,6 +49,7 @@ GEM
       multi_json
     arel (4.0.2)
     attribute_normalizer (1.2.0)
+    awesome_print (1.7.0)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -283,6 +284,7 @@ DEPENDENCIES
   attribute_normalizer
   auth_client!
   auth_redis_user_connector!
+  awesome_print
   axlsx (= 2.0.1)
   cancan
   capistrano-auth-subscriber
@@ -319,4 +321,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   1.13.1
+   1.13.6
