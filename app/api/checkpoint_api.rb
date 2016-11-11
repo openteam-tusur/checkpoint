@@ -17,4 +17,17 @@ class CheckpointAPI < Grape::API
     end
     }
   end
+
+  get :lecturer_permissions do
+    lecturer = Lecturer.find_by( surname: params[:surname],
+                                name: params[:name],
+                                patronymic: params[:patronymic] )
+    result = []
+    if lecturer
+      lecturer.permissions.each do |p|
+        result << { user_id: p.user_id, email: p.email }
+      end
+    end
+    result
+  end
 end
