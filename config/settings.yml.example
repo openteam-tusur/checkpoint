@@ -4,15 +4,19 @@ app:
   secret:                 SECRET
   url:                    URL
 
+errors:
+  key:                    KEY
+  url:                    http://errbit
+
+slack:
+  channel:                channel
+  webhook:                http://webhook
+
 contingent:
   wsdl:                   url
   auth:
     login:                user
     password:             pass
-
-errors:
-  key:                    SECRET
-  host:                   errors.openteam.ru
 
 session_store:
   db:                     7

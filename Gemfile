@@ -19,6 +19,7 @@ group :default do
   gem 'inherited_resources', '1.5.0'
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
+  gem 'openteam-commons', '~> 0.3.3'
   gem 'pg'
   gem 'prawn', '~> 1.0.0.rc2'
   gem 'progress_bar'
@@ -39,9 +40,9 @@ end
 group :development do
   gem 'capistrano-auth-subscriber'
   gem 'hirb'
-  gem 'openteam-capistrano', '~> 1.0.11'
-  gem 'sqlite3'
+  gem 'openteam-capistrano', '~> 1.0.16'
   gem 'rails-erd'
+  gem 'sqlite3'
 end
 
 group :production do
