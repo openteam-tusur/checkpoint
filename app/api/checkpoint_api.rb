@@ -30,4 +30,12 @@ class CheckpointAPI < Grape::API
     end
     result
   end
+
+  get :discipline_info do
+    discipline = Docket.joins(:group).where(discipline: params[:title], groups: { title: params[:group]}).first
+    {
+      cycle: discipline.try(:discipline_cycle),
+      id: discipline.try(:id)
+    }
+  end
 end
